@@ -4,7 +4,244 @@
   "headers": [
     {
       "source": "/assets/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/company-accounts",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/company-accounts/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/management-accounts",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/management-accounts/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/accounts",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/accounts/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/self-assessment",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/self-assessment/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/vat",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/vat/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/vat-returns",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/vat-returns/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/bookkeeping",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/bookkeeping/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/payroll",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/payroll/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/tax",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/tax/",
+      "destination": "/services/",
+      "permanent": true
+    },
+    {
+      "source": "/pricing",
+      "destination": "/packages/",
+      "permanent": true
+    },
+    {
+      "source": "/pricing/",
+      "destination": "/packages/",
+      "permanent": true
+    },
+    {
+      "source": "/prices",
+      "destination": "/packages/",
+      "permanent": true
+    },
+    {
+      "source": "/prices/",
+      "destination": "/packages/",
+      "permanent": true
+    },
+    {
+      "source": "/about-us",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/about-us/",
+      "destination": "/about/",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact/",
+      "permanent": true
+    },
+    {
+      "source": "/contact-us/",
+      "destination": "/contact/",
+      "permanent": true
+    },
+    {
+      "source": "/get-in-touch",
+      "destination": "/contact/",
+      "permanent": true
+    },
+    {
+      "source": "/get-in-touch/",
+      "destination": "/contact/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy",
+      "destination": "/legal/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy/",
+      "destination": "/legal/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/legal/",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy/",
+      "destination": "/legal/",
+      "permanent": true
+    },
+    {
+      "source": "/terms",
+      "destination": "/legal/",
+      "permanent": true
+    },
+    {
+      "source": "/terms/",
+      "destination": "/legal/",
+      "permanent": true
+    },
+    {
+      "source": "/mtd",
+      "destination": "/making-tax-digital/",
+      "permanent": true
+    },
+    {
+      "source": "/mtd/",
+      "destination": "/making-tax-digital/",
+      "permanent": true
+    },
+    {
+      "source": "/valuations",
+      "destination": "/advisory/",
+      "permanent": true
+    },
+    {
+      "source": "/valuations/",
+      "destination": "/advisory/",
+      "permanent": true
+    },
+    {
+      "source": "/business-valuations",
+      "destination": "/advisory/",
+      "permanent": true
+    },
+    {
+      "source": "/business-valuations/",
+      "destination": "/advisory/",
+      "permanent": true
+    },
+    {
+      "source": "/outsourced-finance-function",
+      "destination": "/outsourced-finance/",
+      "permanent": true
+    },
+    {
+      "source": "/outsourced-finance-function/",
+      "destination": "/outsourced-finance/",
+      "permanent": true
+    },
+    {
+      "source": "/fractional-fd",
+      "destination": "/outsourced-finance/",
+      "permanent": true
+    },
+    {
+      "source": "/fractional-fd/",
+      "destination": "/outsourced-finance/",
+      "permanent": true
+    },
+    {
+      "source": "/finance",
+      "destination": "/outsourced-finance/",
+      "permanent": true
+    },
+    {
+      "source": "/finance/",
+      "destination": "/outsourced-finance/",
+      "permanent": true
     }
   ]
 }
