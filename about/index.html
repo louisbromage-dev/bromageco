@@ -321,6 +321,12 @@ a[data-nav] { color: buttontext; text-decoration: none; display: inline-block; t
     
       <a data-nav="" href="/services/" class="scp1" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 13px / 1.5 Barlow, sans-serif; color: rgba(43, 51, 39, 0.7);"><span class="sc-interp">Services</span></a>
     
+      <a data-nav="" href="/services/company-accounts/" class="scp1" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 13px / 1.5 Barlow, sans-serif; color: rgba(43, 51, 39, 0.7);"><span class="sc-interp">Company accounts</span></a>
+    
+      <a data-nav="" href="/services/self-assessment/" class="scp1" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 13px / 1.5 Barlow, sans-serif; color: rgba(43, 51, 39, 0.7);"><span class="sc-interp">Self assessment</span></a>
+    
+      <a data-nav="" href="/services/management-accounts/" class="scp1" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 13px / 1.5 Barlow, sans-serif; color: rgba(43, 51, 39, 0.7);"><span class="sc-interp">Management accounts</span></a>
+    
       <a data-nav="" href="/outsourced-finance/" class="scp1" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 13px / 1.5 Barlow, sans-serif; color: rgba(43, 51, 39, 0.7);"><span class="sc-interp">Outsourced finance</span></a>
     
       <a data-nav="" href="/advisory/" class="scp1" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 13px / 1.5 Barlow, sans-serif; color: rgba(43, 51, 39, 0.7);"><span class="sc-interp">Advisory</span></a>
@@ -764,9 +770,11 @@ a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-alig
           <div style="position:absolute;top:100%;left:-18px;padding-top:12px;z-index:20">
             <div style="position:relative;background:#f6f5f1;border:1px solid rgba(43,51,39,.22);min-width:230px;display:flex;flex-direction:column;box-shadow:0 10px 24px rgba(43,51,39,.1)">
               <sc-for list="{{ n.sub }}" as="s" hint-placeholder-count="2">
-                <a data-nav="" href="{{ s.href }}" sc-camel-on-click="{{ s.go }}" style="border:0;border-bottom:1px solid rgba(43,51,39,.12);background:transparent;padding:15px 18px;text-align:left;display:flex;flex-direction:column;gap:5px;color:#2b3327" style-hover="background:rgba(127,145,115,.1)">
-                  <span style="font:500 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:{{ s.color }}">{{ s.label }}</span>
-                  <span style="font:400 13px/1.4 Barlow,sans-serif;color:rgba(43,51,39,.66)">{{ s.body }}</span>
+                <a data-nav="" href="{{ s.href }}" sc-camel-on-click="{{ s.go }}" style="border:0;border-bottom:1px solid {{ s.rule }};background:transparent;padding:{{ s.pad }};text-align:left;display:flex;flex-direction:column;gap:5px;color:#2b3327" style-hover="background:rgba(127,145,115,.1)">
+                  <span style="font:{{ s.font }};letter-spacing:{{ s.track }};text-transform:{{ s.case }};white-space:nowrap;color:{{ s.color }}">{{ s.label }}</span>
+                  <sc-if value="{{ s.hasBody }}" hint-placeholder-val="{{ true }}">
+                    <span style="font:400 13px/1.4 Barlow,sans-serif;color:rgba(43,51,39,.66)">{{ s.body }}</span>
+                  </sc-if>
                 </a>
               </sc-for>
             </div>
@@ -944,8 +952,16 @@ a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-alig
     <div data-stack="" style="padding:52px clamp(20px,4.6vw,44px);border-bottom:1px solid rgba(43,51,39,.16);display:grid;grid-template-columns:.3fr .7fr;gap:44px;align-items:start">
       <div>
         <div style="font:400 44px/1 'Cormorant Garamond',serif;color:#7f9173">{{ s.num }}</div>
-        <h2 style="margin:12px 0 0;font:400 30px/1.12 'Cormorant Garamond',serif">{{ s.title }}</h2>
+        <sc-if value="{{ s.hasPage }}" hint-placeholder-val="{{ false }}">
+          <h2 style="margin:12px 0 0;font:400 30px/1.12 'Cormorant Garamond',serif"><a data-nav="" href="{{ s.pageHref }}" sc-camel-on-click="{{ s.goPage }}" style="border:0;background:transparent;padding:0;text-align:left;font:inherit;color:#2b3327" style-hover="color:#4a5742">{{ s.title }}</a></h2>
+        </sc-if>
+        <sc-if value="{{ s.noPage }}" hint-placeholder-val="{{ true }}">
+          <h2 style="margin:12px 0 0;font:400 30px/1.12 'Cormorant Garamond',serif">{{ s.title }}</h2>
+        </sc-if>
         <div style="font:500 11px/1.4 'Barlow Condensed',sans-serif;letter-spacing:.18em;color:#4a5742;margin-top:12px">{{ s.price }}</div>
+        <sc-if value="{{ s.hasPage }}" hint-placeholder-val="{{ false }}">
+          <a data-nav="" href="{{ s.pageHref }}" sc-camel-on-click="{{ s.goPage }}" style="margin-top:20px;border:0;background:transparent;padding:0 0 4px;font:500 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#4a5742;border-bottom:1px solid #7f9173" style-hover="color:#7f9173">Read more →</a>
+        </sc-if>
       </div>
       <div style="display:flex;flex-direction:column;gap:20px">
         <p style="margin:0;font:400 17px/1.7 Barlow,sans-serif;color:rgba(43,51,39,.78);max-width:62ch;text-wrap:pretty">{{ s.blurb }}</p>
@@ -1713,6 +1729,154 @@ a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-alig
 </div>
 </sc-if>
 
+<!-- ══ SERVICE PAGES (companyAccounts · selfAssessment · managementAccounts) ══ -->
+<sc-if value="{{ isSvcPage }}" hint-placeholder-val="{{ false }}">
+<div>
+  <div data-stack-sm="" style="padding:60px clamp(20px,4.6vw,44px) 50px;border-bottom:1px solid rgba(43,51,39,.16);display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:end">
+    <div>
+      <div style="font:500 11px/1.5 'Barlow Condensed',sans-serif;letter-spacing:.28em;color:#4a5742;margin-bottom:16px">{{ svc.eyebrow }}</div>
+      <h1 style="margin:0;font:400 clamp(32px,5.6vw,52px)/1.06 'Cormorant Garamond',serif;max-width:17ch;text-wrap:balance">{{ svc.h1 }}</h1>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <p style="margin:0;font:400 17px/1.65 Barlow,sans-serif;color:rgba(43,51,39,.75);text-wrap:pretty">{{ svc.intro }}</p>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="position:relative">
+          <a data-nav="" href="/packages/" sc-camel-on-click="{{ goPackage }}" style="border:1px solid #4a5742;background:#4a5742;color:#f6f5f1;padding:15px 28px;font:500 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;border-radius:0;white-space:nowrap" style-hover="background:#3b4635;border-color:#3b4635">Build your package</a>
+          <span style="position:absolute;top:-8px;left:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;top:-8px;right:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;bottom:-8px;left:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;bottom:-8px;right:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+        </div>
+        <a data-nav="" href="/contact/" sc-camel-on-click="{{ goContact }}" style="border:1px solid rgba(43,51,39,.3);background:transparent;color:#2b3327;padding:15px 28px;font:500 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;border-radius:0;white-space:nowrap" style-hover="background:rgba(127,145,115,.14);border-color:#7f9173">Talk to Louis</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:60px clamp(20px,4.6vw,44px);border-bottom:1px solid rgba(43,51,39,.16)">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:36px;gap:20px;flex-wrap:wrap">
+      <h2 style="margin:0;font:400 clamp(26px,4vw,36px)/1.1 'Cormorant Garamond',serif">Who it's for</h2>
+      <div style="font:500 11px/1 'Barlow Condensed',sans-serif;letter-spacing:.26em;color:rgba(43,51,39,.5)">{{ svc.figWho }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:32px">
+      <sc-for list="{{ svc.who }}" as="w" hint-placeholder-count="3">
+        <div style="position:relative;border:1px solid rgba(43,51,39,.16);padding:28px 26px 30px;display:flex;flex-direction:column;gap:10px">
+          <div style="font:500 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.26em;color:#7f9173">{{ w.num }}</div>
+          <h3 style="margin:0;font:400 24px/1.15 'Cormorant Garamond',serif">{{ w.title }}</h3>
+          <p style="margin:0;font:400 14px/1.6 Barlow,sans-serif;color:rgba(43,51,39,.7);text-wrap:pretty">{{ w.body }}</p>
+          <span style="position:absolute;top:-8px;left:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;top:-8px;right:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;bottom:-8px;left:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;bottom:-8px;right:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="padding:60px clamp(20px,4.6vw,44px);border-bottom:1px solid rgba(43,51,39,.16)">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:32px;gap:20px;flex-wrap:wrap">
+      <h2 style="margin:0;font:400 clamp(26px,4vw,36px)/1.1 'Cormorant Garamond',serif">What's included</h2>
+      <div style="font:500 11px/1 'Barlow Condensed',sans-serif;letter-spacing:.26em;color:rgba(43,51,39,.5)">{{ svc.figScope }}</div>
+    </div>
+    <div data-stack="" style="display:grid;grid-template-columns:.36fr .64fr;gap:44px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:baseline;gap:14px;border-top:1px solid rgba(43,51,39,.16);padding-top:18px;flex-wrap:wrap">
+          <span style="font:400 46px/1 'Cormorant Garamond',serif;color:#4a5742">{{ svc.priceFig }}</span>
+          <span style="font:500 11px/1.5 'Barlow Condensed',sans-serif;letter-spacing:.18em;color:rgba(43,51,39,.62)">{{ svc.priceUnit }}</span>
+        </div>
+        <p style="margin:0;font:400 14px/1.6 Barlow,sans-serif;color:rgba(43,51,39,.7);text-wrap:pretty">{{ svc.priceNote }}</p>
+      </div>
+      <div data-stack-sm="" style="display:grid;grid-template-columns:1fr 1fr;gap:0 36px;border-top:1px solid rgba(43,51,39,.16)">
+        <sc-for list="{{ svc.includes }}" as="i" hint-placeholder-count="6">
+          <div style="display:flex;gap:12px;align-items:baseline;padding:12px 0;border-bottom:1px solid rgba(43,51,39,.12);font:400 15px/1.4 Barlow,sans-serif">
+            <span style="font:400 11px/1.4 ui-monospace,monospace;color:#7f9173;flex:none">·</span>{{ i.label }}
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ svc.hasAside }}" hint-placeholder-val="{{ true }}">
+  <div data-stack-sm="" style="padding:60px clamp(20px,4.6vw,44px);border-bottom:1px solid rgba(43,51,39,.16);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
+    <div>
+      <div style="font:500 11px/1 'Barlow Condensed',sans-serif;letter-spacing:.28em;color:#7f9173;margin-bottom:14px">{{ svc.asideEyebrow }}</div>
+      <h2 style="margin:0;font:400 clamp(27px,4.2vw,38px)/1.1 'Cormorant Garamond',serif;max-width:20ch;text-wrap:balance">{{ svc.asideTitle }}</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <p style="margin:0;font:400 17px/1.7 Barlow,sans-serif;color:rgba(43,51,39,.78);text-wrap:pretty">{{ svc.asideBody }}</p>
+      <sc-if value="{{ svc.asideSigned }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:10px;align-items:center;font:400 13px/1.5 Barlow,sans-serif;color:rgba(43,51,39,.6)">
+          <span style="width:22px;height:1px;background:#7f9173;display:block;flex:none"></span>Louis Bromage, ACMA CGMA
+        </div>
+      </sc-if>
+      <sc-if value="{{ svc.hasList }}" hint-placeholder-val="{{ false }}">
+        <div style="position:relative;border:1px solid rgba(43,51,39,.16);padding:26px 26px 28px;margin-top:6px">
+          <div style="font:500 10px/1 'Barlow Condensed',sans-serif;letter-spacing:.26em;color:#7f9173;margin-bottom:12px">{{ svc.listTitle }}</div>
+          <sc-for list="{{ svc.list }}" as="i" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:baseline;padding:11px 0;border-bottom:1px solid rgba(43,51,39,.12);font:400 15px/1.5 Barlow,sans-serif">
+              <span style="font:500 10px/1.5 'Barlow Condensed',sans-serif;letter-spacing:.2em;color:rgba(43,51,39,.45)">{{ i.num }}</span>{{ i.label }}
+            </div>
+          </sc-for>
+          <span style="position:absolute;top:-8px;left:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;top:-8px;right:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;bottom:-8px;left:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+          <span style="position:absolute;bottom:-8px;right:-7px;font:400 12px/1 ui-monospace,monospace;color:rgba(43,51,39,.5)">+</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{ svc.hasLink }}" hint-placeholder-val="{{ false }}">
+        <a data-nav="" href="{{ svc.linkHref }}" sc-camel-on-click="{{ svc.goLink }}" style="align-self:flex-start;border:0;background:transparent;padding:0;font:500 12px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#4a5742;border-bottom:1px solid #7f9173;padding-bottom:4px" style-hover="color:#7f9173">{{ svc.linkLabel }}</a>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="padding:60px clamp(20px,4.6vw,44px);border-bottom:1px solid rgba(43,51,39,.16)">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;gap:20px;flex-wrap:wrap">
+      <h2 style="margin:0;font:400 clamp(26px,4vw,36px)/1.1 'Cormorant Garamond',serif">How the year runs</h2>
+      <div style="font:500 11px/1 'Barlow Condensed',sans-serif;letter-spacing:.26em;color:rgba(43,51,39,.5)">{{ svc.figYear }}</div>
+    </div>
+    <p style="margin:0 0 40px;font:400 16px/1.65 Barlow,sans-serif;color:rgba(43,51,39,.72);max-width:64ch;text-wrap:pretty">{{ svc.yearIntro }}</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,178px),1fr));border-top:1px solid #7f9173">
+      <sc-for list="{{ svc.timeline }}" as="t" hint-placeholder-count="5">
+        <div style="position:relative;padding:28px 22px 30px;border-right:1px solid rgba(43,51,39,.16);border-bottom:1px solid rgba(43,51,39,.16);display:flex;flex-direction:column;gap:8px" style-hover="background:rgba(127,145,115,.08)">
+          <span style="position:absolute;top:-5px;left:22px;width:9px;height:9px;border:1px solid #4a5742;background:{{ t.fill }}"></span>
+          <div style="font:500 10px/1.4 'Barlow Condensed',sans-serif;letter-spacing:.24em;color:{{ t.whenInk }}">{{ t.when }}</div>
+          <h4 style="margin:0;font:400 21px/1.15 'Cormorant Garamond',serif">{{ t.title }}</h4>
+          <p style="margin:0;font:400 13.5px/1.6 Barlow,sans-serif;color:rgba(43,51,39,.7);text-wrap:pretty">{{ t.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:28px;flex-wrap:wrap;margin-top:18px;font:500 10px/1.4 'Barlow Condensed',sans-serif;letter-spacing:.22em;color:rgba(43,51,39,.55)">
+      <span style="display:flex;gap:9px;align-items:center"><span style="width:9px;height:9px;border:1px solid #4a5742;background:#4a5742;flex:none"></span>{{ svc.legendDue }}</span>
+      <span style="display:flex;gap:9px;align-items:center"><span style="width:9px;height:9px;border:1px solid #4a5742;background:#f6f5f1;flex:none"></span>WHAT LOUIS DOES</span>
+    </div>
+    <sc-if value="{{ svc.hasNote }}" hint-placeholder-val="{{ false }}">
+      <p style="margin:28px 0 0;padding-top:20px;border-top:1px solid rgba(43,51,39,.12);font:400 14.5px/1.65 Barlow,sans-serif;color:rgba(43,51,39,.75);max-width:70ch;text-wrap:pretty">{{ svc.timelineNote }}</p>
+    </sc-if>
+  </div>
+
+  <div data-stack="" style="padding:70px clamp(20px,4.6vw,44px);display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;border-bottom:1px solid rgba(43,51,39,.16)">
+    <div>
+      <h2 style="margin:0 0 12px;font:400 clamp(27px,4.2vw,38px)/1.1 'Cormorant Garamond',serif">Questions,<br>answered plainly</h2>
+      <p style="margin:0;font:400 15px/1.6 Barlow,sans-serif;color:rgba(43,51,39,.68)">Anything not here, just ask. We don't charge for questions.</p>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <sc-for list="{{ svc.faq }}" as="f" hint-placeholder-count="5">
+        <div style="border-top:1px solid rgba(43,51,39,.16)">
+          <button sc-camel-on-click="{{ f.toggle }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:20px;background:transparent;border:0;padding:20px 2px;text-align:left;color:#2b3327;font:400 21px/1.3 'Cormorant Garamond',serif" style-hover="color:#4a5742">
+            {{ f.q }}
+            <span style="font:400 18px/1 ui-monospace,monospace;color:#7f9173">{{ f.sign }}</span>
+          </button>
+          <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:0;padding:0 56px 22px 2px;font:400 15px/1.65 Barlow,sans-serif;color:rgba(43,51,39,.75);text-wrap:pretty">{{ f.a }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid rgba(43,51,39,.16)"></div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
 <!-- ══ SHARED CTA + FOOTER ══ -->
 <sc-if value="{{ showCta }}" hint-placeholder-val="{{ true }}">
 <div style="padding:60px clamp(20px,4.6vw,44px);display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap">
@@ -1779,7 +1943,7 @@ a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-alig
 
 </script>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180}}">
-const __ROUTES = [{"key":"home","path":"/","title":"Bromage & Co Accounting | Chartered Accountant in Fleet, Hampshire","description":"CIMA chartered accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."},{"key":"services","path":"/services/","title":"Accounting & Tax Services for Small Businesses | Bromage & Co","description":"Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."},{"key":"finance","path":"/outsourced-finance/","title":"Outsourced Finance & Part-Time FD Support | Bromage & Co","description":"Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."},{"key":"advisory","path":"/advisory/","title":"Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co","description":"Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a CIMA chartered accountant, scoped as projects with the fee fixed first."},{"key":"package","path":"/packages/","title":"Accounting Package Prices: Build Your Quote Online | Bromage & Co","description":"Build your accounting package and see the fixed monthly price instantly. Published prices for limited companies, sole traders, partnerships and personal tax. No call needed."},{"key":"mtd","path":"/making-tax-digital/","title":"Making Tax Digital for Income Tax: What You Need to Do | Bromage & Co","description":"Making Tax Digital for Income Tax starts April 2026 for sole traders and landlords over £50,000, then £30,000 from April 2027. What changes, and how Bromage & Co can handle the quarterly updates for you."},{"key":"about","path":"/about/","title":"About Louis Bromage, CIMA Chartered Accountant | Bromage & Co","description":"A solo practice in Fleet, Hampshire, on purpose. Meet Louis Bromage, CIMA chartered management accountant, and see how Bromage & Co works with its clients."},{"key":"contact","path":"/contact/","title":"Contact Bromage & Co Accounting | Fleet, Hampshire","description":"Talk to Louis about your accounts, tax or finance. Call 07387 835 746, email enquiries@bromageco.com or send a message. Questions are always free."},{"key":"legal","path":"/legal/","title":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."}];
+const __ROUTES = [{"key":"home","path":"/","title":"Bromage & Co Accounting | Chartered Accountant in Fleet, Hampshire","description":"CIMA chartered accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."},{"key":"services","path":"/services/","title":"Accounting & Tax Services for Small Businesses | Bromage & Co","description":"Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."},{"key":"companyAccounts","path":"/services/company-accounts/","title":"Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet","description":"Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a CIMA chartered accountant in Fleet, Hampshire."},{"key":"selfAssessment","path":"/services/self-assessment/","title":"Self Assessment Tax Returns: £180 a Year | Bromage & Co, Fleet","description":"Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. £180 a year, from a chartered accountant in Fleet, Hampshire."},{"key":"managementAccounts","path":"/services/management-accounts/","title":"Management Accounts for Small Businesses | Bromage & Co","description":"Monthly or quarterly management accounts from £55 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA chartered management accountant."},{"key":"finance","path":"/outsourced-finance/","title":"Outsourced Finance & Part-Time FD Support | Bromage & Co","description":"Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."},{"key":"advisory","path":"/advisory/","title":"Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co","description":"Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a CIMA chartered accountant, scoped as projects with the fee fixed first."},{"key":"package","path":"/packages/","title":"Accounting Package Prices: Build Your Quote Online | Bromage & Co","description":"Build your accounting package and see the fixed monthly price instantly. Published prices for limited companies, sole traders, partnerships and personal tax. No call needed."},{"key":"mtd","path":"/making-tax-digital/","title":"Making Tax Digital for Income Tax: What You Need to Do | Bromage & Co","description":"Making Tax Digital for Income Tax starts April 2026 for sole traders and landlords over £50,000, then £30,000 from April 2027. What changes, and how Bromage & Co can handle the quarterly updates for you."},{"key":"about","path":"/about/","title":"About Louis Bromage, CIMA Chartered Accountant | Bromage & Co","description":"A solo practice in Fleet, Hampshire, on purpose. Meet Louis Bromage, CIMA chartered management accountant, and see how Bromage & Co works with its clients."},{"key":"contact","path":"/contact/","title":"Contact Bromage & Co Accounting | Fleet, Hampshire","description":"Talk to Louis about your accounts, tax or finance. Call 07387 835 746, email enquiries@bromageco.com or send a message. Questions are always free."},{"key":"legal","path":"/legal/","title":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."}];
 const __routeFor = key => __ROUTES.find(r => r.key === key) || __ROUTES[0];
 function __pageFromLocation() {
   if (typeof window === "undefined") return "home";
@@ -1814,6 +1978,9 @@ const PAGES = [
 
 const SERVICES_SUB = [
   { key: "services", label: "Accounts & tax", body: "Compliance, bookkeeping, payroll and VAT." },
+  { key: "companyAccounts", label: "Company accounts & corporation tax", child: true },
+  { key: "selfAssessment", label: "Self assessment", child: true },
+  { key: "managementAccounts", label: "Management accounts", child: true },
   { key: "finance", label: "Outsourced finance", body: "Your whole finance function, from August 2027." }
 ];
 
@@ -1861,6 +2028,112 @@ const FIN_FAQ = [
   { q: "Is year end included?", a: "Yes, year-end accounts and corporation tax are included in every tier." },
   { q: "Can we move between tiers?", a: "Yes, as the business grows." }
 ];
+
+const SVC_KEYS = ["companyAccounts", "selfAssessment", "managementAccounts"];
+const SVC_BY_NUM = { "01": "companyAccounts", "02": "selfAssessment", "05": "managementAccounts" };
+
+const SVC_PAGES = {
+  companyAccounts: {
+    detail: "01", cat: "ct", fallback: 75, kind: "monthly",
+    eyebrow: "COMPANY ACCOUNTS & CORPORATION TAX",
+    h1: "Company accounts filed early enough to still be useful.",
+    intro: "Every limited company files accounts at Companies House and a corporation tax return with HMRC each year. Left until the deadline, the numbers are months old and there's nothing left to change. We prepare yours soon after the year end, walk you through what they say, and file once you're happy with them.",
+    figWho: "FIG. 10 · AUDIENCE", figScope: "FIG. 11 · SCOPE", figYear: "FIG. 12 · DEADLINES",
+    who: [
+      { num: "01", title: "Limited companies", body: "Trading companies of any size that need statutory accounts and a CT600 every year." },
+      { num: "02", title: "Contractors & consultants", body: "Trading through your own company, where the split between salary and dividends matters as much as the filing." },
+      { num: "03", title: "First year end", body: "Founders filing for the first time, when the dates and the rules are least familiar." }
+    ],
+    priceNote: "Covers the annual accounts, the CT600, Companies House filing and the confirmation statement. Fixed monthly, agreed in writing before any work starts.",
+    aside: { eyebrow: "FROM LOUIS", title: "Why I push for early.", signed: true,
+      body: "Accounts filed in the last week are a record. Accounts finished a few months after the year end are still a tool: there's time to decide on dividends, plan for the tax bill, and change something before the next year closes. That is the whole reason, it isn't tidiness." },
+    yearIntro: "Every deadline for a limited company counts from the end of its accounting period, except the confirmation statement, which follows the date the company was formed.",
+    legendDue: "STATUTORY DEADLINE",
+    timeline: [
+      { when: "BEFORE YEAR END", title: "Pre-year-end review", body: "A look at the numbers while there's still time to act on them: dividends, pension contributions, planned purchases." },
+      { when: "YEAR END", title: "Period closes", body: "Records collected, bank reconciled, questions asked while the answers are still fresh." },
+      { when: "+ 9 MONTHS", title: "Accounts to Companies House", body: "The legal deadline. Yours are filed well before it, after a walkthrough call.", due: true },
+      { when: "+ 9 MONTHS AND 1 DAY", title: "Corporation tax paid", body: "The tax is due before the return is. You'll know the figure as soon as the accounts are agreed.", due: true },
+      { when: "+ 12 MONTHS", title: "CT600 filed with HMRC", body: "The return itself. Ours go in alongside the accounts, not months later.", due: true },
+      { when: "EVERY YEAR", title: "Confirmation statement", body: "Officers, shareholders and registered details confirmed at Companies House. Diarised separately, because its date follows incorporation.", due: true }
+    ],
+    timelineNote: "The first year runs differently. First accounts are due 21 months after the company was incorporated, and if the first period is longer than 12 months it needs two corporation tax returns. We map out your dates on day one.",
+    faq: [
+      { q: "What's the difference between the accounts and the CT600?", a: "The accounts are the company's financial statements for the year: profit and loss, balance sheet and notes. They go to Companies House and become public. The CT600 is the corporation tax return. It takes the accounting profit, adjusts it for the tax rules, and works out what the company owes. It goes to HMRC with a copy of the accounts. Same numbers, two audiences." },
+      { q: "When do I pay corporation tax?", a: "Nine months and one day after the end of your accounting period, which is before the return itself is due. For a 31 March year end, that's 1 January. Companies with profits over £1.5 million pay in quarterly instalments instead, and we'll tell you well before you get near that." },
+      { q: "Can you take over from my current accountant mid-year?", a: "Yes. You sign one authority form, we write to your current accountant for professional clearance and collect the records, and we deal with them directly from there. You don't need to wait for your year end. Allow two to three weeks for the handover." },
+      { q: "What do I need to send you?", a: "Access to your bookkeeping software, or bank statements if there isn't any. Sales and purchase invoices, any loan or finance agreements, and details of anything you paid personally for the business. If we already do your bookkeeping, most of this is already with us." },
+      { q: "Is my first year end different?", a: "Yes, in two ways. The first accounts are due 21 months after incorporation rather than 9 months after the year end. And while a company's first accounts can cover more than 12 months, a corporation tax period can't, so a long first period means two CT600s. None of it is difficult once it's written down, which is why we write it down on day one." }
+    ]
+  },
+  selfAssessment: {
+    detail: "02", cat: "sa", fallback: 15, kind: "annual",
+    eyebrow: "SELF ASSESSMENT",
+    h1: "Your tax return done in the autumn, not the last week of January.",
+    intro: "If HMRC doesn't take the right tax from your income automatically, you owe them a return each year. We prepare yours from records we already hold, in the autumn, so you know what you owe months before you have to pay it.",
+    figWho: "FIG. 13 · AUDIENCE", figScope: "FIG. 14 · SCOPE", figYear: "FIG. 15 · DEADLINES",
+    who: [
+      { num: "01", title: "Sole traders & landlords", body: "Self-employed profits or rental income, the costs you can set against them, and the return that goes with it." },
+      { num: "02", title: "Directors taking dividends", body: "Salary and dividends from your own company, with the personal tax on them worked out in advance." },
+      { num: "03", title: "Anyone with untaxed income", body: "Savings, investments, capital gains or side income that HMRC doesn't tax through your payslip." }
+    ],
+    priceNote: "One fixed fee for the full return, billed monthly if you prefer. Agreed in writing before any work starts.",
+    aside: { eyebrow: "MAKING TAX DIGITAL", title: "Quarterly updates are on the way.", signed: false,
+      body: "From April 2026, sole traders and landlords with qualifying income over £50,000 send HMRC quarterly updates as well as a final declaration, and the threshold drops to £30,000 in April 2027. If that's you, we'll move you onto compatible software and send the updates for you.",
+      link: "mtd", linkLabel: "What MTD means for you →" },
+    yearIntro: "The tax year runs from 6 April to 5 April. Everything below counts from the end of it, and the dates are the same every year.",
+    legendDue: "HMRC DEADLINE",
+    timeline: [
+      { when: "5 APRIL", title: "Tax year ends", body: "We ask for anything we don't already hold: P60s, rental statements, dividend and interest figures." },
+      { when: "5 OCTOBER", title: "Register if you're new", body: "First year in self assessment? HMRC needs to know by now to issue your UTR. We handle the registration.", due: true },
+      { when: "AUTUMN", title: "Return prepared", body: "Drafted, checked and talked through with you. You know the figure and the payment dates well before Christmas." },
+      { when: "31 JANUARY", title: "Filed and balance paid", body: "The online filing deadline, and the date the balancing payment and first payment on account are due. Yours is already in.", due: true },
+      { when: "31 JULY", title: "Second payment on account", body: "Half of last year's bill, paid towards this year's. You'll get the amount from us before it's due.", due: true }
+    ],
+    timelineNote: "Miss 31 January and HMRC charges a £100 penalty straight away, even if there's no tax to pay. Further penalties follow at three, six and twelve months, with interest on any tax paid late.",
+    faq: [
+      { q: "Do I need to file a return?", a: "Usually yes if you're self-employed with income over £1,000, receive rent, take dividends from your own company, have a capital gain to report, or earn income that isn't taxed through PAYE. If you're not sure, ask. It's a two-minute question and there's no charge for it." },
+      { q: "What are payments on account?", a: "Advance payments towards next year's tax, each one half of the previous year's bill, due on 31 January and 31 July. You don't make them if last year's bill was under £1,000, or if most of your tax is already taken at source. The first year catches people out, because the balance for one year and the first advance for the next land in the same January." },
+      { q: "Which expenses can I claim?", a: "Costs incurred wholly and exclusively for the business: materials, software, phone, professional fees, a share of running costs if you work from home, and business mileage. Landlords can claim repairs, letting fees and insurance, with mortgage interest given as a basic-rate tax credit instead of a deduction. We go through what applies to you, not a generic list." },
+      { q: "I've missed the deadline, what now?", a: "File as soon as you can. The £100 penalty applies the day after 31 January, then £10 a day after three months, and more at six and twelve months. Interest runs on any unpaid tax. Getting the return in stops most of it growing, and if there was a genuine reason for the delay we can appeal the penalty for you." },
+      { q: "What about Making Tax Digital?", a: "It adds quarterly updates for sole traders and landlords above an income threshold: £50,000 from April 2026, then £30,000 from April 2027. You still file a final declaration each year. The Making Tax Digital page has the dates and what changes." }
+    ]
+  },
+  managementAccounts: {
+    detail: "05", cat: "ma", fallback: 55, kind: "monthly",
+    eyebrow: "MANAGEMENT ACCOUNTS",
+    h1: "Numbers you can make decisions with, not just file.",
+    intro: "Year-end accounts tell you what happened, usually months after it did. Management accounts tell you what's happening now: which jobs make money, where the cash is going, and what the next quarter looks like. Monthly or quarterly, with a call each time to talk it through.",
+    figWho: "FIG. 16 · AUDIENCE", figScope: "FIG. 17 · SCOPE", figYear: "FIG. 18 · EACH PERIOD",
+    who: [
+      { num: "01", title: "Growing businesses", body: "Deciding whether to hire, raise prices or take on a bigger contract, and wanting the numbers before the decision." },
+      { num: "02", title: "Owners who see figures once a year", body: "When the year-end accounts are the only profit figure you get, and it's already out of date by the time it arrives." },
+      { num: "03", title: "Talking to a bank or investor", body: "Lenders and investors expect current figures and a forecast, not last year's filed accounts." }
+    ],
+    priceNote: "Monthly or quarterly, depending on how often the decisions come up. Fixed monthly, agreed in writing before any work starts.",
+    aside: { eyebrow: "WHY CIMA MATTERS HERE", title: "Trained to use the numbers, not audit them.", signed: true,
+      body: "CIMA is the management accounting body. Where audit training is about checking what already happened, mine is in using the numbers to run a business: costing, pricing, budgeting and forecasting. Management accounts are the service where that difference shows most.",
+      listTitle: "WHAT'S IN A TYPICAL PACK",
+      list: ["Profit and loss against budget", "Cashflow forecast", "Margins by job or product", "The KPIs that matter to your business", "A review call each period"] },
+    yearIntro: "Management accounts have no legal deadlines, so the rhythm is set around you. Each month or quarter follows the same cycle.",
+    legendDue: "WHAT YOU GET",
+    timeline: [
+      { when: "START OF THE YEAR", title: "Budget agreed", body: "A budget set with you, so every pack after it has something to measure against." },
+      { when: "PERIOD END", title: "Books closed", body: "Transactions reconciled and adjustments made, so the figures are final rather than roughly right." },
+      { when: "SHORTLY AFTER", title: "Pack delivered", body: "Profit and loss against budget, cashflow forecast, margins and KPIs, kept short enough to read.", due: true },
+      { when: "THE REVIEW CALL", title: "Decisions, not a PDF", body: "What moved, why, and what to do about it. The call is the point of the service.", due: true },
+      { when: "YEAR END", title: "Straight into the accounts", body: "With the books current all year, the statutory accounts are quicker and hold no surprises." }
+    ],
+    timelineNote: "",
+    faq: [
+      { q: "What's the difference from year-end accounts?", a: "Year-end accounts are a legal requirement, prepared to accounting standards, filed once a year and mostly backward-looking. Management accounts have no set format and no filing deadline. They're built around your business and the decisions in front of you, and they look forward as much as back." },
+      { q: "Monthly or quarterly?", a: "Quarterly suits most small businesses with steady trading. Monthly is worth it if cash is tight, you're growing quickly, or a lender wants regular figures. You can start quarterly and move to monthly later." },
+      { q: "Do I need bookkeeping too?", a: "The books need to be current and reconciled before each pack, otherwise the numbers aren't worth reading. If you keep them up yourself, that's fine and we'll check them first. If not, bookkeeping can go into the same monthly fee." },
+      { q: "What software do you use?", a: "Xero, or QuickBooks if you're already on it. If you're on spreadsheets, moving you onto Xero is part of setting up." },
+      { q: "What does it cost?", a: "The figure on this page is the starting point. It depends on how often you want reporting and how much detail the business needs. Build a package and you'll see the monthly price straight away." }
+    ]
+  }
+};
 
 const REFERRAL_STEPS = [
   { num: "01", title: "A call, no charge", body: "Twenty minutes on where the business is and what you actually need doing." },
@@ -2302,7 +2575,7 @@ class Component extends DCLogic {
     return {
       nav: PAGES.map(n => {
         const hasSub = n.key === "services";
-        const active = p === n.key || (hasSub && p === "finance");
+        const active = p === n.key || (hasSub && (p === "finance" || SVC_KEYS.indexOf(p) !== -1));
         const subOpen = hasSub && this.state.menu;
         return {
           label: n.label,
@@ -2317,15 +2590,24 @@ class Component extends DCLogic {
           enter: hasSub ? () => this.setState({ menu: true }) : undefined,
           leave: hasSub ? () => this.setState({ menu: false }) : undefined,
           sub: hasSub ? SERVICES_SUB.map(s => ({
-            label: s.label, body: s.body,
-            color: p === s.key ? "#7f9173" : "#2b3327",
+            label: s.label, body: s.body || "", hasBody: !!s.body,
+            color: p === s.key ? "#7f9173" : (s.child ? "rgba(43,51,39,.82)" : "#2b3327"),
+            pad: s.child ? "10px 18px 10px 32px" : "15px 18px",
+            font: s.child ? "400 14px/1.3 Barlow,sans-serif" : "500 12px/1 'Barlow Condensed',sans-serif",
+            track: s.child ? "0" : ".14em",
+            case: s.child ? "none" : "uppercase",
+            rule: s.child ? "rgba(43,51,39,.07)" : "rgba(43,51,39,.12)",
             go: () => this.go(s.key),
             href: __routeFor(s.key).path
           })) : []
         };
       }),
       footerNav: PAGES.flatMap(n => n.key === "services"
-        ? [{ key: "services", label: "Services" }, { key: "finance", label: "Outsourced finance" }]
+        ? [{ key: "services", label: "Services" },
+           { key: "companyAccounts", label: "Company accounts" },
+           { key: "selfAssessment", label: "Self assessment" },
+           { key: "managementAccounts", label: "Management accounts" },
+           { key: "finance", label: "Outsourced finance" }]
         : [n]).map(n => ({ label: n.label, href: __routeFor(n.key).path, go: () => this.go(n.key) })),
       isFinance: p === "finance",
       goFinance: () => this.go("finance"),
@@ -2385,8 +2667,41 @@ class Component extends DCLogic {
           else if (s.priceKind === "payroll") price = "£" + PAYROLL_BASE + " base + £" + PAYROLL_PER_EMPLOYEE + " per employee / month";
           else price = "From £" + n + " / month";
         }
-        return { ...s, price, includes: s.includes.map(label => ({ label })) };
+        const pageKey = SVC_BY_NUM[s.num];
+        return { ...s, price, includes: s.includes.map(label => ({ label })),
+          hasPage: !!pageKey, noPage: !pageKey, goPage: pageKey ? () => this.go(pageKey) : undefined, pageHref: pageKey ? __routeFor(pageKey).path : undefined };
       }),
+      isSvcPage: SVC_KEYS.indexOf(p) !== -1,
+      svc: (() => {
+        const d = SVC_PAGES[p] || SVC_PAGES.companyAccounts;
+        const det = SERVICE_DETAIL.find(s => s.num === d.detail);
+        const live = cheapest(d.cat);
+        const n = Number.isFinite(live) ? live : d.fallback;
+        const a = d.aside || {};
+        return {
+          eyebrow: d.eyebrow, h1: d.h1, intro: d.intro,
+          figWho: d.figWho, figScope: d.figScope, figYear: d.figYear,
+          who: d.who,
+          includes: det.includes.map(label => ({ label })),
+          priceFig: "£" + (d.kind === "annual" ? n * 12 : n),
+          priceUnit: d.kind === "annual" ? "PER YEAR · £" + n + " A MONTH" : "FROM · PER MONTH",
+          priceNote: d.priceNote,
+          hasAside: !!d.aside, asideEyebrow: a.eyebrow || "", asideTitle: a.title || "", asideBody: a.body || "",
+          asideSigned: !!a.signed,
+          hasList: !!a.list, listTitle: a.listTitle || "",
+          list: (a.list || []).map((label, i) => ({ label, num: "0" + (i + 1) })),
+          hasLink: !!a.link, linkLabel: a.linkLabel || "", goLink: a.link ? () => this.go(a.link) : undefined, linkHref: a.link ? __routeFor(a.link).path : undefined,
+          yearIntro: d.yearIntro, legendDue: d.legendDue,
+          timeline: d.timeline.map(t => ({ ...t, fill: t.due ? "#4a5742" : "#f6f5f1", whenInk: t.due ? "#4a5742" : "#7f9173" })),
+          hasNote: !!d.timelineNote, timelineNote: d.timelineNote,
+          faq: d.faq.map((f, i) => ({
+            q: f.q, a: f.a,
+            open: this.state.open === i,
+            sign: this.state.open === i ? "–" : "+",
+            toggle: () => this.setState(s => ({ open: s.open === i ? -1 : i }))
+          }))
+        };
+      })(),
       payrollNote: "£" + PAYROLL_BASE + " base plus £" + PAYROLL_PER_EMPLOYEE + " per employee per month. Directors count.",
       partnersNote: "£" + PARTNER_SA_MONTHLY * 12 + " per partner per year, billed monthly.",
       steps: STEPS,

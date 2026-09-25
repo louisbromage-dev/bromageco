@@ -37,6 +37,21 @@ const PAGES = [
     description: "Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."
   },
   {
+    key: "companyAccounts", path: "/services/company-accounts/",
+    title: "Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet",
+    description: "Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a CIMA chartered accountant in Fleet, Hampshire."
+  },
+  {
+    key: "selfAssessment", path: "/services/self-assessment/",
+    title: "Self Assessment Tax Returns: £180 a Year | Bromage & Co, Fleet",
+    description: "Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. £180 a year, from a chartered accountant in Fleet, Hampshire."
+  },
+  {
+    key: "managementAccounts", path: "/services/management-accounts/",
+    title: "Management Accounts for Small Businesses | Bromage & Co",
+    description: "Monthly or quarterly management accounts from £55 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA chartered management accountant."
+  },
+  {
     key: "finance", path: "/outsourced-finance/",
     title: "Outsourced Finance & Part-Time FD Support | Bromage & Co",
     description: "Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."
@@ -237,7 +252,8 @@ const LINK_TARGETS = {
   goHome: pathOf.home, goServices: pathOf.services, goPackage: pathOf.package,
   goContact: pathOf.contact, goAbout: pathOf.about, goAdvisory: pathOf.advisory,
   goFinance: pathOf.finance, goFinanceCall: pathOf.contact + "?topic=finance",
-  goLegal: pathOf.legal, "n.go": "{{ n.href }}", "s.go": "{{ s.href }}"
+  goLegal: pathOf.legal, "n.go": "{{ n.href }}", "s.go": "{{ s.href }}",
+  "s.goPage": "{{ s.pageHref }}", "svc.goLink": "{{ svc.linkHref }}"
 };
 let linkCount = 0;
 markup = markup.replace(/<button sc-camel-on-click="\{\{ ([\w.]+) \}\}"([^>]*)>([\s\S]*?)<\/button>/g, (whole, handler, attrs, inner) => {
@@ -306,6 +322,12 @@ logic = replaceOnce(logic, `go: () => this.go(n.key),\n`,
   `go: () => this.go(n.key),\n          href: __routeFor(n.key).path,\n`, "the main navigation items");
 logic = replaceOnce(logic, `go: () => this.go(s.key)\n`,
   `go: () => this.go(s.key),\n            href: __routeFor(s.key).path\n`, "the services submenu items");
+logic = replaceOnce(logic, `goPage: pageKey ? () => this.go(pageKey) : undefined`,
+  `goPage: pageKey ? () => this.go(pageKey) : undefined, pageHref: pageKey ? __routeFor(pageKey).path : undefined`,
+  "the service page links");
+logic = replaceOnce(logic, `goLink: a.link ? () => this.go(a.link) : undefined,`,
+  `goLink: a.link ? () => this.go(a.link) : undefined, linkHref: a.link ? __routeFor(a.link).path : undefined,`,
+  "the service page side link");
 logic = replaceOnce(logic, `.map(n => ({ label: n.label, go: () => this.go(n.key) })),`,
   `.map(n => ({ label: n.label, href: __routeFor(n.key).path, go: () => this.go(n.key) })),`, "the footer navigation items");
 

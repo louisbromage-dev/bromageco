@@ -15,42 +15,42 @@
   "redirects": [
     {
       "source": "/company-accounts",
-      "destination": "/services/",
+      "destination": "/services/company-accounts/",
       "permanent": true
     },
     {
       "source": "/company-accounts/",
-      "destination": "/services/",
+      "destination": "/services/company-accounts/",
       "permanent": true
     },
     {
       "source": "/management-accounts",
-      "destination": "/services/",
+      "destination": "/services/management-accounts/",
       "permanent": true
     },
     {
       "source": "/management-accounts/",
-      "destination": "/services/",
+      "destination": "/services/management-accounts/",
       "permanent": true
     },
     {
       "source": "/accounts",
-      "destination": "/services/",
+      "destination": "/services/company-accounts/",
       "permanent": true
     },
     {
       "source": "/accounts/",
-      "destination": "/services/",
+      "destination": "/services/company-accounts/",
       "permanent": true
     },
     {
       "source": "/self-assessment",
-      "destination": "/services/",
+      "destination": "/services/self-assessment/",
       "permanent": true
     },
     {
       "source": "/self-assessment/",
-      "destination": "/services/",
+      "destination": "/services/self-assessment/",
       "permanent": true
     },
     {
@@ -95,12 +95,12 @@
     },
     {
       "source": "/tax",
-      "destination": "/services/",
+      "destination": "/services/self-assessment/",
       "permanent": true
     },
     {
       "source": "/tax/",
-      "destination": "/services/",
+      "destination": "/services/self-assessment/",
       "permanent": true
     },
     {
