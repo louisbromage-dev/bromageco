@@ -1,0 +1,11 @@
+{
+  "name": "bromageco-build",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.56.1"
+  }
+}
