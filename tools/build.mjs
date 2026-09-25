@@ -227,7 +227,7 @@ markup = markup.replace(/<title>[\s\S]*?<\/title>\s*/, "");
 markup = markup.replace(/<meta (name|property)="(description|og:[a-z:]+|twitter:[a-z:]+)"[^>]*>\s*/g, "");
 markup = markup.replace(/<link rel="(icon|apple-touch-icon)"[^>]*>\s*/g, "");
 const faviconSrc = (tpl.match(/<link rel="icon" href="([^"]+)"/) || [])[1];
-const touchIconSrc = (tpl.match(/<link rel="apple-touch-icon" href="([^"]+)"/) || [])[1];
+if (!faviconSrc || !faviconSrc.endsWith(".svg")) fail("the design no longer has an SVG favicon.");
 
 // Navigation buttons become real links, so crawlers can follow them and
 // visitors can open pages in new tabs. Clicks still go through the design's
@@ -319,7 +319,7 @@ const ORG = {
   legalName: "Bromage & Co Accounting Ltd",
   alternateName: "Fileo & Co Accounting",
   url: SITE_URL + "/",
-  logo: SITE_URL + touchIconSrc,
+  logo: SITE_URL + "/icon-512.png",
   image: SITE_URL + "/social-card.png",
   description: PAGES[0].description,
   telephone: "+44 7387 835746",
@@ -352,8 +352,9 @@ function shell(page, { head = "", body = "", robots = "index,follow" }) {
 <meta name="description" content="${escapeAttr(page.description)}">
 <meta name="robots" content="${robots}">
 <link rel="canonical" href="${url}">
-<link rel="icon" href="${faviconSrc}" type="image/svg+xml">
-<link rel="apple-touch-icon" href="${touchIconSrc}">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="theme-color" content="#4a5742">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE_NAME.replace("&", "&amp;")}">
@@ -459,6 +460,35 @@ for (const page of PAGES) {
 const notFound = { ...PAGES[0], title: "Page not found | " + SITE_NAME };
 fs.writeFileSync(path.join(ROOT, "404.html"),
   shell(notFound, { head: pageCss("home"), body: rendered.home.html, robots: "noindex,follow" }));
+
+// Site icons at fixed addresses. Google shows a favicon only if it is square
+// and a multiple of 48px, and it looks for /favicon.ico by default.
+{
+  const svg = fs.readFileSync(path.join(ROOT, faviconSrc));
+  fs.writeFileSync(path.join(ROOT, "favicon.svg"), svg);
+  const tab = await browser.newPage();
+  const png = async size => Buffer.from(await tab.evaluate(async ({ b64, size }) => {
+    const img = new Image();
+    img.src = "data:image/svg+xml;base64," + b64;
+    await img.decode();
+    const c = document.createElement("canvas");
+    c.width = c.height = size;
+    c.getContext("2d").drawImage(img, 0, 0, size, size);
+    return c.toDataURL("image/png").split(",")[1];
+  }, { b64: svg.toString("base64"), size }), "base64");
+  const ico48 = await png(48);
+  // A .ico file holding one 48 × 48 PNG image.
+  const header = Buffer.alloc(22);
+  header.writeUInt16LE(0, 0); header.writeUInt16LE(1, 2); header.writeUInt16LE(1, 4);
+  header.writeUInt8(48, 6); header.writeUInt8(48, 7);
+  header.writeUInt16LE(1, 10); header.writeUInt16LE(32, 12);
+  header.writeUInt32LE(ico48.length, 14); header.writeUInt32LE(22, 18);
+  fs.writeFileSync(path.join(ROOT, "favicon.ico"), Buffer.concat([header, ico48]));
+  fs.writeFileSync(path.join(ROOT, "apple-touch-icon.png"), await png(180));
+  fs.writeFileSync(path.join(ROOT, "icon-192.png"), await png(192));
+  fs.writeFileSync(path.join(ROOT, "icon-512.png"), await png(512));
+  await tab.close();
+}
 
 // Social sharing card (1200 × 630).
 {
