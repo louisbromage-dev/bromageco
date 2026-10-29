@@ -23,13 +23,29 @@ const EXPORT = path.join(ROOT, "design", "export.html");
 const SITE_URL = "https://bromageco.com";
 const SITE_NAME = "Bromage & Co Accounting";
 
+// Self Assessment campaign: prices, dates and Stripe links live in
+// config/sa-campaign.json and nowhere else. The tier is worked out in the
+// visitor's browser (tools/sa-campaign-client.js), never at build time.
+const SA_CFG = JSON.parse(fs.readFileSync(path.join(ROOT, "config", "sa-campaign.json"), "utf8"));
+for (const t of SA_CFG.tiers) {
+  if (t.link && (!/^https:\/\/book\.stripe\.com\/[A-Za-z0-9]+$/.test(t.link) || /\/test_/.test(t.link)))
+    fail(`config/sa-campaign.json: "${t.key}" must be a live https://book.stripe.com/ payment link.`);
+}
+for (const src of SA_CFG.sources) {
+  if (!/^[A-Za-z0-9_-]+$/.test(src)) fail(`config/sa-campaign.json: source "${src}" may only use letters, numbers, hyphens and underscores.`);
+}
+const SA_CLIENT = `var SA_CFG = ${JSON.stringify(SA_CFG)};\n` +
+  fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "sa-campaign-client.js"), "utf8");
+const SA_STATES = [...SA_CFG.tiers.map(t => t.key), "over"];
+const SA_BUILD_STATE = new Function(SA_CLIENT + "\nreturn saCampaignState().key;")();
+
 // One entry per page in the design. `key` is the page name the design uses
 // internally; `path` is the public URL.
 const PAGES = [
   {
     key: "home", path: "/",
-    title: "Bromage & Co Accounting | Chartered Accountant in Fleet, Hampshire",
-    description: "CIMA chartered accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."
+    title: "Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire",
+    description: "Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."
   },
   {
     key: "services", path: "/services/",
@@ -39,17 +55,17 @@ const PAGES = [
   {
     key: "companyAccounts", path: "/services/company-accounts/",
     title: "Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet",
-    description: "Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a CIMA chartered accountant in Fleet, Hampshire."
+    description: "Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire."
   },
   {
     key: "selfAssessment", path: "/services/self-assessment/",
     title: "Self Assessment Tax Returns: £180 a Year | Bromage & Co, Fleet",
-    description: "Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. £180 a year, from a chartered accountant in Fleet, Hampshire."
+    description: "Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. £180 a year, from a Chartered Management Accountant in Fleet, Hampshire."
   },
   {
     key: "managementAccounts", path: "/services/management-accounts/",
     title: "Management Accounts for Small Businesses | Bromage & Co",
-    description: "Monthly or quarterly management accounts from £55 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA chartered management accountant."
+    description: "Monthly or quarterly management accounts from £55 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant."
   },
   {
     key: "finance", path: "/outsourced-finance/",
@@ -59,7 +75,7 @@ const PAGES = [
   {
     key: "advisory", path: "/advisory/",
     title: "Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co",
-    description: "Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a CIMA chartered accountant, scoped as projects with the fee fixed first."
+    description: "Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a Chartered Management Accountant, scoped as projects with the fee fixed first."
   },
   {
     key: "package", path: "/packages/",
@@ -73,8 +89,8 @@ const PAGES = [
   },
   {
     key: "about", path: "/about/",
-    title: "About Louis Bromage, CIMA Chartered Accountant | Bromage & Co",
-    description: "A solo practice in Fleet, Hampshire, on purpose. Meet Louis Bromage, CIMA chartered management accountant, and see how Bromage & Co works with its clients."
+    title: "About Louis Bromage, Chartered Management Accountant | Bromage & Co",
+    description: "A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients."
   },
   {
     key: "contact", path: "/contact/",
@@ -85,6 +101,19 @@ const PAGES = [
     key: "legal", path: "/legal/",
     title: "Legal Information & Privacy Notice | Bromage & Co Accounting",
     description: "Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."
+  },
+  {
+    // The description follows the current price tier; this is only the
+    // fallback for anything that reads the page without running it.
+    key: "taxReturn", path: "/tax-return/",
+    title: "Self Assessment tax return from £180 | Bromage & Co",
+    description: "Your Self Assessment 2025/26 tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet, Hampshire. Fixed fee, no VAT."
+  },
+  {
+    key: "saThanks", path: "/tax-return/thank-you/",
+    title: "Thank you for booking | Bromage & Co",
+    description: "Thank you for booking your Self Assessment tax return with Bromage & Co.",
+    robots: "noindex,follow", sitemap: false
   }
 ];
 
@@ -170,7 +199,8 @@ const server = createServer((req, res) => {
 await new Promise(r => server.listen(0, "127.0.0.1", r));
 const ORIGIN = `http://127.0.0.1:${server.address().port}`;
 
-const browser = await chromium.launch();
+// CHROMIUM_PATH lets the build use a Chromium that is already installed.
+const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
 
 // Scale oversized images down (Chromium does the resampling, so the build
 // needs no image library).
@@ -244,6 +274,132 @@ markup = markup.replace(/<link rel="(icon|apple-touch-icon)"[^>]*>\s*/g, "");
 const faviconSrc = (tpl.match(/<link rel="icon" href="([^"]+)"/) || [])[1];
 if (!faviconSrc || !faviconSrc.endsWith(".svg")) fail("the design no longer has an SVG favicon.");
 
+// ── 3a. Self Assessment campaign ─────────────────────────────────────────
+// The design's own campaign code is replaced by tools/sa-campaign-client.js,
+// so prices, dates and links come only from config/sa-campaign.json, the tier
+// follows London time, and the closed and finished states behave as briefed.
+{
+  // Remove one top-level declaration, from its first line to the line that
+  // closes it.
+  const cut = (startText, endText, what) => {
+    const a = logic.indexOf(startText);
+    const b = a === -1 ? -1 : logic.indexOf(endText, a);
+    if (a === -1 || b === -1) fail(`could not find ${what} in the design.`);
+    logic = logic.slice(0, a) + logic.slice(b + endText.length);
+  };
+  cut("const SA = {", "\n};\n", "the campaign price table");
+  cut("const SA_STRIPE = {", "\n};\n", "the campaign payment links");
+  cut("function saDate(", "; }\n", "the campaign date helper");
+  cut("function saState(", "\n  return v;\n}\n", "the campaign state function");
+  logic = "const SA_STRIPE = {};\nfunction saState() { return saCampaignState(); }\n" + logic;
+}
+logic = logic.replace(/\n  saNow\(\) \{[\s\S]*?\n  \}\n/, "\n  saNow() { return null; }\n");
+// The page now comes from the URL, so drop the design's own address sniffing.
+logic = logic.replace(/\n\s*if \(\/tax-return\|paid=1\/i\.test\([^\n]*\n/, "\n");
+logic = logic.replace(/\n\s*if \(typeof document !== "undefined"\) document\.title = page === "taxReturn"[^\n]*\n/, "\n");
+logic = logic.split("within 24 hours").join("within one working day");
+logic = replaceOnce(logic, "const SA_FAQ = [", "const SA_FAQ = [\n" +
+  '  { q: "What if you can\\u2019t take me on?", a: "Then your payment is refunded in full. Louis will tell you on your onboarding call, within one working day of booking, and the money goes back to the card you paid with." },',
+  "the Self Assessment questions");
+logic = replaceOnce(logic, `isTaxReturn: p === "taxReturn",`, `isTaxReturn: p === "taxReturn",\n      isSaThanks: p === "saThanks",`, "the tax return page flag");
+logic = replaceOnce(logic, `&& p !== "taxReturn",`, `&& p !== "taxReturn" && p !== "saThanks",`, "the shared call-to-action rule");
+logic = SA_CLIENT + "\n" + logic;
+
+markup = markup.split("within 24 hours").join("within one working day");
+markup = replaceOnce(markup, "Chartered management accountant in Fleet, Hampshire</h1>",
+  "Chartered Management Accountant in Fleet, Hampshire</h1>", "the home page heading");
+markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxReturnLink }}"`,
+  `<a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturnLink }}"`, "the campaign banner link");
+markup = replaceOnce(markup, "<span>Call and onboarding within one working day</span>",
+  "<span>Louis calls within one working day</span>", "the tax return trust line");
+markup = replaceOnce(markup, "Partner returns and extras are confirmed on your call and invoiced separately.",
+  `Add a spouse or partner return for £${SA_CFG.partnerFee} at checkout. Any extras are agreed with you before work starts.`,
+  "the booking section note");
+
+// The card-payment reassurance line only applies while online booking is open.
+{
+  const trust = markup.match(/<div [^>]*>\s*<span>Pay securely by card through Stripe<\/span>[\s\S]*?<\/div>/);
+  if (!trust) fail("could not find the tax return reassurance line.");
+  markup = markup.replace(trust[0], `<sc-if value="{{ sa.showPhoneLink }}" hint-placeholder-val="{{ true }}">${trust[0]}</sc-if>`);
+}
+
+// Design fix: on phones the price table's note column should hide, but the
+// design's rule loses to the cells' own inline style.
+if (markup.includes("[data-saprice] [data-sanote]{display:none}"))
+  markup = markup.replace("[data-saprice] [data-sanote]{display:none}", "[data-saprice] [data-sanote]{display:none !important}");
+
+// Book buttons become links straight to the current Stripe payment link, each
+// tagged with where it was clicked (client_reference_id).
+const asLink = (button, href, label) => {
+  const m = button.match(/^<button sc-camel-on-click="\{\{ \w+ \}\}" style="([^"]*)"([^>]*)>[\s\S]*<\/button>$/);
+  if (!m) fail("could not convert a campaign button into a link.");
+  return `<a href="{{ ${href} }}" style="${m[1]};text-decoration:none;display:inline-flex;align-items:center;justify-content:center"${m[2]}>{{ ${label} }}</a>`;
+};
+{
+  const card = markup.match(/<button sc-camel-on-click="\{\{ goTaxReturn \}\}"[^>]*>Book my tax return<\/button>/);
+  if (!card) fail("could not find the home page campaign card button.");
+  markup = markup.replace(card[0], asLink(card[0], "sa.cardHref", "sa.cardBook"));
+  const hero = markup.match(/<button sc-camel-on-click="\{\{ scrollBook \}\}"[^>]*>Book my tax return<\/button>/);
+  if (!hero) fail("could not find the tax return page hero button.");
+  markup = markup.replace(hero[0], asLink(hero[0], "sa.heroHref", "sa.bookLabel"));
+  const pricing = markup.match(/<button sc-camel-on-click="\{\{ scrollBook \}\}"[^>]*>Secure my tax return →<\/button>/);
+  if (!pricing) fail("could not find the tax return price table button.");
+  markup = markup.replace(pricing[0], asLink(pricing[0], "sa.pricingHref", "sa.pricingLabel"));
+  const heroPhone = markup.match(/<a href="tel:\+447387835746" [^>]*style-hover="background:rgba\(27,31,28,\.05\)">Call 07387 835 746<\/a>/);
+  if (!heroPhone) fail("could not find the tax return page phone button.");
+  markup = markup.replace(heroPhone[0], `<sc-if value="{{ sa.showPhoneLink }}" hint-placeholder-val="{{ true }}">${heroPhone[0]}</sc-if>`);
+  // The booking form becomes a final Book button: the Stripe checkout takes
+  // the details, and the partner return is an add-on inside it.
+  const submit = markup.match(/<button type="submit" disabled="\{\{ saSending \}\}" style="([^"]*)"([^>]*)>/);
+  const from = markup.indexOf(`<sc-if value="{{ saSent }}"`);
+  const formEnd = markup.indexOf("</form>", from);
+  const to = markup.indexOf("</sc-if>", formEnd);
+  if (!submit || from === -1 || formEnd === -1 || to === -1) fail("could not find the tax return booking form.");
+  markup = markup.slice(0, from) +
+    `<div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px">
+      <a href="{{ sa.footerHref }}" style="${submit[1]};text-decoration:none;display:inline-flex;align-items:center"${submit[2]}>{{ sa.bookLabel }}</a>
+      <span style="font:400 14.5px/1.4 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72)">{{ sa.formNote }}</span>
+    </div>` + markup.slice(to + "</sc-if>".length);
+}
+
+// Thank-you page, reached from the Stripe payment links. The Google Ads
+// conversion tag goes in config/sa-campaign.json (googleAdsConversionSnippet).
+markup = replaceOnce(markup, "<!-- ══ SHARED CTA + FOOTER ══ -->", `<!-- ══ TAX RETURN THANK YOU ══ -->
+<sc-if value="{{ isSaThanks }}" hint-placeholder-val="{{ false }}">
+<div style="padding:clamp(56px,8vw,112px) clamp(20px,4.6vw,48px);border-bottom:1px solid #dcd8cf;display:flex;flex-direction:column;gap:24px">
+  <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34">Self Assessment ${SA_CFG.taxYear}</div>
+  <h1 style="margin:0;font:500 clamp(44px,6.4vw,84px)/1 'Cormorant Garamond',serif;letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance">Thank you for booking.</h1>
+  <p style="margin:0;font:400 clamp(18px,1.7vw,21px)/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);max-width:58ch;text-wrap:pretty">Louis will call you within one working day to take you through onboarding: a quick ID check and the list of records we need.</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
+    <a href="${SA_CFG.phoneHref}" style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:20px 32px;font:600 17px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;text-decoration:none" style-hover="background:#142b24;border-color:#142b24">Call ${SA_CFG.phone}</a>
+    <a href="mailto:${SA_CFG.email}" style="border:1px solid #1b1f1c;background:transparent;color:#1b1f1c;padding:20px 30px;font:600 17px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;text-decoration:none" style-hover="background:rgba(27,31,28,.05)">${SA_CFG.email}</a>
+  </div>
+</div>
+</sc-if>
+
+<!-- ══ SHARED CTA + FOOTER ══ -->`, "the shared footer marker");
+
+// ── 3a2. Site details that live in config/site.json ──────────────────────
+// Google review count and profile link. Until both are filled in, the site
+// says "Rated 5.0 on Google" with no link, so a placeholder can never go live.
+{
+  const SITE_CFG = JSON.parse(fs.readFileSync(path.join(ROOT, "config", "site.json"), "utf8"));
+  const { count, profileUrl } = SITE_CFG.googleReviews || {};
+  const reviewLink = /<a href="\[GOOGLE BUSINESS PROFILE URL\]"[^>]*style="([^"]*)"[^>]*>5\.0 from \[NUMBER\] Google reviews([^<]*)<\/a>/;
+  if (count && /^https:\/\//.test(profileUrl || "")) {
+    markup = markup.split("[GOOGLE BUSINESS PROFILE URL]").join(escapeAttr(profileUrl)).split("[NUMBER]").join(String(count));
+    logic = logic.split("[GOOGLE BUSINESS PROFILE URL]").join(profileUrl).split("[NUMBER]").join(String(count));
+  } else {
+    const m = markup.match(reviewLink);
+    if (m) markup = markup.replace(m[0], `<span style="${m[1].replace(/;?border-bottom:[^;]*|;?padding-bottom:[^;]*/g, "")}">Rated 5.0 on Google</span>`);
+    logic = logic.replace(/\{ figure: "5\.0", label: "from \[NUMBER\] Google reviews", href: "\[GOOGLE BUSINESS PROFILE URL\]" \}/,
+      `{ figure: "5.0", label: "Rated on Google" }`);
+  }
+  const left = (markup + logic).match(/\[[A-Z][A-Z0-9 _£]{2,}\]/);
+  if (left) fail(`the design still contains the placeholder ${left[0]}. Fill it in (config/site.json) or remove it in Claude Design.`);
+}
+
+// ── 3b. Real links for navigation ────────────────────────────────────────
 // Navigation buttons become real links, so crawlers can follow them and
 // visitors can open pages in new tabs. Clicks still go through the design's
 // own navigation.
@@ -252,12 +408,13 @@ const LINK_TARGETS = {
   goHome: pathOf.home, goServices: pathOf.services, goPackage: pathOf.package,
   goContact: pathOf.contact, goAbout: pathOf.about, goAdvisory: pathOf.advisory,
   goFinance: pathOf.finance, goFinanceCall: pathOf.contact + "?topic=finance",
-  goLegal: pathOf.legal, "n.go": "{{ n.href }}", "s.go": "{{ s.href }}",
+  goLegal: pathOf.legal, goMtd: pathOf.mtd, goTaxReturn: pathOf.taxReturn,
   "s.goPage": "{{ s.pageHref }}", "svc.goLink": "{{ svc.linkHref }}"
 };
 let linkCount = 0;
 markup = markup.replace(/<button sc-camel-on-click="\{\{ ([\w.]+) \}\}"([^>]*)>([\s\S]*?)<\/button>/g, (whole, handler, attrs, inner) => {
-  const href = LINK_TARGETS[handler];
+  // Any list item's "x.go" handler gets a matching "x.href" (added below).
+  const href = LINK_TARGETS[handler] || (/^\w+\.go$/.test(handler) ? `{{ ${handler.replace(/\.go$/, ".href")} }}` : null);
   if (!href) return whole;
   linkCount++;
   return `<a data-nav="" href="${href}" sc-camel-on-click="{{ ${handler} }}"${attrs}>${inner}</a>`;
@@ -266,10 +423,14 @@ if (linkCount < 15) fail(`only ${linkCount} navigation buttons found; the design
 
 // Plain links keep the design's link colours; navigation links keep the look
 // of the buttons they replace.
-markup = replaceOnce(markup, "a{color:#4a5742}a:hover{color:#2b3327}",
-  "a:not([data-nav]){color:#4a5742}a:not([data-nav]):hover{color:#2b3327}\n" +
-  "a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-align:center;cursor:pointer;box-sizing:border-box}",
-  "the global link colour rule");
+{
+  const linkRule = /a\{color:(#[0-9a-fA-F]{3,8})\}a:hover\{color:(#[0-9a-fA-F]{3,8})\}/;
+  const m = markup.match(linkRule);
+  if (!m) fail("could not find the global link colour rule in the design.");
+  markup = markup.replace(linkRule,
+    `a:not([data-nav]){color:${m[1]}}a:not([data-nav]):hover{color:${m[2]}}\n` +
+    "a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-align:center;cursor:pointer;box-sizing:border-box}");
+}
 
 // Page logic: read the page from the URL, keep the URL, title and
 // description in step when the page changes, and support back/forward.
@@ -288,48 +449,49 @@ function __topicFromLocation() {
 }
 function __applyMeta(key, topic) {
   const r = __routeFor(key);
+  const description = key === "taxReturn" ? saCampaignState().meta : r.description;
   document.title = r.title;
   const set = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
   const url = ${JSON.stringify(SITE_URL)} + r.path;
-  set('meta[name="description"]', "content", r.description);
+  set('meta[name="description"]', "content", description);
   set('link[rel="canonical"]', "href", url);
   set('meta[property="og:title"]', "content", r.title);
-  set('meta[property="og:description"]', "content", r.description);
+  set('meta[property="og:description"]', "content", description);
   set('meta[property="og:url"]', "content", url);
 }
 `;
 logic = ROUTER + logic;
 logic = replaceOnce(logic, `page: "home", open: 0,`,
   `page: __pageFromLocation(), open: 0,`, "the initial page state");
-logic = replaceOnce(logic, `menu: false, finOpen: 0, topic: ""`,
-  `menu: false, finOpen: 0, topic: __topicFromLocation()`, "the initial topic state");
+if (!/finOpen: 0, topic: ""/.test(logic)) fail("could not find the initial topic state in the design.");
+logic = logic.replace(/finOpen: 0, topic: ""/, "finOpen: 0, topic: __topicFromLocation()");
 logic = replaceOnce(logic, `document.title = "Bromage & Co Accounting";`,
   `__applyMeta(this.state.page, this.state.topic);
     window.addEventListener("popstate", () => {
       const page = __pageFromLocation();
-      this.setState({ page, open: 0, finOpen: 0, sent: false, menu: false, topic: __topicFromLocation() });
+      this.setState({ page, open: 0, finOpen: 0, sent: false, menu: false, mobileMenu: false, topic: __topicFromLocation() });
       __applyMeta(page);
     });`, "the page title line");
-logic = replaceOnce(logic,
-  `this.setState({ page, open: 0, finOpen: 0, sent: false, menu: false, topic: topic || "" });`,
-  `this.setState({ page, open: 0, finOpen: 0, sent: false, menu: false, topic: topic || "" });
-    if (typeof window !== "undefined") {
+{
+  const go = logic.match(/\n  go\(page, topic\) \{\n    this\.setState\(\{ page,[^\n]*\}\);\n/);
+  if (!go) fail("could not find the go() navigation method in the design.");
+  logic = logic.replace(go[0], go[0] + `    if (typeof window !== "undefined") {
       const target = __routeFor(page).path + (topic ? "?topic=" + encodeURIComponent(topic) : "");
       if (target !== window.location.pathname + window.location.search) window.history.pushState(null, "", target);
       __applyMeta(page, topic);
-    }`, "the go() navigation method");
-logic = replaceOnce(logic, `go: () => this.go(n.key),\n`,
-  `go: () => this.go(n.key),\n          href: __routeFor(n.key).path,\n`, "the main navigation items");
-logic = replaceOnce(logic, `go: () => this.go(s.key)\n`,
-  `go: () => this.go(s.key),\n            href: __routeFor(s.key).path\n`, "the services submenu items");
+    }
+`);
+}
+// Every list item that navigates gets the address it navigates to.
+logic = logic.replace(/\bgo: \(\) => this\.go\(([^()]*)\)/g, (m, target) => `href: __routeFor(${target}).path, go: () => this.go(${target})`);
+logic = logic.replace(/\bgo: \(\) => \{ this\.setState\(\{ mobileMenu: false \}\); this\.go\(([^()]*)\); \}/g,
+  (m, target) => `href: __routeFor(${target}).path, ${m}`);
 logic = replaceOnce(logic, `goPage: pageKey ? () => this.go(pageKey) : undefined`,
   `goPage: pageKey ? () => this.go(pageKey) : undefined, pageHref: pageKey ? __routeFor(pageKey).path : undefined`,
   "the service page links");
 logic = replaceOnce(logic, `goLink: a.link ? () => this.go(a.link) : undefined,`,
   `goLink: a.link ? () => this.go(a.link) : undefined, linkHref: a.link ? __routeFor(a.link).path : undefined,`,
   "the service page side link");
-logic = replaceOnce(logic, `.map(n => ({ label: n.label, go: () => this.go(n.key) })),`,
-  `.map(n => ({ label: n.label, href: __routeFor(n.key).path, go: () => this.go(n.key) })),`, "the footer navigation items");
 
 // ── 4. Page shell ─────────────────────────────────────────────────────────
 
@@ -353,7 +515,10 @@ const ORG = {
   knowsAbout: ["Year-end accounts", "Corporation tax", "Self assessment", "VAT", "Bookkeeping", "Payroll", "Management accounts", "Making Tax Digital", "Business valuations"]
 };
 
-function shell(page, { head = "", body = "", robots = "index,follow" }) {
+// Inline JSON safely inside a <script> element.
+const scriptJson = v => JSON.stringify(v).replace(/</g, "\\u003c");
+
+function shell(page, { head = "", body = "", variants = {}, robots = page.robots || "index,follow" }) {
   const url = SITE_URL + page.path;
   const ld = [ORG, {
     "@context": "https://schema.org",
@@ -365,6 +530,9 @@ function shell(page, { head = "", body = "", robots = "index,follow" }) {
     isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL + "/" },
     about: { "@id": ORG["@id"] }
   }];
+  const conversion = page.key === "saThanks" ? `
+<!-- Google Ads conversion tag: set googleAdsConversionSnippet in config/sa-campaign.json and rebuild. -->
+${SA_CFG.googleAdsConversionSnippet || "<!-- PLACEHOLDER: Google Ads conversion tag not supplied yet. -->"}` : "";
   return `<!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -377,7 +545,7 @@ function shell(page, { head = "", body = "", robots = "index,follow" }) {
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#4a5742">
+<meta name="theme-color" content="#1f3d34">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE_NAME.replace("&", "&amp;")}">
 <meta property="og:locale" content="en_GB">
@@ -389,7 +557,16 @@ function shell(page, { head = "", body = "", robots = "index,follow" }) {
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>
-<style>x-dc{display:none!important}</style>
+<script>
+${SA_CLIENT}
+${page.key === "taxReturn" ? `(function () {
+  var d = saCampaignState().meta;
+  document.querySelector('meta[name="description"]').setAttribute("content", d);
+  document.querySelector('meta[property="og:description"]').setAttribute("content", d);
+})();` : ""}
+</script>
+<style>x-dc{display:none!important}html:not(.sa-ok) [data-sa-dyn]{visibility:hidden}</style>
+<noscript><style>[data-sa-dyn]{visibility:visible!important}</style></noscript>${conversion}
 ${head}
 <script>window.__resources = {};</script>
 <script defer src="${reactSrc}"></script>
@@ -398,6 +575,33 @@ ${head}
 </head>
 <body>
 <div id="prerender">${body}</div>
+<script>
+(function () {
+  // The page was pre-rendered for one campaign state. Swap in the parts that
+  // differ for today's state before anything is painted, so the price shown
+  // is never stale, then honour any banner the visitor has dismissed.
+  var V = ${scriptJson(variants)}, built = ${scriptJson(SA_BUILD_STATE)};
+  var st = saCampaignState().key, pre = document.getElementById("prerender");
+  if (st !== built) {
+    var nodes = pre.querySelectorAll("[data-sa-dyn]");
+    for (var i = 0; i < nodes.length; i++) {
+      var v = V[nodes[i].getAttribute("data-sa-dyn")];
+      if (v && v[st] != null) nodes[i].outerHTML = v[st];
+    }
+  }
+  try {
+    if (window.localStorage.getItem("bc-sa-banner") === st) {
+      var b = pre.querySelector('[aria-label="Self Assessment offer"]');
+      if (b) b.parentNode.removeChild(b);
+    }
+    if (window.localStorage.getItem("bc-rebrand-notice") === "dismissed") {
+      var d = pre.querySelector('button[aria-label="Dismiss notice"]');
+      if (d && d.parentNode) d.parentNode.parentNode.removeChild(d.parentNode);
+    }
+  } catch (e) {}
+  document.documentElement.className += " sa-ok";
+})();
+</script>
 <script type="text/x-dc-template" id="dc-template">${markup.replace(/<\/script/gi, "<\\/script")}</script>
 <script type="text/x-dc" data-dc-script="" data-props="${dataProps}">${logic}</script>
 <script>
@@ -442,46 +646,108 @@ for (const page of PAGES) {
   fs.writeFileSync(outFile(page.path), shell(page, {}));
 }
 
+// Render one page in one campaign state (?saPreview works on the local build
+// server) and capture its HTML and styles.
 const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
-const rendered = {};
-for (const page of PAGES) {
+async function renderState(page, state) {
   const tab = await context.newPage();
   const errors = [];
   tab.on("pageerror", e => errors.push(e.message));
-  await tab.goto(ORIGIN + page.path, { waitUntil: "networkidle" });
+  await tab.goto(`${ORIGIN}${page.path}?saPreview=${state}`, { waitUntil: "networkidle" });
   await tab.waitForFunction(() => {
     const r = document.getElementById("dc-root");
     return r && r.innerText.trim().length > 200 && !document.getElementById("prerender");
   }, null, { timeout: 30000 });
-  await tab.waitForTimeout(500);
-  if (errors.length) fail(`${page.path} threw: ${errors.join("; ")}`);
+  await tab.waitForTimeout(400);
+  if (errors.length) fail(`${page.path} (${state}) threw: ${errors.join("; ")}`);
   const snap = await tab.evaluate(() => {
-    // Styles the design injected at runtime, including rules added through
-    // the CSSOM (hover and focus states), which never appear in textContent.
-    const css = [...document.head.querySelectorAll("style")].map(s => {
-      try { return [...s.sheet.cssRules].map(r => r.cssText).join("\n"); }
-      catch { return s.textContent; }
-    }).filter(Boolean).join("\n");
+    // Hover and focus styles get numbered class names in render order, which
+    // differ between states; rename each after its own rule so they line up.
+    const hashOf = s => { let x = 2166136261; for (let i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36); };
+    const rename = {};
+    const css = [];
+    for (const el of document.head.querySelectorAll("style")) {
+      let rules;
+      try { rules = [...el.sheet.cssRules]; } catch { css.push(el.textContent); continue; }
+      for (const r of rules) {
+        let text = r.cssText;
+        const m = r.selectorText && r.selectorText.match(/^\.(scp[0-9a-z]+)(::?[\w-]+)$/);
+        if (m) {
+          const name = "p" + hashOf(m[2] + r.style.cssText);
+          rename[m[1]] = name;
+          text = text.replace("." + m[1], "." + name);
+        }
+        css.push(text);
+      }
+    }
     const root = document.getElementById("dc-root").cloneNode(true);
     root.querySelectorAll("[data-dc-tpl]").forEach(el => el.removeAttribute("data-dc-tpl"));
+    root.querySelectorAll("[class]").forEach(el =>
+      el.setAttribute("class", el.getAttribute("class").split(/\s+/).map(c => rename[c] || c).join(" ")));
     const h1 = document.querySelector("#dc-root h1");
     return { css, html: root.innerHTML, h1: h1 ? h1.innerText : "", text: document.getElementById("dc-root").innerText.length };
   });
-  rendered[page.key] = snap;
-  console.log(`rendered ${page.path.padEnd(22)} h1: ${JSON.stringify(snap.h1)}  (${snap.text} chars of text)`);
   await tab.close();
+  return snap;
 }
+
+// Combine one page's renders: the build-day state is written out in full, and
+// each element that differs between states is marked so the page script can
+// swap in the right version.
+const mergeTab = await browser.newPage();
+async function mergeStates(byState) {
+  return mergeTab.evaluate(({ byState, states, built }) => {
+    const parse = h => { const d = document.createElement("div"); d.innerHTML = h; return d; };
+    const roots = states.map(s => parse(byState[s].html));
+    const variants = {};
+    let n = 0;
+    const sameAttrs = els => els.every(e => e.attributes.length === els[0].attributes.length &&
+      [...els[0].attributes].every(at => e.getAttribute(at.name) === at.value));
+    const mark = els => {
+      if (els[0] === roots[0]) throw new Error("the whole page differs between campaign states");
+      const id = String(n++);
+      els.forEach(e => e.setAttribute("data-sa-dyn", id));
+      variants[id] = {};
+      states.forEach((s, i) => { variants[id][s] = els[i].outerHTML; });
+    };
+    const walk = els => {
+      if (els.every(e => e.outerHTML === els[0].outerHTML)) return;
+      const kids = els.map(e => [...e.childNodes]);
+      const k0 = kids[0];
+      const sameShape = kids.every(k => k.length === k0.length &&
+        k.every((c, i) => c.nodeType === k0[i].nodeType && c.nodeName === k0[i].nodeName));
+      const sameText = sameShape && k0.every((c, i) => c.nodeType === 1 || kids.every(k => k[i].textContent === c.textContent));
+      if (!sameShape || !sameText || !sameAttrs(els)) { mark(els); return; }
+      k0.forEach((c, i) => { if (c.nodeType === 1) walk(kids.map(k => k[i])); });
+    };
+    walk(roots);
+    const css = [];
+    const seen = new Set();
+    for (const s of [built, ...states]) for (const r of byState[s].css) if (!seen.has(r)) { seen.add(r); css.push(r); }
+    return { html: roots[states.indexOf(built)].innerHTML, variants, css: css.join("\n"), dynamic: n };
+  }, { byState, states: SA_STATES, built: SA_BUILD_STATE });
+}
+
+const rendered = {};
+for (const page of PAGES) {
+  const byState = {};
+  for (const state of SA_STATES) byState[state] = await renderState(page, state);
+  rendered[page.key] = await mergeStates(byState);
+  const b = byState[SA_BUILD_STATE];
+  console.log(`rendered ${page.path.padEnd(32)} h1: ${JSON.stringify(b.h1)}  (${b.text} chars, ${rendered[page.key].dynamic} parts vary by campaign state)`);
+}
+await mergeTab.close();
 
 // Second pass: full pages with the rendered content and styles inline.
 const pageCss = key => `<style id="prerender-css">${rendered[key].css.replace(/<\/style/gi, "<\\/style")}</style>`;
 for (const page of PAGES) {
-  fs.writeFileSync(outFile(page.path), shell(page, { head: pageCss(page.key), body: rendered[page.key].html }));
+  fs.writeFileSync(outFile(page.path), shell(page, { head: pageCss(page.key), body: rendered[page.key].html, variants: rendered[page.key].variants }));
 }
 
 // Not-found page: the home page content, marked noindex.
 const notFound = { ...PAGES[0], title: "Page not found | " + SITE_NAME };
 fs.writeFileSync(path.join(ROOT, "404.html"),
-  shell(notFound, { head: pageCss("home"), body: rendered.home.html, robots: "noindex,follow" }));
+  shell(notFound, { head: pageCss("home"), body: rendered.home.html, variants: rendered.home.variants, robots: "noindex,follow" }));
 
 // Site icons at fixed addresses. Google shows a favicon only if it is square
 // and a multiple of 48px, and it looks for /favicon.ico by default.
@@ -518,11 +784,10 @@ fs.writeFileSync(path.join(ROOT, "404.html"),
   await tab.goto(ORIGIN + "/");
   await tab.waitForFunction(() => document.fonts.ready.then(() => true));
   await tab.setContent(`<html><head>${pageCss("home")}</head><body style="margin:0">
-    <div style="width:1200px;height:630px;background:#4a5742;color:#f6f5f1;display:flex;flex-direction:column;justify-content:center;padding:0 96px;box-sizing:border-box">
-      <div style="font:400 150px/1 'Cormorant Garamond',Georgia,serif">B&amp;Co</div>
-      <div style="font:500 26px/1 'Barlow Condensed',sans-serif;letter-spacing:.32em;color:#b9c4ad;margin-top:18px">ACCOUNTING</div>
-      <div style="font:400 38px/1.25 'Cormorant Garamond',Georgia,serif;margin-top:56px;max-width:900px">The accountant for businesses ready to grow.</div>
-      <div style="font:400 22px/1.4 Barlow,sans-serif;color:#d8dfd1;margin-top:18px">CIMA chartered · Fleet, Hampshire · Fixed monthly fees</div>
+    <div style="width:1200px;height:630px;background:#1f3d34;color:#f4f1ea;display:flex;flex-direction:column;justify-content:center;padding:0 96px;box-sizing:border-box">
+      <div style="font:500 128px/1 'Cormorant Garamond',Georgia,serif;letter-spacing:-.02em">Bromage &amp; Co</div>
+      <div style="font:500 44px/1.2 'Cormorant Garamond',Georgia,serif;margin-top:48px;max-width:900px">Your accountant, by name. <i style="color:#b9cabf">Your fee, in writing.</i></div>
+      <div style="font:500 24px/1.4 'Hanken Grotesk',sans-serif;color:#d3dcd5;margin-top:22px">Chartered Management Accountant · Fleet, Hampshire</div>
     </div></body></html>`, { waitUntil: "networkidle" });
   await tab.evaluate(() => document.fonts.ready);
   await tab.screenshot({ path: path.join(ROOT, "social-card.png") });
@@ -538,7 +803,7 @@ const today = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${PAGES.map(p => `  <url><loc>${SITE_URL}${p.path}</loc><lastmod>${today}</lastmod></url>`).join("\n")}
+${PAGES.filter(p => p.sitemap !== false).map(p => `  <url><loc>${SITE_URL}${p.path}</loc><lastmod>${today}</lastmod></url>`).join("\n")}
 </urlset>
 `);
 fs.writeFileSync(path.join(ROOT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);

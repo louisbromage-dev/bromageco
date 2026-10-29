@@ -1,0 +1,56 @@
+{
+  "taxYear": "2025/26",
+  "timeZone": "Europe/London",
+  "standardFee": 300,
+  "partnerFee": 150,
+  "highIncome": { "from": 100000, "to": 200000, "surcharge": 100 },
+  "phone": "07387 835 746",
+  "phoneHref": "tel:+447387835746",
+  "email": "enquiries@bromageco.com",
+  "filingDeadline": { "date": "2027-01-31", "label": "31 January 2027" },
+  "tiers": [
+    {
+      "key": "november",
+      "until": "2026-11-30",
+      "untilLabel": "30 November 2026",
+      "untilShort": "30 November",
+      "price": 180,
+      "note": "Early bird",
+      "laterText": "in November",
+      "link": "https://book.stripe.com/aFabIU08T0k99XTglk1wY00"
+    },
+    {
+      "key": "december",
+      "until": "2026-12-31",
+      "untilLabel": "31 December 2026",
+      "untilShort": "31 December",
+      "price": 230,
+      "note": "December",
+      "laterText": "in December",
+      "link": "https://book.stripe.com/dRm8wI6xh0k92vrc541wY01"
+    },
+    {
+      "key": "january",
+      "until": "2027-01-20",
+      "untilLabel": "20 January 2027",
+      "untilShort": "20 January",
+      "price": 300,
+      "note": "Standard fee",
+      "laterText": "in January",
+      "link": "https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02"
+    },
+    {
+      "key": "closed",
+      "until": "2027-01-31",
+      "untilLabel": "After 20 January 2027",
+      "untilShort": "31 January",
+      "price": 350,
+      "note": "By phone, subject to capacity",
+      "laterText": "after 20 January, by phone and subject to capacity",
+      "link": null
+    }
+  ],
+  "sources": ["banner", "home-card", "tax-return-hero", "tax-return-pricing", "tax-return-footer"],
+  "productionHosts": ["bromageco.com", "www.bromageco.com"],
+  "googleAdsConversionSnippet": ""
+}
