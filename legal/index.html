@@ -23,19 +23,25 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"AccountingService","@id":"https://bromageco.com/#business","name":"Bromage & Co Accounting","legalName":"Bromage & Co Accounting Ltd","alternateName":"Fileo & Co Accounting","url":"https://bromageco.com/","logo":"https://bromageco.com/icon-512.png","image":"https://bromageco.com/social-card.png","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis.","telephone":"+44 7387 835746","email":"enquiries@bromageco.com","founder":{"@type":"Person","name":"Louis Bromage","jobTitle":"CIMA Chartered Management Accountant"},"address":{"@type":"PostalAddress","addressLocality":"Fleet","addressRegion":"Hampshire","addressCountry":"GB"},"areaServed":[{"@type":"Country","name":"United Kingdom"}],"identifier":{"@type":"PropertyValue","propertyID":"Companies House company number","value":"17052920"},"knowsAbout":["Year-end accounts","Corporation tax","Self assessment","VAT","Bookkeeping","Payroll","Management accounts","Making Tax Digital","Business valuations"]},{"@context":"https://schema.org","@type":"WebPage","@id":"https://bromageco.com/legal/","url":"https://bromageco.com/legal/","name":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920.","isPartOf":{"@type":"WebSite","name":"Bromage & Co Accounting","url":"https://bromageco.com/"},"about":{"@id":"https://bromageco.com/#business"}}]</script>
 <script>
-var SA_CFG = {"taxYear":"2025/26","timeZone":"Europe/London","standardFee":300,"partnerFee":150,"highIncome":{"from":100000,"to":200000,"surcharge":100},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","filingDeadline":{"date":"2027-01-31","label":"31 January 2027"},"tiers":[{"key":"november","until":"2026-11-30","untilLabel":"30 November 2026","untilShort":"30 November","price":180,"note":"Early bird","laterText":"in November","link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00"},{"key":"december","until":"2026-12-31","untilLabel":"31 December 2026","untilShort":"31 December","price":230,"note":"December","laterText":"in December","link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01"},{"key":"january","until":"2027-01-20","untilLabel":"20 January 2027","untilShort":"20 January","price":300,"note":"Standard fee","laterText":"in January","link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02"},{"key":"closed","until":"2027-01-31","untilLabel":"After 20 January 2027","untilShort":"31 January","price":350,"note":"By phone, subject to capacity","laterText":"after 20 January, by phone and subject to capacity","link":null}],"sources":["banner","tax-return-hero","tax-return-pricing","tax-return-footer"],"productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
+var SA_CFG = {"_note":"Wording and contact details for the Self Assessment campaign. Prices, dates, Stripe links and add-ons live in Supabase (public.campaign_prices); the standard fee is the builder_packages row named below, times 12 months.","campaign":"sa-2025-26","taxYear":"2025/26","timeZone":"Europe/London","standardFee":{"category":"sa","tierKey":"professional","months":12},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
+var SA_SNAPSHOT = {"campaign_prices":[{"campaign":"sa-2025-26","kind":"tier","key":"november","label":"Early bird","price":180,"price_basis":"fixed","active_from":"2026-10-29","active_until":"2026-11-30","payment_link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00","sort_order":1},{"campaign":"sa-2025-26","kind":"tier","key":"december","label":"December","price":230,"price_basis":"fixed","active_from":"2026-12-01","active_until":"2026-12-31","payment_link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01","sort_order":2},{"campaign":"sa-2025-26","kind":"tier","key":"january","label":"Standard fee","price":300,"price_basis":"fixed","active_from":"2027-01-01","active_until":"2027-01-20","payment_link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02","sort_order":3},{"campaign":"sa-2025-26","kind":"tier","key":"closed","label":"By phone, subject to capacity","price":350,"price_basis":"fixed","active_from":"2027-01-21","active_until":"2027-01-31","payment_link":null,"sort_order":4},{"campaign":"sa-2025-26","kind":"addon","key":"partner","label":"Spouse or partner return","price":150,"price_basis":"fixed","active_from":null,"active_until":null,"payment_link":null,"sort_order":10},{"campaign":"sa-2025-26","kind":"addon","key":"income-100k-200k","label":"Income £100,000 to £200,000, including a short tax-saving review","price":100,"price_basis":"plus_tier","active_from":null,"active_until":null,"payment_link":null,"sort_order":11},{"campaign":"sa-2025-26","kind":"addon","key":"income-over-200k","label":"Income over £200,000","price":null,"price_basis":"quote","active_from":null,"active_until":null,"payment_link":null,"sort_order":12}],"builder_packages":[{"name":"Starter SA","category":"sa","tier_key":"starter","price":15,"short_desc":"Employed with one or two additional income sources.","includes":["SA100 preparation & filing","Employment income review","Basic reliefs & allowances"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"Professional SA","category":"sa","tier_key":"professional","price":25,"short_desc":"Self-employed individual with trading income.","includes":["Everything in Starter","Self-employment pages","Expense review & maximisation"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"Comprehensive SA","category":"sa","tier_key":"comprehensive","price":35,"short_desc":"Multiple income streams or complex personal tax affairs.","includes":["Everything in Professional","Rental, investment & foreign income","Capital gains tax review"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3}]};
 // Self Assessment campaign: works out which price tier applies right now, in
-// the visitor's browser, and everything the site shows for it. The build
-// injects this file twice: into every page's <head> (so the pre-rendered page
-// can switch to the right price before it is painted) and into the design's
-// page logic (so the live site renders the same thing).
+// the visitor's browser, and everything the site shows for it.
 //
-// SA_CFG is defined just above this code by the build, from
-// config/sa-campaign.json. Keep this file plain ES5: it runs before anything
-// else on the page.
+// Prices, dates, payment links and add-ons come from Supabase:
+//   public.campaign_prices   the campaign tiers and add-ons
+//   public.builder_packages  the standard fee (Professional SA x 12 months)
+// The build injects this file into every page's <head> (with the rows it
+// read from Supabase, so the pre-rendered page can switch to the right tier
+// before it is painted) and into the design's page logic, which fetches the
+// rows live and calls saSetRows() again.
+//
+// SA_CFG (wording and contact details only, from config/sa-campaign.json) is
+// defined just above this code by the build. Keep this file plain ES5: it
+// runs before anything else on the page.
 
 function saDayNum(iso) {
-  var p = iso.split("-");
+  var p = String(iso).slice(0, 10).split("-");
   return Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000;
 }
 
@@ -43,8 +49,55 @@ function saIsoFromDay(n) {
   return new Date(n * 86400000).toISOString().slice(0, 10);
 }
 
+function saMoney(n) {
+  return "£" + Number(n).toLocaleString("en-GB", { maximumFractionDigits: 2 });
+}
+
+var SA_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+function saLongDate(iso) {
+  var p = String(iso).split("-");
+  return (+p[2]) + " " + SA_MONTHS[+p[1] - 1] + " " + p[0];
+}
+function saShortDate(iso) {
+  var p = String(iso).split("-");
+  return (+p[2]) + " " + SA_MONTHS[+p[1] - 1];
+}
+
+// Turn the Supabase rows into the tiers and add-ons the site uses.
+function saSetRows(campaignRows, packageRows) {
+  var rows = (campaignRows || []).filter(function (r) { return r.campaign === SA_CFG.campaign; });
+  rows.sort(function (a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
+  var tiers = [], addons = {};
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    if (r.kind === "addon") { addons[r.key] = { label: r.label, price: r.price == null ? null : Number(r.price), basis: r.price_basis }; continue; }
+    if (r.kind !== "tier") continue;
+    tiers.push({
+      key: r.key, note: r.label, price: Number(r.price), link: r.payment_link || null,
+      from: String(r.active_from).slice(0, 10), until: String(r.active_until).slice(0, 10)
+    });
+  }
+  for (var j = 0; j < tiers.length; j++) {
+    var t = tiers[j], prev = tiers[j - 1];
+    t.untilLabel = saLongDate(t.until);
+    t.untilShort = saShortDate(t.until);
+    t.tableLabel = t.link || !prev ? "By " + t.untilLabel : "After " + prev.untilLabel;
+    t.laterText = t.link || !prev ? "in " + SA_MONTHS[+t.until.split("-")[1] - 1]
+      : "after " + prev.untilShort + ", by phone and subject to capacity";
+  }
+  var std = null, sf = SA_CFG.standardFee;
+  for (var k = 0; k < (packageRows || []).length; k++) {
+    var p = packageRows[k];
+    if (p.category === sf.category && p.tier_key === sf.tierKey) std = Number(p.price) * sf.months;
+  }
+  SA_CFG.tiers = tiers;
+  SA_CFG.addons = addons;
+  SA_CFG.standardFee.amount = std;
+  if (tiers.length) SA_CFG.filingDeadline = { date: tiers[tiers.length - 1].until, label: saLongDate(tiers[tiers.length - 1].until) };
+}
+
 // Today's date in London, as YYYY-MM-DD. Each tier ends at 23:59:59 London
-// time on its end date, so comparing London calendar dates is exact.
+// time on its last day, so comparing London calendar dates is exact.
 function saLondonToday(now) {
   try {
     var parts = new Intl.DateTimeFormat("en-GB", {
@@ -60,8 +113,8 @@ function saLondonToday(now) {
   }
 }
 
-// ?saPreview=november|december|january|closed|over, or a London date such as
-// ?saPreview=2026-12-01. Ignored on the production domain.
+// ?saPreview=<tier key>|over, or a London date such as ?saPreview=2026-12-01.
+// Ignored on the production domain.
 function saPreviewParam() {
   try {
     if (SA_CFG.productionHosts.indexOf(window.location.hostname) !== -1) return "";
@@ -76,20 +129,41 @@ function saToday() {
   var real = saLondonToday(new Date());
   var pv = saPreviewParam();
   if (/^\d{4}-\d{2}-\d{2}$/.test(pv)) return pv;
-  if (pv === "over") return saIsoFromDay(saDayNum(tiers[tiers.length - 1].until) + 1);
+  if (pv === "over" && tiers.length) return saIsoFromDay(saDayNum(tiers[tiers.length - 1].until) + 1);
   for (var i = 0; i < tiers.length; i++) {
     if (tiers[i].key !== pv) continue;
-    var end = saDayNum(tiers[i].until);
-    var start = i === 0 ? -Infinity : saDayNum(tiers[i - 1].until) + 1;
     var r = saDayNum(real);
-    if (r >= start && r <= end) return real;
-    return saIsoFromDay(i === 0 ? end : start);
+    if (r >= saDayNum(tiers[i].from) && r <= saDayNum(tiers[i].until)) return real;
+    return tiers[i].from;
   }
   return real;
 }
 
 function saWithSource(link, source) {
   return link + (link.indexOf("?") === -1 ? "?" : "&") + "client_reference_id=" + encodeURIComponent(source);
+}
+
+function saAddonText(key, style) {
+  var a = SA_CFG.addons[key];
+  if (!a) return "";
+  if (a.basis === "quote") return "Quoted individually";
+  if (a.basis === "plus_tier") return style === "faq" ? "the tier price plus " + saMoney(a.price) : "Tier price + " + saMoney(a.price);
+  return style === "faq" || style === "plain" ? saMoney(a.price) : saMoney(a.price) + " at any tier";
+}
+
+// Fill price placeholders in fixed wording: {partner}, {highIncome}.
+function saFill(text) {
+  return String(text)
+    .split("{partner}").join(saAddonText("partner", "plain"))
+    .split("{highIncome}").join(saAddonText("income-100k-200k", "faq"));
+}
+
+// The add-on rows for the price table.
+function saAddonNotes() {
+  var out = [], keys = [];
+  for (var k in SA_CFG.addons) keys.push(k);
+  for (var i = 0; i < keys.length; i++) out.push({ label: SA_CFG.addons[keys[i]].label, value: saAddonText(keys[i], "table") });
+  return out;
 }
 
 // Everything the campaign shows, for the tier in force today.
@@ -103,7 +177,8 @@ function saCampaignState() {
   var t = over ? tiers[tiers.length - 1] : tiers[idx];
   var closed = !over && !t.link;
   var daysLeft = saDayNum(t.until) - td + 1;
-  var price = "£" + t.price;
+  var price = saMoney(t.price);
+  var std = c.standardFee.amount;
   var v = {
     key: over ? "over" : t.key, today: today, idx: over ? tiers.length : idx,
     phase: over ? "over" : "live", live: !over, closed: closed, over: over,
@@ -123,6 +198,9 @@ function saCampaignState() {
   v.cardBook = closed ? "Late booking details" : "Book my tax return";
   v.pricingLabel = closed ? "Call " + c.phone + " →" : "Secure my tax return →";
   v.showPhoneLink = !closed;
+  v.partnerNote = c.addons.partner
+    ? "Add a spouse or partner return for " + saMoney(c.addons.partner.price) + " at checkout. Any extras are agreed with you before work starts."
+    : "Any extras are agreed with you before work starts.";
 
   if (closed) {
     v.banner = "Online bookings have closed. Call " + c.phone + " to check if we have capacity.";
@@ -147,21 +225,22 @@ function saCampaignState() {
   } else {
     v.banner = "Self Assessment " + c.taxYear + ": " + price + " if you book by " + t.untilShort + " →";
     v.cardHeading = "Your tax return for " + price;
-    v.cardLine = "Book by " + t.untilShort + "." + (t.price < c.standardFee ? " Normally £" + c.standardFee + "." : "") + " Fixed fee, no VAT.";
+    v.cardLine = "Book by " + t.untilShort + "." + (std && t.price < std ? " Normally " + saMoney(std) + "." : "") + " Fixed fee, no VAT.";
     v.countdown = (daysLeft === 1 ? "Last day" : daysLeft + " days left") + " at " + price;
     v.heroHeading = "Your tax return for " + price + ".";
     v.heroAccent = "Book by " + t.untilShort + ".";
-    v.heroLine = "Prepared, checked and filed by Louis Bromage ACMA CGMA. One fixed fee, all in, and you approve every figure before it goes to HMRC.";
+    v.heroLine = "Prepared, checked and filed by Louis Bromage ACMA CGMA. One fixed fee, all in" + (std && t.price < std ? " (normally " + saMoney(std) + ")" : "") + ", and you approve every figure before it goes to HMRC.";
     v.formHeading = "Book at " + price;
     v.formNote = "Secure card payment through Stripe. Fixed fee, no VAT.";
-    v.meta = "Your Self Assessment " + c.taxYear + " tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. " + price + " if you book by " + t.untilShort + ". Fixed fee, no VAT.";
+    v.meta = "Your Self Assessment " + c.taxYear + " tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. " + price + " if you book by " + t.untilShort + (std && t.price < std ? ", normally " + saMoney(std) : "") + ". Fixed fee, no VAT.";
   }
+  v.title = "Self Assessment tax return " + (over ? "" : closed ? price + ", subject to capacity " : "from " + price + " ") + "| Bromage & Co";
 
   var later = [];
   if (!over && !closed) {
     for (var j = idx + 1; j < tiers.length; j++) {
       if (!tiers[j].link && idx < tiers.length - 2) continue;
-      later.push("£" + tiers[j].price + " " + tiers[j].laterText);
+      later.push(saMoney(tiers[j].price) + " " + tiers[j].laterText);
     }
   }
   v.nextLine = later.join(" · ");
@@ -174,9 +253,9 @@ function saCampaignState() {
   for (var k = 0; k < tiers.length; k++) {
     var x = tiers[k], cur = !over && k === idx, past = over || k < idx;
     v.tiers.push({
-      label: x.link ? "By " + x.untilLabel : x.untilLabel,
+      label: x.tableLabel,
       note: past ? "Ended" : x.note,
-      priceLabel: "£" + x.price,
+      priceLabel: saMoney(x.price),
       current: cur, past: past, aria: cur ? "true" : "false",
       bg: cur ? "#e9efe9" : "transparent",
       priceInk: cur ? "#1f3d34" : past ? "rgba(27,31,28,.45)" : "#1b1f1c"
@@ -184,6 +263,8 @@ function saCampaignState() {
   }
   return v;
 }
+
+saSetRows(SA_SNAPSHOT.campaign_prices, SA_SNAPSHOT.builder_packages);
 
 
 </script>
@@ -1052,7 +1133,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
       </div>
       <div style="display:flex;flex-direction:column;gap:clamp(28px,3vw,40px);min-width:0">
       <sc-if value="{{ saShowCard }}" hint-placeholder-val="{{ false }}">
-        <div aria-label="Self Assessment 2025/26 offer" role="region" style="background:#efece4;border:0;border-top:2px solid #1f3d34;border-radius:0;padding:clamp(22px,2.4vw,30px);display:flex;flex-direction:column;gap:12px">
+        <div aria-label="Self Assessment 2025/26 offer" role="region" style="background:#efece4;border:2px solid #1f3d34;border-radius:0;padding:clamp(22px,2.4vw,30px);display:flex;flex-direction:column;gap:12px">
           <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34">Self Assessment 2025/26</div>
           <div style="font:500 clamp(30px,3vw,38px)/1.05 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c;text-wrap:balance">{{ sa.cardHeading }}</div>
           <p style="margin:0;font:400 16.5px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-wrap:pretty">{{ sa.cardLine }}</p>
@@ -2178,7 +2259,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
       <sc-if value="{{ sa.showPhoneLink }}" hint-placeholder-val="{{ true }}"><a href="tel:+447387835746" style="display:inline-flex;align-items:center;border:1px solid #1b1f1c;color:#1b1f1c;text-decoration:none;padding:19px 28px;font:600 17px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap" style-hover="background:rgba(27,31,28,.05)">Call 07387 835 746</a></sc-if>
     </div>
     <sc-if value="{{ sa.showPhoneLink }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-wrap:wrap;gap:8px 24px;font:500 15px/1.4 Hanken Grotesk,sans-serif;color:#1b1f1c">
-      <span>Pay securely by card through Stripe</span><span>Louis calls within one working day</span><span>Fully refundable</span>
+      <span>Pay securely by card through Stripe</span><span>Louis calls within one working day</span><span>Fully refundable until work starts on your return</span>
     </div></sc-if>
     <div style="font:400 15px/1.4 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72)">{{ sa.countdown }}</div>
   </div>
@@ -2272,8 +2353,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
     </ol>
   </div>
 
-  <div data-sa2="" style="padding:clamp(48px,6vw,88px) clamp(20px,4.6vw,48px);border-bottom:1px solid #dcd8cf;display:grid;grid-template-columns:minmax(0,.6fr) minmax(0,1.4fr);gap:clamp(32px,5vw,72px);align-items:start">
-    <div role="img" aria-label="Photo of Louis Bromage to be added" style="aspect-ratio:4/5;border:1px dashed rgba(27,31,28,.35);border-radius:2px;background:#f1eee6;display:flex;align-items:flex-end;padding:18px;font:500 14px/1.3 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72);max-width:360px">Photo of Louis</div>
+  <div data-sa2="" style="padding:clamp(48px,6vw,88px) clamp(20px,4.6vw,48px);border-bottom:1px solid #dcd8cf;display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:start">
     <div style="display:flex;flex-direction:column;gap:18px">
       <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34">About Louis</div>
       <h2 style="margin:0;font:500 clamp(32px,4.4vw,46px)/1.05 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c">Your return, prepared by the person you speak to.</h2>
@@ -2300,8 +2380,8 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
     <div style="display:flex;flex-direction:column;gap:16px">
       <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34">Book my tax return</div>
       <h2 style="margin:0;font:500 clamp(32px,4.4vw,46px)/1.05 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c">{{ sa.formHeading }}</h2>
-      <p style="margin:0;font:400 17px/1.65 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-wrap:pretty">Pay securely by card through Stripe, and Louis will call you within one working day to start onboarding. Your payment is fully refundable.</p>
-      <p style="margin:0;font:400 15px/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72);text-wrap:pretty">Add a spouse or partner return for £150 at checkout. Any extras are agreed with you before work starts.</p>
+      <p style="margin:0;font:400 17px/1.65 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-wrap:pretty">Pay securely by card through Stripe, and Louis will call you within one working day to start onboarding. Your payment is fully refundable until work starts on your return.</p>
+      <p style="margin:0;font:400 15px/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72);text-wrap:pretty">{{ sa.partnerNote }}</p>
       <a href="tel:+447387835746" style="align-self:flex-start;font:600 16px/1.3 Hanken Grotesk,sans-serif;color:#1f3d34;text-decoration:none;border-bottom:1px solid #1f3d34;padding-bottom:3px">Or call 07387 835 746</a>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px">
@@ -2383,7 +2463,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 
 </script>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180},&quot;previewDate&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;live&quot;,&quot;options&quot;:[&quot;live&quot;,&quot;2026-11-10&quot;,&quot;2026-11-30&quot;,&quot;2026-12-15&quot;,&quot;2027-01-10&quot;,&quot;2027-01-25&quot;,&quot;2027-02-05&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Self Assessment campaign&quot;}}">
-const __ROUTES = [{"key":"home","path":"/","title":"Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."},{"key":"services","path":"/services/","title":"Accounting & Tax Services for Small Businesses | Bromage & Co","description":"Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."},{"key":"companyAccounts","path":"/services/company-accounts/","title":"Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet","description":"Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"selfAssessment","path":"/services/self-assessment/","title":"Self Assessment Tax Returns: £180 a Year | Bromage & Co, Fleet","description":"Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. £180 a year, from a Chartered Management Accountant in Fleet, Hampshire."},{"key":"managementAccounts","path":"/services/management-accounts/","title":"Management Accounts for Small Businesses | Bromage & Co","description":"Monthly or quarterly management accounts from £55 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant."},{"key":"finance","path":"/outsourced-finance/","title":"Outsourced Finance & Part-Time FD Support | Bromage & Co","description":"Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."},{"key":"advisory","path":"/advisory/","title":"Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co","description":"Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a Chartered Management Accountant, scoped as projects with the fee fixed first."},{"key":"package","path":"/packages/","title":"Accounting Package Prices: Build Your Quote Online | Bromage & Co","description":"Build your accounting package and see the fixed monthly price instantly. Published prices for limited companies, sole traders, partnerships and personal tax. No call needed."},{"key":"mtd","path":"/making-tax-digital/","title":"Making Tax Digital for Income Tax: What You Need to Do | Bromage & Co","description":"Making Tax Digital for Income Tax starts April 2026 for sole traders and landlords over £50,000, then £30,000 from April 2027. What changes, and how Bromage & Co can handle the quarterly updates for you."},{"key":"about","path":"/about/","title":"About Louis Bromage, Chartered Management Accountant | Bromage & Co","description":"A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients."},{"key":"contact","path":"/contact/","title":"Contact Bromage & Co Accounting | Fleet, Hampshire","description":"Talk to Louis about your accounts, tax or finance. Call 07387 835 746, email enquiries@bromageco.com or send a message. Questions are always free."},{"key":"legal","path":"/legal/","title":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."},{"key":"taxReturn","path":"/tax-return/","title":"Self Assessment tax return from £180 | Bromage & Co","description":"Your Self Assessment 2025/26 tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet, Hampshire. Fixed fee, no VAT."},{"key":"saThanks","path":"/tax-return/thank-you/","title":"Thank you for booking | Bromage & Co","description":"Thank you for booking your Self Assessment tax return with Bromage & Co."}];
+const __ROUTES = [{"key":"home","path":"/","title":"Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."},{"key":"services","path":"/services/","title":"Accounting & Tax Services for Small Businesses | Bromage & Co","description":"Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."},{"key":"companyAccounts","path":"/services/company-accounts/","title":"Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet","description":"Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"selfAssessment","path":"/services/self-assessment/","title":"Self Assessment Tax Returns from £180 a Year | Bromage & Co, Fleet","description":"Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. From £180 a year, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"managementAccounts","path":"/services/management-accounts/","title":"Management Accounts for Small Businesses | Bromage & Co","description":"Monthly or quarterly management accounts from £200 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant."},{"key":"finance","path":"/outsourced-finance/","title":"Outsourced Finance & Part-Time FD Support | Bromage & Co","description":"Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."},{"key":"advisory","path":"/advisory/","title":"Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co","description":"Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a Chartered Management Accountant, scoped as projects with the fee fixed first."},{"key":"package","path":"/packages/","title":"Accounting Package Prices: Build Your Quote Online | Bromage & Co","description":"Build your accounting package and see the fixed monthly price instantly. Published prices for limited companies, sole traders, partnerships and personal tax. No call needed."},{"key":"mtd","path":"/making-tax-digital/","title":"Making Tax Digital for Income Tax: What You Need to Do | Bromage & Co","description":"Making Tax Digital for Income Tax starts April 2026 for sole traders and landlords over £50,000, then £30,000 from April 2027. What changes, and how Bromage & Co can handle the quarterly updates for you."},{"key":"about","path":"/about/","title":"About Louis Bromage, Chartered Management Accountant | Bromage & Co","description":"A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients."},{"key":"contact","path":"/contact/","title":"Contact Bromage & Co Accounting | Fleet, Hampshire","description":"Talk to Louis about your accounts, tax or finance. Call 07387 835 746, email enquiries@bromageco.com or send a message. Questions are always free."},{"key":"legal","path":"/legal/","title":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."},{"key":"taxReturn","path":"/tax-return/","title":"Self Assessment tax return from £180 | Bromage & Co","description":"Your Self Assessment 2025/26 tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. £180 if you book by 30 November, normally £300. Fixed fee, no VAT."},{"key":"saThanks","path":"/tax-return/thank-you/","title":"Thank you for booking | Bromage & Co","description":"Thank you for booking your Self Assessment tax return with Bromage & Co."}];
 const __routeFor = key => __ROUTES.find(r => r.key === key) || __ROUTES[0];
 function __pageFromLocation() {
   if (typeof window === "undefined") return "home";
@@ -2397,29 +2477,37 @@ function __topicFromLocation() {
 }
 function __applyMeta(key, topic) {
   const r = __routeFor(key);
-  const description = key === "taxReturn" ? saCampaignState().meta : r.description;
-  document.title = r.title;
+  const sa = key === "taxReturn" ? saCampaignState() : null;
+  const description = sa ? sa.meta : r.description;
+  const title = sa ? sa.title : r.title;
+  document.title = title;
   const set = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
   const url = "https://bromageco.com" + r.path;
   set('meta[name="description"]', "content", description);
   set('link[rel="canonical"]', "href", url);
-  set('meta[property="og:title"]', "content", r.title);
+  set('meta[property="og:title"]', "content", title);
   set('meta[property="og:description"]', "content", description);
   set('meta[property="og:url"]', "content", url);
 }
-var SA_CFG = {"taxYear":"2025/26","timeZone":"Europe/London","standardFee":300,"partnerFee":150,"highIncome":{"from":100000,"to":200000,"surcharge":100},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","filingDeadline":{"date":"2027-01-31","label":"31 January 2027"},"tiers":[{"key":"november","until":"2026-11-30","untilLabel":"30 November 2026","untilShort":"30 November","price":180,"note":"Early bird","laterText":"in November","link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00"},{"key":"december","until":"2026-12-31","untilLabel":"31 December 2026","untilShort":"31 December","price":230,"note":"December","laterText":"in December","link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01"},{"key":"january","until":"2027-01-20","untilLabel":"20 January 2027","untilShort":"20 January","price":300,"note":"Standard fee","laterText":"in January","link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02"},{"key":"closed","until":"2027-01-31","untilLabel":"After 20 January 2027","untilShort":"31 January","price":350,"note":"By phone, subject to capacity","laterText":"after 20 January, by phone and subject to capacity","link":null}],"sources":["banner","tax-return-hero","tax-return-pricing","tax-return-footer"],"productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
+var SA_CFG = {"_note":"Wording and contact details for the Self Assessment campaign. Prices, dates, Stripe links and add-ons live in Supabase (public.campaign_prices); the standard fee is the builder_packages row named below, times 12 months.","campaign":"sa-2025-26","taxYear":"2025/26","timeZone":"Europe/London","standardFee":{"category":"sa","tierKey":"professional","months":12},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
+var SA_SNAPSHOT = {"campaign_prices":[{"campaign":"sa-2025-26","kind":"tier","key":"november","label":"Early bird","price":180,"price_basis":"fixed","active_from":"2026-10-29","active_until":"2026-11-30","payment_link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00","sort_order":1},{"campaign":"sa-2025-26","kind":"tier","key":"december","label":"December","price":230,"price_basis":"fixed","active_from":"2026-12-01","active_until":"2026-12-31","payment_link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01","sort_order":2},{"campaign":"sa-2025-26","kind":"tier","key":"january","label":"Standard fee","price":300,"price_basis":"fixed","active_from":"2027-01-01","active_until":"2027-01-20","payment_link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02","sort_order":3},{"campaign":"sa-2025-26","kind":"tier","key":"closed","label":"By phone, subject to capacity","price":350,"price_basis":"fixed","active_from":"2027-01-21","active_until":"2027-01-31","payment_link":null,"sort_order":4},{"campaign":"sa-2025-26","kind":"addon","key":"partner","label":"Spouse or partner return","price":150,"price_basis":"fixed","active_from":null,"active_until":null,"payment_link":null,"sort_order":10},{"campaign":"sa-2025-26","kind":"addon","key":"income-100k-200k","label":"Income £100,000 to £200,000, including a short tax-saving review","price":100,"price_basis":"plus_tier","active_from":null,"active_until":null,"payment_link":null,"sort_order":11},{"campaign":"sa-2025-26","kind":"addon","key":"income-over-200k","label":"Income over £200,000","price":null,"price_basis":"quote","active_from":null,"active_until":null,"payment_link":null,"sort_order":12}],"builder_packages":[{"name":"Starter SA","category":"sa","tier_key":"starter","price":15,"short_desc":"Employed with one or two additional income sources.","includes":["SA100 preparation & filing","Employment income review","Basic reliefs & allowances"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"Professional SA","category":"sa","tier_key":"professional","price":25,"short_desc":"Self-employed individual with trading income.","includes":["Everything in Starter","Self-employment pages","Expense review & maximisation"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"Comprehensive SA","category":"sa","tier_key":"comprehensive","price":35,"short_desc":"Multiple income streams or complex personal tax affairs.","includes":["Everything in Professional","Rental, investment & foreign income","Capital gains tax review"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3}]};
 // Self Assessment campaign: works out which price tier applies right now, in
-// the visitor's browser, and everything the site shows for it. The build
-// injects this file twice: into every page's <head> (so the pre-rendered page
-// can switch to the right price before it is painted) and into the design's
-// page logic (so the live site renders the same thing).
+// the visitor's browser, and everything the site shows for it.
 //
-// SA_CFG is defined just above this code by the build, from
-// config/sa-campaign.json. Keep this file plain ES5: it runs before anything
-// else on the page.
+// Prices, dates, payment links and add-ons come from Supabase:
+//   public.campaign_prices   the campaign tiers and add-ons
+//   public.builder_packages  the standard fee (Professional SA x 12 months)
+// The build injects this file into every page's <head> (with the rows it
+// read from Supabase, so the pre-rendered page can switch to the right tier
+// before it is painted) and into the design's page logic, which fetches the
+// rows live and calls saSetRows() again.
+//
+// SA_CFG (wording and contact details only, from config/sa-campaign.json) is
+// defined just above this code by the build. Keep this file plain ES5: it
+// runs before anything else on the page.
 
 function saDayNum(iso) {
-  var p = iso.split("-");
+  var p = String(iso).slice(0, 10).split("-");
   return Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000;
 }
 
@@ -2427,8 +2515,55 @@ function saIsoFromDay(n) {
   return new Date(n * 86400000).toISOString().slice(0, 10);
 }
 
+function saMoney(n) {
+  return "£" + Number(n).toLocaleString("en-GB", { maximumFractionDigits: 2 });
+}
+
+var SA_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+function saLongDate(iso) {
+  var p = String(iso).split("-");
+  return (+p[2]) + " " + SA_MONTHS[+p[1] - 1] + " " + p[0];
+}
+function saShortDate(iso) {
+  var p = String(iso).split("-");
+  return (+p[2]) + " " + SA_MONTHS[+p[1] - 1];
+}
+
+// Turn the Supabase rows into the tiers and add-ons the site uses.
+function saSetRows(campaignRows, packageRows) {
+  var rows = (campaignRows || []).filter(function (r) { return r.campaign === SA_CFG.campaign; });
+  rows.sort(function (a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
+  var tiers = [], addons = {};
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    if (r.kind === "addon") { addons[r.key] = { label: r.label, price: r.price == null ? null : Number(r.price), basis: r.price_basis }; continue; }
+    if (r.kind !== "tier") continue;
+    tiers.push({
+      key: r.key, note: r.label, price: Number(r.price), link: r.payment_link || null,
+      from: String(r.active_from).slice(0, 10), until: String(r.active_until).slice(0, 10)
+    });
+  }
+  for (var j = 0; j < tiers.length; j++) {
+    var t = tiers[j], prev = tiers[j - 1];
+    t.untilLabel = saLongDate(t.until);
+    t.untilShort = saShortDate(t.until);
+    t.tableLabel = t.link || !prev ? "By " + t.untilLabel : "After " + prev.untilLabel;
+    t.laterText = t.link || !prev ? "in " + SA_MONTHS[+t.until.split("-")[1] - 1]
+      : "after " + prev.untilShort + ", by phone and subject to capacity";
+  }
+  var std = null, sf = SA_CFG.standardFee;
+  for (var k = 0; k < (packageRows || []).length; k++) {
+    var p = packageRows[k];
+    if (p.category === sf.category && p.tier_key === sf.tierKey) std = Number(p.price) * sf.months;
+  }
+  SA_CFG.tiers = tiers;
+  SA_CFG.addons = addons;
+  SA_CFG.standardFee.amount = std;
+  if (tiers.length) SA_CFG.filingDeadline = { date: tiers[tiers.length - 1].until, label: saLongDate(tiers[tiers.length - 1].until) };
+}
+
 // Today's date in London, as YYYY-MM-DD. Each tier ends at 23:59:59 London
-// time on its end date, so comparing London calendar dates is exact.
+// time on its last day, so comparing London calendar dates is exact.
 function saLondonToday(now) {
   try {
     var parts = new Intl.DateTimeFormat("en-GB", {
@@ -2444,8 +2579,8 @@ function saLondonToday(now) {
   }
 }
 
-// ?saPreview=november|december|january|closed|over, or a London date such as
-// ?saPreview=2026-12-01. Ignored on the production domain.
+// ?saPreview=<tier key>|over, or a London date such as ?saPreview=2026-12-01.
+// Ignored on the production domain.
 function saPreviewParam() {
   try {
     if (SA_CFG.productionHosts.indexOf(window.location.hostname) !== -1) return "";
@@ -2460,20 +2595,41 @@ function saToday() {
   var real = saLondonToday(new Date());
   var pv = saPreviewParam();
   if (/^\d{4}-\d{2}-\d{2}$/.test(pv)) return pv;
-  if (pv === "over") return saIsoFromDay(saDayNum(tiers[tiers.length - 1].until) + 1);
+  if (pv === "over" && tiers.length) return saIsoFromDay(saDayNum(tiers[tiers.length - 1].until) + 1);
   for (var i = 0; i < tiers.length; i++) {
     if (tiers[i].key !== pv) continue;
-    var end = saDayNum(tiers[i].until);
-    var start = i === 0 ? -Infinity : saDayNum(tiers[i - 1].until) + 1;
     var r = saDayNum(real);
-    if (r >= start && r <= end) return real;
-    return saIsoFromDay(i === 0 ? end : start);
+    if (r >= saDayNum(tiers[i].from) && r <= saDayNum(tiers[i].until)) return real;
+    return tiers[i].from;
   }
   return real;
 }
 
 function saWithSource(link, source) {
   return link + (link.indexOf("?") === -1 ? "?" : "&") + "client_reference_id=" + encodeURIComponent(source);
+}
+
+function saAddonText(key, style) {
+  var a = SA_CFG.addons[key];
+  if (!a) return "";
+  if (a.basis === "quote") return "Quoted individually";
+  if (a.basis === "plus_tier") return style === "faq" ? "the tier price plus " + saMoney(a.price) : "Tier price + " + saMoney(a.price);
+  return style === "faq" || style === "plain" ? saMoney(a.price) : saMoney(a.price) + " at any tier";
+}
+
+// Fill price placeholders in fixed wording: {partner}, {highIncome}.
+function saFill(text) {
+  return String(text)
+    .split("{partner}").join(saAddonText("partner", "plain"))
+    .split("{highIncome}").join(saAddonText("income-100k-200k", "faq"));
+}
+
+// The add-on rows for the price table.
+function saAddonNotes() {
+  var out = [], keys = [];
+  for (var k in SA_CFG.addons) keys.push(k);
+  for (var i = 0; i < keys.length; i++) out.push({ label: SA_CFG.addons[keys[i]].label, value: saAddonText(keys[i], "table") });
+  return out;
 }
 
 // Everything the campaign shows, for the tier in force today.
@@ -2487,7 +2643,8 @@ function saCampaignState() {
   var t = over ? tiers[tiers.length - 1] : tiers[idx];
   var closed = !over && !t.link;
   var daysLeft = saDayNum(t.until) - td + 1;
-  var price = "£" + t.price;
+  var price = saMoney(t.price);
+  var std = c.standardFee.amount;
   var v = {
     key: over ? "over" : t.key, today: today, idx: over ? tiers.length : idx,
     phase: over ? "over" : "live", live: !over, closed: closed, over: over,
@@ -2507,6 +2664,9 @@ function saCampaignState() {
   v.cardBook = closed ? "Late booking details" : "Book my tax return";
   v.pricingLabel = closed ? "Call " + c.phone + " →" : "Secure my tax return →";
   v.showPhoneLink = !closed;
+  v.partnerNote = c.addons.partner
+    ? "Add a spouse or partner return for " + saMoney(c.addons.partner.price) + " at checkout. Any extras are agreed with you before work starts."
+    : "Any extras are agreed with you before work starts.";
 
   if (closed) {
     v.banner = "Online bookings have closed. Call " + c.phone + " to check if we have capacity.";
@@ -2531,21 +2691,22 @@ function saCampaignState() {
   } else {
     v.banner = "Self Assessment " + c.taxYear + ": " + price + " if you book by " + t.untilShort + " →";
     v.cardHeading = "Your tax return for " + price;
-    v.cardLine = "Book by " + t.untilShort + "." + (t.price < c.standardFee ? " Normally £" + c.standardFee + "." : "") + " Fixed fee, no VAT.";
+    v.cardLine = "Book by " + t.untilShort + "." + (std && t.price < std ? " Normally " + saMoney(std) + "." : "") + " Fixed fee, no VAT.";
     v.countdown = (daysLeft === 1 ? "Last day" : daysLeft + " days left") + " at " + price;
     v.heroHeading = "Your tax return for " + price + ".";
     v.heroAccent = "Book by " + t.untilShort + ".";
-    v.heroLine = "Prepared, checked and filed by Louis Bromage ACMA CGMA. One fixed fee, all in, and you approve every figure before it goes to HMRC.";
+    v.heroLine = "Prepared, checked and filed by Louis Bromage ACMA CGMA. One fixed fee, all in" + (std && t.price < std ? " (normally " + saMoney(std) + ")" : "") + ", and you approve every figure before it goes to HMRC.";
     v.formHeading = "Book at " + price;
     v.formNote = "Secure card payment through Stripe. Fixed fee, no VAT.";
-    v.meta = "Your Self Assessment " + c.taxYear + " tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. " + price + " if you book by " + t.untilShort + ". Fixed fee, no VAT.";
+    v.meta = "Your Self Assessment " + c.taxYear + " tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. " + price + " if you book by " + t.untilShort + (std && t.price < std ? ", normally " + saMoney(std) : "") + ". Fixed fee, no VAT.";
   }
+  v.title = "Self Assessment tax return " + (over ? "" : closed ? price + ", subject to capacity " : "from " + price + " ") + "| Bromage & Co";
 
   var later = [];
   if (!over && !closed) {
     for (var j = idx + 1; j < tiers.length; j++) {
       if (!tiers[j].link && idx < tiers.length - 2) continue;
-      later.push("£" + tiers[j].price + " " + tiers[j].laterText);
+      later.push(saMoney(tiers[j].price) + " " + tiers[j].laterText);
     }
   }
   v.nextLine = later.join(" · ");
@@ -2558,9 +2719,9 @@ function saCampaignState() {
   for (var k = 0; k < tiers.length; k++) {
     var x = tiers[k], cur = !over && k === idx, past = over || k < idx;
     v.tiers.push({
-      label: x.link ? "By " + x.untilLabel : x.untilLabel,
+      label: x.tableLabel,
       note: past ? "Ended" : x.note,
-      priceLabel: "£" + x.price,
+      priceLabel: saMoney(x.price),
       current: cur, past: past, aria: cur ? "true" : "false",
       bg: cur ? "#e9efe9" : "transparent",
       priceInk: cur ? "#1f3d34" : past ? "rgba(27,31,28,.45)" : "#1b1f1c"
@@ -2569,14 +2730,35 @@ function saCampaignState() {
   return v;
 }
 
+saSetRows(SA_SNAPSHOT.campaign_prices, SA_SNAPSHOT.builder_packages);
+
+var __PRICE_ROWS = [{"name":"Bookkeeping - Starter","category":"bk","tier_key":"starter","price":100,"short_desc":"50-100 transactions per month.","includes":["Monthly bank reconciliation","Xero / QuickBooks management","Receipt & invoice processing"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"Foundation Accounts","category":"ct","tier_key":"foundation","price":75,"short_desc":"Micro company - small turnover, simple structure.","includes":["Annual financial statements","CT600 submission to HMRC","Companies House filing"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"LLP Essentials","category":"llp","tier_key":"llp-essentials","price":75,"short_desc":"Dormant or minimal activity LLP with straightforward finances.","includes":["Statutory accounts preparation","Companies House filing","SA800 partnership return","Members' report"],"billing_suffix":"/ mo","business_types":["partnership"],"sort_order":1},{"name":"P&L Insights","category":"ma","tier_key":"pl","price":200,"short_desc":"Monthly or quarterly profit & loss report.","includes":["Revenue & expense summary","Month-on-month comparisons","Key performance indicators"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"Starter SA","category":"sa","tier_key":"starter","price":15,"short_desc":"Employed with one or two additional income sources.","includes":["SA100 preparation & filing","Employment income review","Basic reliefs & allowances"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"SA800 Partnership Return","category":"sa800","tier_key":"sa800-professional","price":25,"short_desc":"Annual partnership tax return filed with HMRC on behalf of the partnership.","includes":["SA800 partnership tax return","Partnership statement","HMRC submission","Dedicated accountant review"],"billing_suffix":"/ mo","business_types":["Partnership"],"sort_order":1},{"name":"SA800 Partnership Return","category":"sa800","tier_key":"sa800-standard","price":15,"short_desc":"Annual partnership tax return filed with HMRC on behalf of the partnership.","includes":["SA800 partnership tax return","Partnership statement","HMRC submission","Dedicated accountant review"],"billing_suffix":"/ mo","business_types":["partnership"],"sort_order":1},{"name":"Starter VAT","category":"vat","tier_key":"starter","price":20,"short_desc":"Turnover under GBP 50,000.","includes":["Quarterly VAT return preparation","MTD-compliant submission","HMRC correspondence"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"Bookkeeping - Standard","category":"bk","tier_key":"standard","price":150,"short_desc":"100-200 transactions per month.","includes":["Everything in Starter","Supplier & customer ledgers","Monthly reporting summary"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"Professional Accounts","category":"ct","tier_key":"professional","price":100,"short_desc":"Small company with employees or multiple income streams.","includes":["Everything in Foundation","Director's loan account review","Dividend planning advice"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"LLP Standard","category":"llp","tier_key":"llp-standard","price":125,"short_desc":"Active trading LLP with clean books and straightforward income streams.","includes":["Statutory accounts preparation","Companies House filing","SA800 partnership return","Members' report","Trading income & expense review","Members' profit allocation"],"billing_suffix":"/ mo","business_types":["partnership"],"sort_order":2},{"name":"Professional SA","category":"sa","tier_key":"professional","price":25,"short_desc":"Self-employed individual with trading income.","includes":["Everything in Starter","Self-employment pages","Expense review & maximisation"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"Growth VAT","category":"vat","tier_key":"growth","price":35,"short_desc":"Turnover GBP 50,000 - GBP 150,000.","includes":["Everything in Starter","Input tax review & optimisation","Partial exemption support"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"Bookkeeping - Advanced","category":"bk","tier_key":"advanced","price":250,"short_desc":"200-400 transactions per month.","includes":["Everything in Standard","Multi-currency support","Dedicated bookkeeper"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3},{"name":"Strategic Accounts","category":"ct","tier_key":"strategic","price":120,"short_desc":"Growth company with complex reporting requirements.","includes":["Everything in Professional","Group structure support","Annual tax planning meeting"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3},{"name":"LLP Complex","category":"llp","tier_key":"llp-complex","price":200,"short_desc":"Multiple income streams, high transaction volume, or more involved member arrangements.","includes":["Statutory accounts preparation","Companies House filing","SA800 partnership return","Members' report","Multiple income stream analysis","Complex member arrangements","Priority review & support"],"billing_suffix":"/ mo","business_types":["partnership"],"sort_order":3},{"name":"Comprehensive SA","category":"sa","tier_key":"comprehensive","price":35,"short_desc":"Multiple income streams or complex personal tax affairs.","includes":["Everything in Professional","Rental, investment & foreign income","Capital gains tax review"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3},{"name":"Professional VAT","category":"vat","tier_key":"professional","price":50,"short_desc":"Turnover GBP 150,000 - GBP 500,000.","includes":["Everything in Growth","EC sales list support","Annual VAT health check"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3},{"name":"Bookkeeping - Enterprise","category":"bk","tier_key":"enterprise","price":400,"short_desc":"400+ transactions per month.","includes":["Everything in Advanced","Weekly reconciliation","Priority turnaround"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":4}];
+var __saCampaignRows = SA_SNAPSHOT.campaign_prices;
+function __minPrice(rows, cat) {
+  var p = (rows || []).filter(function (r) { return r.category === cat; }).map(function (r) { return Number(r.price); });
+  return p.length ? Math.min.apply(null, p) : null;
+}
+function __tierPrice(rows, cat, key) {
+  var r = (rows || []).filter(function (x) { return x.category === cat && x.tier_key === key; })[0];
+  return r ? Number(r.price) : null;
+}
+function __audiencePrice(a, rows) {
+  var n = null, from = true;
+  if (a.key === "companyAccounts") n = __minPrice(rows, "ct");
+  else if (a.key === "managementAccounts") n = __minPrice(rows, "ma");
+  else if (a.key === "selfAssessment") { n = __tierPrice(rows, SA_CFG.standardFee.category, SA_CFG.standardFee.tierKey); from = false; }
+  else return a.price;
+  return n == null ? "" : (from ? "From " : "") + saMoney(n) + " / month";
+}
+
 const SA_STRIPE = {};
 function saState() { return saCampaignState(); }
 
 // Stripe Payment Links, one per tier. In each link's settings, set "After payment" to redirect to https://bromageco.com/tax-return?paid=1
 const SA_INCLUDED = ["Employment and pension income", "Self-employment or CIS income", "Bank interest", "Dividends", "One rental property", "High Income Child Benefit Charge", "Pension and Gift Aid relief"];
-const SA_EXTRAS = ["Additional rental properties", "Capital gains", "Foreign income", "Spouse or partner return, £150", "Income over £100,000"];
+const SA_EXTRAS = ["Additional rental properties", "Capital gains", "Foreign income", "Spouse or partner return, {partner}", "Income over £100,000"];
 const SA_STEPS = [
-  { title: "Book and pay", body: "Pay securely by card through Stripe. Your price is held from that moment, and the payment is fully refundable." },
+  { title: "Book and pay", body: "Pay securely by card through Stripe. Your price is held from that moment, and the payment is fully refundable until work starts on your return." },
   { title: "Onboarding call", body: "Louis calls you within one working day to talk through your income, confirm your ID and send your engagement letter." },
   { title: "Send your records", body: "Use the checklist for your income sources. Upload securely, no posting paperwork." },
   { title: "Approve your draft", body: "You see the full return and what you owe, with any questions answered, before anything is filed." },
@@ -2584,11 +2766,11 @@ const SA_STEPS = [
 ];
 const SA_FAQ = [
   { q: "What if you can\u2019t take me on?", a: "Then your payment is refunded in full. Louis will tell you on your onboarding call, within one working day of booking, and the money goes back to the card you paid with." },
-  { q: "Is my payment refundable?", a: "Yes, fully. If you change your mind, tell Louis and the full amount goes back to the card you paid with." },
+  { q: "Is my payment refundable?", a: "Yes. Your payment is fully refundable until work starts on your return. Tell Louis and the full amount goes back to the card you paid with." },
   { q: "What counts as \u201ccomplete records\u201d?", a: "Everything needed to prepare your return in one go: P60s and any P11D, bank interest and dividend figures, rental income and costs, pension contributions and Gift Aid, and anything else for the income sources you tick. You get a checklist when you book. Your price is set on the date your payment and complete records have both arrived." },
   { q: "What if I'm late with my records?", a: "Your return will still be done. If your complete records arrive after the date for your tier, the fee for the next tier applies. We'll tell you before that happens, never after." },
   { q: "Do I need a UTR?", a: "Yes, a Unique Taxpayer Reference is needed to file. If you're new to Self Assessment and don't have one, tell us when you book and we'll help you register. HMRC usually posts it within 15 working days, so it's worth starting early." },
-  { q: "What if my return is more complex?", a: "Additional properties, capital gains and foreign income are added at a fixed price, agreed before you pay. If your income is between £100,000 and £200,000, the fee is the tier price plus £100, including a short tax-saving review. Over £200,000, Louis will quote individually." }
+  { q: "What if my return is more complex?", a: "Additional properties, capital gains and foreign income are added at a fixed price, agreed before you pay. If your income is between £100,000 and £200,000, the fee is {highIncome}, including a short tax-saving review. Over £200,000, Louis will quote individually." }
 ];
 const SA_INCOME = ["Employment or pension", "Bank interest", "Dividends", "Rental property", "Self-employment or CIS", "Capital gains", "Foreign income", "Child Benefit (HICBC)", "Income over £100,000", "Not sure"];
 
@@ -2661,7 +2843,7 @@ const SVC_BY_NUM = { "01": "companyAccounts", "02": "selfAssessment", "05": "man
 
 const SVC_PAGES = {
   companyAccounts: {
-    detail: "01", cat: "ct", fallback: 75, kind: "monthly",
+    detail: "01", cat: "ct", fallback: __minPrice(__PRICE_ROWS, "ct"), kind: "monthly",
     eyebrow: "Company accounts & corporation tax",
     h1: "Company accounts filed early enough to still be useful.",
     intro: "Every limited company files accounts at Companies House and a corporation tax return with HMRC each year. Left until the deadline, the numbers are months old and there's nothing left to change. We prepare yours soon after the year end, walk you through what they say, and file once you're happy with them.",
@@ -2694,7 +2876,7 @@ const SVC_PAGES = {
     ]
   },
   selfAssessment: {
-    detail: "02", cat: "sa", fallback: 15, kind: "annual",
+    detail: "02", cat: "sa", fallback: __minPrice(__PRICE_ROWS, "sa"), kind: "annual",
     eyebrow: "Self assessment",
     h1: "Your tax return done in the autumn, not the last week of January.",
     intro: "If HMRC doesn't take the right tax from your income automatically, you owe them a return each year. We prepare yours from records we already hold, in the autumn, so you know what you owe months before you have to pay it.",
@@ -2727,7 +2909,7 @@ const SVC_PAGES = {
     ]
   },
   managementAccounts: {
-    detail: "05", cat: "ma", fallback: 55, kind: "monthly",
+    detail: "05", cat: "ma", fallback: __minPrice(__PRICE_ROWS, "ma"), kind: "monthly",
     eyebrow: "Management accounts",
     h1: "Numbers you can make decisions with, not just file.",
     intro: "Year-end accounts tell you what happened, usually months after it did. Management accounts tell you what's happening now: which jobs make money, where the cash is going, and what the next quarter looks like. Monthly or quarterly, with a call each time to talk it through.",
@@ -2769,10 +2951,10 @@ const REFERRAL_STEPS = [
 ];
 
 const AUDIENCES = [
-  { num: "01", title: "Limited companies & contractors", body: "Accounts, CT600 and Companies House, filed early enough to be useful.", price: "From £75 / month", key: "companyAccounts" },
-  { num: "02", title: "Sole traders & landlords", body: "Your tax return done in the autumn, Making Tax Digital included.", price: "£15 / month", key: "selfAssessment" },
+  { num: "01", title: "Limited companies & contractors", body: "Accounts, CT600 and Companies House, filed early enough to be useful.", price: "", key: "companyAccounts" },
+  { num: "02", title: "Sole traders & landlords", body: "Your tax return done in the autumn, Making Tax Digital included.", price: "", key: "selfAssessment" },
   { num: "03", title: "Founders in year one", body: "Company structure, Xero setup and compliance right from day one.", price: "Build a package", key: "package" },
-  { num: "04", title: "Growing businesses", body: "Monthly numbers you can make hiring and pricing decisions with.", price: "From £55 / month", key: "managementAccounts" }
+  { num: "04", title: "Growing businesses", body: "Monthly numbers you can make hiring and pricing decisions with.", price: "", key: "managementAccounts" }
 ];
 
 const SERVICE_CARDS = [
@@ -2785,19 +2967,19 @@ const SERVICE_CARDS = [
 ];
 
 const SERVICE_DETAIL = [
-  { num: "01", title: "Company accounts & tax", price: "From £75 / month", priceKey: "accounts", priceKind: "from",
+  { num: "01", title: "Company accounts & tax", price: "", priceKey: "ct", priceKind: "from",
     blurb: "Statutory accounts and your CT600 prepared early enough that there's still time to act on what they say. You get a walkthrough before anything is filed, what changed, what it means, and what we'd do differently next year.",
     includes: ["Annual statutory accounts", "Corporation tax return (CT600)", "Companies House filing", "Confirmation statement", "Pre-year-end tax review", "A proper walkthrough call"] },
-  { num: "02", title: "Self assessment", price: "£180 / year (£15 per month)", priceKey: "sa", priceKind: "annual",
+  { num: "02", title: "Self assessment", price: "", priceKey: "sa", priceKind: "annual",
     blurb: "Your personal return, prepared from records we already hold rather than a January scramble. Every allowance you're entitled to, and a clear note of what you owe and when, with no chasing from our end because we already have the numbers.",
     includes: ["Full SA100 return", "Income & expenses review", "Allowances and reliefs", "Dividend and salary income", "Payments on account", "Filed directly with HMRC"] },
-  { num: "03", title: "VAT returns", price: "From £45 / month", priceKey: "vat", priceKind: "from",
+  { num: "03", title: "VAT returns", price: "", priceKey: "vat", priceKind: "from",
     blurb: "Quarterly returns filed on time and MTD-compliant, with a sense check before each one goes rather than after. If you're near the threshold we'll tell you what registering actually means for your margins before it becomes urgent.",
     includes: ["Quarterly VAT returns", "MTD-compatible filing", "Flat rate vs standard review", "Threshold monitoring", "Reverse charge handling", "HMRC correspondence"] },
-  { num: "04", title: "Bookkeeping", price: "From £60 / month", priceKey: "books", priceKind: "from",
+  { num: "04", title: "Bookkeeping", price: "", priceKey: "bk", priceKind: "from",
     blurb: "Your books kept current rather than reconstructed. We handle the bank feeds, chase what's missing, and keep everything reconciled, which is what makes the management accounts worth reading and the year end quick.",
     includes: ["Monthly bank reconciliation", "Purchase & sales ledgers", "Receipt capture setup", "Supplier and customer records", "Xero or QuickBooks licence", "Quarterly tidy-up review"] },
-  { num: "05", title: "Management accounts", price: "From £55 / month", priceKey: "mgmt", priceKind: "from",
+  { num: "05", title: "Management accounts", price: "", priceKey: "ma", priceKind: "from",
     blurb: "This is where the CIMA training earns its keep. Numbers you can use, margin by job, where the cash actually goes, what next quarter looks like, plus a call to talk through the decisions in front of you rather than a PDF you'll never open.",
     includes: ["Quarterly or monthly reporting", "Cashflow forecasting", "Margin & job costing", "Budget vs actual", "KPI tracking", "A review call every period"] },
   { num: "06", title: "Payroll", price: "£40 base + £7 per employee / month", priceKey: "payroll", priceKind: "payroll",
@@ -2892,14 +3074,7 @@ const CATEGORIES = [
 ];
 
 // Used only if the dashboard cannot be reached, so the page never shows a blank price
-const FALLBACK_TIERS = [
-  { category: "ct", tier_key: "std", name: "Company accounts & CT600", price: 75, short_desc: "Annual statutory accounts, corporation tax return and Companies House filing.", business_types: ["limited"] },
-  { category: "sa800", tier_key: "std", name: "SA800 partnership return", price: 30, short_desc: "The partnership's own annual return to HMRC.", business_types: ["partnership"] },
-  { category: "sa", tier_key: "std", name: "Self assessment", price: 15, short_desc: "Your personal SA100 return, prepared and filed with HMRC.", business_types: [] },
-  { category: "vat", tier_key: "std", name: "VAT returns", price: 45, short_desc: "Quarterly MTD-compliant returns.", business_types: ["limited", "sole", "partnership"] },
-  { category: "bk", tier_key: "std", name: "Bookkeeping", price: 60, short_desc: "Monthly reconciliation and receipt capture.", business_types: ["limited", "sole", "partnership"] },
-  { category: "ma", tier_key: "std", name: "Management accounts", price: 55, short_desc: "Quarterly numbers and a review call each period.", business_types: ["limited", "sole", "partnership"] }
-];
+const FALLBACK_TIERS = __PRICE_ROWS;
 
 const ENTITIES = [
   { key: "limited", label: "Limited company", body: "Incorporated business with separate legal entity status.", hint: "Year-end accounts and a CT600 are the baseline for a limited company; everything else is optional." },
@@ -3000,7 +3175,7 @@ class Component extends DCLogic {
     entity: "limited", chosen: {}, employees: 2, partners: 2,
     name: "", email: "", note: "", sent: false, sending: false, sendError: "",
     banner: true,
-    tiers: null, priceState: "loading",
+    tiers: __PRICE_ROWS, priceState: "live",
     menu: false, mobileMenu: false, finOpen: 0, topic: __topicFromLocation(),
     saName: "", saEmail: "", saPhone: "", saIncome: {}, saPartner: "No", saContact: "Email", saSending: false, saSent: false, saError: "", saHidden: "", saPaid: false
   };
@@ -3021,6 +3196,24 @@ class Component extends DCLogic {
       if (/[?&]paid=1/.test(window.location.search + window.location.hash)) this.setState({ saSent: true, saPaid: true });
     } catch (e) {}
     this.loadPrices();
+    this.loadCampaign();
+  }
+
+  async loadCampaign() {
+    try {
+      const res = await fetch(
+        PRICING.url.replace(/\/$/, "") + "/rest/v1/campaign_prices?select=campaign,kind,key,label,price,price_basis,active_from,active_until,payment_link,sort_order&active=eq.true&campaign=eq." + encodeURIComponent(SA_CFG.campaign) + "&order=sort_order.asc",
+        { headers: { apikey: PRICING.anonKey, Authorization: "Bearer " + PRICING.anonKey } }
+      );
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const rows = await res.json();
+      if (!Array.isArray(rows) || !rows.some(r => r.kind === "tier")) throw new Error("no active campaign tiers");
+      __saCampaignRows = rows;
+      saSetRows(rows, this.state.tiers || __PRICE_ROWS);
+      this.setState({ saRev: Date.now() });
+    } catch (e) {
+      if (typeof console !== "undefined") console.warn("[pricing] campaign prices unreachable, using the prices the page was built with:", e.message);
+    }
   }
 
   async loadPrices() {
@@ -3033,6 +3226,7 @@ class Component extends DCLogic {
       if (!res.ok) throw new Error("HTTP " + res.status);
       const rows = await res.json();
       if (!Array.isArray(rows) || !rows.length) throw new Error("no active rows");
+      saSetRows(__saCampaignRows, rows);
       this.setState({ tiers: rows, priceState: "live" }, () => this.seedDefaults());
     } catch (e) {
       this.setState({ tiers: FALLBACK_TIERS, priceState: "fallback" }, () => this.seedDefaults());
@@ -3331,14 +3525,10 @@ class Component extends DCLogic {
       scrollBook: () => this.scrollBook(),
       saFormRef: this.saFormRef,
       saIncluded: SA_INCLUDED.map(label => ({ label })),
-      saExtras: SA_EXTRAS.map(label => ({ label })),
+      saExtras: SA_EXTRAS.map(label => ({ label: saFill(label) })),
       saSteps: SA_STEPS.map((x, i) => ({ ...x, n: "0" + (i + 1) })),
-      saFaq: SA_FAQ,
-      saPriceNotes: [
-        { label: "Spouse or partner return", value: "£150 at any tier" },
-        { label: "Income £100,000 to £200,000, including a short tax-saving review", value: "Tier price + £100" },
-        { label: "Income over £200,000", value: "Quoted individually" }
-      ],
+      saFaq: SA_FAQ.map(f => ({ ...f, a: saFill(f.a) })),
+      saPriceNotes: saAddonNotes(),
       saName: this.state.saName, saEmail: this.state.saEmail, saPhone: this.state.saPhone,
       setSaName: e => this.setState({ saName: e.target.value, saError: "" }),
       setSaEmail: e => this.setState({ saEmail: e.target.value, saError: "" }),
@@ -3350,7 +3540,7 @@ class Component extends DCLogic {
       saSent: this.state.saSent, saNotSent: !this.state.saSent,
       saThanksHeading: this.state.saPaid ? "Thank you. Your payment is in." : "Thank you. Your details are in.",
       saThanksBody: this.state.saPaid
-        ? "Louis will call you within one working day to start onboarding. Your price is held, and your payment is fully refundable."
+        ? "Louis will call you within one working day to start onboarding. Your price is held, and your payment is fully refundable until work starts on your return."
         : "Online payment isn't switched on yet, so Louis will call you within one working day to take payment and start onboarding. Your price is held at " + saV.priceText + " until " + saV.untilText + ".",
       saSending: this.state.saSending,
       saSubmitLabel: this.state.saSending ? "Taking you to payment" : saV.payLabel,
@@ -3382,7 +3572,7 @@ class Component extends DCLogic {
       privacy: PRIVACY,
       showCta: p !== "contact" && p !== "package" && p !== "legal" && p !== "finance" && p !== "taxReturn" && p !== "saThanks",
 
-      audiences: AUDIENCES.map(a => ({ ...a, href: __routeFor(a.key).path, go: () => this.go(a.key) })),
+      audiences: AUDIENCES.map(a => ({ ...a, price: __audiencePrice(a, this.state.tiers || __PRICE_ROWS), href: __routeFor(a.key).path, go: () => this.go(a.key) })),
       referralSteps: REFERRAL_STEPS.map((x, i) => ({ ...x, n: String(i + 1).padStart(2, "0") })),
       heroServices: [
         { label: "Company accounts & corporation tax", key: "companyAccounts" },

@@ -1,0 +1,467 @@
+{
+  "_note": "Copy of the active rows the website reads from Supabase (public anon access). Written by tools/build.mjs on every build that can reach Supabase; used only to pre-render pages. Never edit by hand: change prices in Supabase.",
+  "fetchedAt": "2026-10-29T16:50:00Z",
+  "builder_packages": [
+    {
+      "name": "Bookkeeping - Starter",
+      "category": "bk",
+      "tier_key": "starter",
+      "price": 100,
+      "short_desc": "50-100 transactions per month.",
+      "includes": [
+        "Monthly bank reconciliation",
+        "Xero / QuickBooks management",
+        "Receipt & invoice processing"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 1
+    },
+    {
+      "name": "Foundation Accounts",
+      "category": "ct",
+      "tier_key": "foundation",
+      "price": 75,
+      "short_desc": "Micro company - small turnover, simple structure.",
+      "includes": [
+        "Annual financial statements",
+        "CT600 submission to HMRC",
+        "Companies House filing"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 1
+    },
+    {
+      "name": "LLP Essentials",
+      "category": "llp",
+      "tier_key": "llp-essentials",
+      "price": 75,
+      "short_desc": "Dormant or minimal activity LLP with straightforward finances.",
+      "includes": [
+        "Statutory accounts preparation",
+        "Companies House filing",
+        "SA800 partnership return",
+        "Members' report"
+      ],
+      "billing_suffix": "/ mo",
+      "business_types": [
+        "partnership"
+      ],
+      "sort_order": 1
+    },
+    {
+      "name": "P&L Insights",
+      "category": "ma",
+      "tier_key": "pl",
+      "price": 200,
+      "short_desc": "Monthly or quarterly profit & loss report.",
+      "includes": [
+        "Revenue & expense summary",
+        "Month-on-month comparisons",
+        "Key performance indicators"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 1
+    },
+    {
+      "name": "Starter SA",
+      "category": "sa",
+      "tier_key": "starter",
+      "price": 15,
+      "short_desc": "Employed with one or two additional income sources.",
+      "includes": [
+        "SA100 preparation & filing",
+        "Employment income review",
+        "Basic reliefs & allowances"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 1
+    },
+    {
+      "name": "SA800 Partnership Return",
+      "category": "sa800",
+      "tier_key": "sa800-professional",
+      "price": 25,
+      "short_desc": "Annual partnership tax return filed with HMRC on behalf of the partnership.",
+      "includes": [
+        "SA800 partnership tax return",
+        "Partnership statement",
+        "HMRC submission",
+        "Dedicated accountant review"
+      ],
+      "billing_suffix": "/ mo",
+      "business_types": [
+        "Partnership"
+      ],
+      "sort_order": 1
+    },
+    {
+      "name": "SA800 Partnership Return",
+      "category": "sa800",
+      "tier_key": "sa800-standard",
+      "price": 15,
+      "short_desc": "Annual partnership tax return filed with HMRC on behalf of the partnership.",
+      "includes": [
+        "SA800 partnership tax return",
+        "Partnership statement",
+        "HMRC submission",
+        "Dedicated accountant review"
+      ],
+      "billing_suffix": "/ mo",
+      "business_types": [
+        "partnership"
+      ],
+      "sort_order": 1
+    },
+    {
+      "name": "Starter VAT",
+      "category": "vat",
+      "tier_key": "starter",
+      "price": 20,
+      "short_desc": "Turnover under GBP 50,000.",
+      "includes": [
+        "Quarterly VAT return preparation",
+        "MTD-compliant submission",
+        "HMRC correspondence"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 1
+    },
+    {
+      "name": "Bookkeeping - Standard",
+      "category": "bk",
+      "tier_key": "standard",
+      "price": 150,
+      "short_desc": "100-200 transactions per month.",
+      "includes": [
+        "Everything in Starter",
+        "Supplier & customer ledgers",
+        "Monthly reporting summary"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 2
+    },
+    {
+      "name": "Professional Accounts",
+      "category": "ct",
+      "tier_key": "professional",
+      "price": 100,
+      "short_desc": "Small company with employees or multiple income streams.",
+      "includes": [
+        "Everything in Foundation",
+        "Director's loan account review",
+        "Dividend planning advice"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 2
+    },
+    {
+      "name": "LLP Standard",
+      "category": "llp",
+      "tier_key": "llp-standard",
+      "price": 125,
+      "short_desc": "Active trading LLP with clean books and straightforward income streams.",
+      "includes": [
+        "Statutory accounts preparation",
+        "Companies House filing",
+        "SA800 partnership return",
+        "Members' report",
+        "Trading income & expense review",
+        "Members' profit allocation"
+      ],
+      "billing_suffix": "/ mo",
+      "business_types": [
+        "partnership"
+      ],
+      "sort_order": 2
+    },
+    {
+      "name": "Professional SA",
+      "category": "sa",
+      "tier_key": "professional",
+      "price": 25,
+      "short_desc": "Self-employed individual with trading income.",
+      "includes": [
+        "Everything in Starter",
+        "Self-employment pages",
+        "Expense review & maximisation"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 2
+    },
+    {
+      "name": "Growth VAT",
+      "category": "vat",
+      "tier_key": "growth",
+      "price": 35,
+      "short_desc": "Turnover GBP 50,000 - GBP 150,000.",
+      "includes": [
+        "Everything in Starter",
+        "Input tax review & optimisation",
+        "Partial exemption support"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 2
+    },
+    {
+      "name": "Bookkeeping - Advanced",
+      "category": "bk",
+      "tier_key": "advanced",
+      "price": 250,
+      "short_desc": "200-400 transactions per month.",
+      "includes": [
+        "Everything in Standard",
+        "Multi-currency support",
+        "Dedicated bookkeeper"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 3
+    },
+    {
+      "name": "Strategic Accounts",
+      "category": "ct",
+      "tier_key": "strategic",
+      "price": 120,
+      "short_desc": "Growth company with complex reporting requirements.",
+      "includes": [
+        "Everything in Professional",
+        "Group structure support",
+        "Annual tax planning meeting"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 3
+    },
+    {
+      "name": "LLP Complex",
+      "category": "llp",
+      "tier_key": "llp-complex",
+      "price": 200,
+      "short_desc": "Multiple income streams, high transaction volume, or more involved member arrangements.",
+      "includes": [
+        "Statutory accounts preparation",
+        "Companies House filing",
+        "SA800 partnership return",
+        "Members' report",
+        "Multiple income stream analysis",
+        "Complex member arrangements",
+        "Priority review & support"
+      ],
+      "billing_suffix": "/ mo",
+      "business_types": [
+        "partnership"
+      ],
+      "sort_order": 3
+    },
+    {
+      "name": "Comprehensive SA",
+      "category": "sa",
+      "tier_key": "comprehensive",
+      "price": 35,
+      "short_desc": "Multiple income streams or complex personal tax affairs.",
+      "includes": [
+        "Everything in Professional",
+        "Rental, investment & foreign income",
+        "Capital gains tax review"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 3
+    },
+    {
+      "name": "Professional VAT",
+      "category": "vat",
+      "tier_key": "professional",
+      "price": 50,
+      "short_desc": "Turnover GBP 150,000 - GBP 500,000.",
+      "includes": [
+        "Everything in Growth",
+        "EC sales list support",
+        "Annual VAT health check"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 3
+    },
+    {
+      "name": "Bookkeeping - Enterprise",
+      "category": "bk",
+      "tier_key": "enterprise",
+      "price": 400,
+      "short_desc": "400+ transactions per month.",
+      "includes": [
+        "Everything in Advanced",
+        "Weekly reconciliation",
+        "Priority turnaround"
+      ],
+      "billing_suffix": "/mo",
+      "business_types": [
+        "limited",
+        "sole",
+        "partnership",
+        "personal"
+      ],
+      "sort_order": 4
+    }
+  ],
+  "campaign_prices": [
+    {
+      "campaign": "sa-2025-26",
+      "kind": "tier",
+      "key": "november",
+      "label": "Early bird",
+      "price": 180,
+      "price_basis": "fixed",
+      "active_from": "2026-10-29",
+      "active_until": "2026-11-30",
+      "payment_link": "https://book.stripe.com/aFabIU08T0k99XTglk1wY00",
+      "sort_order": 1
+    },
+    {
+      "campaign": "sa-2025-26",
+      "kind": "tier",
+      "key": "december",
+      "label": "December",
+      "price": 230,
+      "price_basis": "fixed",
+      "active_from": "2026-12-01",
+      "active_until": "2026-12-31",
+      "payment_link": "https://book.stripe.com/dRm8wI6xh0k92vrc541wY01",
+      "sort_order": 2
+    },
+    {
+      "campaign": "sa-2025-26",
+      "kind": "tier",
+      "key": "january",
+      "label": "Standard fee",
+      "price": 300,
+      "price_basis": "fixed",
+      "active_from": "2027-01-01",
+      "active_until": "2027-01-20",
+      "payment_link": "https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02",
+      "sort_order": 3
+    },
+    {
+      "campaign": "sa-2025-26",
+      "kind": "tier",
+      "key": "closed",
+      "label": "By phone, subject to capacity",
+      "price": 350,
+      "price_basis": "fixed",
+      "active_from": "2027-01-21",
+      "active_until": "2027-01-31",
+      "payment_link": null,
+      "sort_order": 4
+    },
+    {
+      "campaign": "sa-2025-26",
+      "kind": "addon",
+      "key": "partner",
+      "label": "Spouse or partner return",
+      "price": 150,
+      "price_basis": "fixed",
+      "active_from": null,
+      "active_until": null,
+      "payment_link": null,
+      "sort_order": 10
+    },
+    {
+      "campaign": "sa-2025-26",
+      "kind": "addon",
+      "key": "income-100k-200k",
+      "label": "Income £100,000 to £200,000, including a short tax-saving review",
+      "price": 100,
+      "price_basis": "plus_tier",
+      "active_from": null,
+      "active_until": null,
+      "payment_link": null,
+      "sort_order": 11
+    },
+    {
+      "campaign": "sa-2025-26",
+      "kind": "addon",
+      "key": "income-over-200k",
+      "label": "Income over £200,000",
+      "price": null,
+      "price_basis": "quote",
+      "active_from": null,
+      "active_until": null,
+      "payment_link": null,
+      "sort_order": 12
+    }
+  ]
+}

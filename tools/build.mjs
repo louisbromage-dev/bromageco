@@ -23,24 +23,68 @@ const EXPORT = path.join(ROOT, "design", "export.html");
 const SITE_URL = "https://bromageco.com";
 const SITE_NAME = "Bromage & Co Accounting";
 
-// Self Assessment campaign: prices, dates and Stripe links live in
-// config/sa-campaign.json and nowhere else. The tier is worked out in the
-// visitor's browser (tools/sa-campaign-client.js), never at build time.
-const SA_CFG = JSON.parse(fs.readFileSync(path.join(ROOT, "config", "sa-campaign.json"), "utf8"));
-for (const t of SA_CFG.tiers) {
-  if (t.link && (!/^https:\/\/book\.stripe\.com\/[A-Za-z0-9]+$/.test(t.link) || /\/test_/.test(t.link)))
-    fail(`config/sa-campaign.json: "${t.key}" must be a live https://book.stripe.com/ payment link.`);
-}
-for (const src of SA_CFG.sources) {
-  if (!/^[A-Za-z0-9_-]+$/.test(src)) fail(`config/sa-campaign.json: source "${src}" may only use letters, numbers, hyphens and underscores.`);
-}
-const SA_CLIENT = `var SA_CFG = ${JSON.stringify(SA_CFG)};\n` +
-  fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "sa-campaign-client.js"), "utf8");
-const SA_STATES = [...SA_CFG.tiers.map(t => t.key), "over"];
-const SA_BUILD_STATE = new Function(SA_CLIENT + "\nreturn saCampaignState().key;")();
+// ── Prices from Supabase ──────────────────────────────────────────────────
+// Every price on the site comes from Supabase: public.builder_packages (the
+// price list) and public.campaign_prices (campaign tiers and add-ons). The
+// live site reads both in the visitor's browser. The build reads them too,
+// so the pre-rendered pages show the same prices; if Supabase cannot be
+// reached it uses the copy saved by the last build that could
+// (config/prices-snapshot.json) and says so.
+const SNAPSHOT_FILE = path.join(ROOT, "config", "prices-snapshot.json");
+const PRICES = await (async () => {
+  const raw = fs.readFileSync(EXPORT, "utf8");
+  const url = (raw.match(/url: \\"(https:\/\/[a-z0-9]+\.supabase\.co)\\"/) || [])[1];
+  const key = (raw.match(/anonKey: \\"(eyJ[A-Za-z0-9._-]+)\\"/) || [])[1];
+  const get = async (table, query) => {
+    const res = await fetch(`${url}/rest/v1/${table}?${query}`, { headers: { apikey: key, Authorization: "Bearer " + key }, signal: AbortSignal.timeout(15000) });
+    if (!res.ok) throw new Error(`${table}: HTTP ${res.status}`);
+    return res.json();
+  };
+  try {
+    if (!url || !key) throw new Error("no Supabase address in the design");
+    const snap = {
+      _note: "Copy of the active rows the website reads from Supabase (public anon access), saved by the build and used only to pre-render pages. Do not edit: change prices in Supabase.",
+      fetchedAt: new Date().toISOString(),
+      builder_packages: await get("builder_packages", "select=name,category,tier_key,price,short_desc,includes,billing_suffix,business_types,sort_order&active=eq.true&order=sort_order.asc"),
+      campaign_prices: await get("campaign_prices", "select=campaign,kind,key,label,price,price_basis,active_from,active_until,payment_link,sort_order&active=eq.true&order=sort_order.asc")
+    };
+    fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(snap, null, 2) + "\n");
+    console.log("prices: read live from Supabase");
+    return snap;
+  } catch (e) {
+    const snap = JSON.parse(fs.readFileSync(SNAPSHOT_FILE, "utf8"));
+    console.warn(`prices: Supabase not reachable (${e.message}); using the snapshot from ${snap.fetchedAt}`);
+    return snap;
+  }
+})();
+const minPrice = cat => {
+  const p = PRICES.builder_packages.filter(r => r.category === cat).map(r => Number(r.price));
+  if (!p.length) fail(`builder_packages has no active "${cat}" rows.`);
+  return Math.min(...p);
+};
+const money = n => "£" + Number(n).toLocaleString("en-GB", { maximumFractionDigits: 2 });
 
-// One entry per page in the design. `key` is the page name the design uses
-// internally; `path` is the public URL.
+// Self Assessment campaign. Wording and contact details are in
+// config/sa-campaign.json; the tier is worked out in the visitor's browser
+// (tools/sa-campaign-client.js), never at build time.
+const SA_CFG = JSON.parse(fs.readFileSync(path.join(ROOT, "config", "sa-campaign.json"), "utf8"));
+const SA_ROWS = PRICES.campaign_prices.filter(r => r.campaign === SA_CFG.campaign);
+if (!SA_ROWS.some(r => r.kind === "tier")) fail(`campaign_prices has no active tiers for "${SA_CFG.campaign}".`);
+for (const r of SA_ROWS) {
+  if (r.payment_link && (!/^https:\/\/book\.stripe\.com\/[A-Za-z0-9]+$/.test(r.payment_link) || /\/test_/.test(r.payment_link)))
+    fail(`campaign_prices "${r.key}" must use a live https://book.stripe.com/ payment link.`);
+}
+const SA_SNAPSHOT = {
+  campaign_prices: SA_ROWS,
+  builder_packages: PRICES.builder_packages.filter(r => r.category === SA_CFG.standardFee.category)
+};
+const SA_CLIENT = `var SA_CFG = ${JSON.stringify(SA_CFG)};\nvar SA_SNAPSHOT = ${JSON.stringify(SA_SNAPSHOT)};\n` +
+  fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "sa-campaign-client.js"), "utf8") +
+  "\nsaSetRows(SA_SNAPSHOT.campaign_prices, SA_SNAPSHOT.builder_packages);\n";
+const SA_STATES = [...SA_ROWS.filter(r => r.kind === "tier").sort((x, y) => x.sort_order - y.sort_order).map(r => r.key), "over"];
+const SA_BUILD = new Function(SA_CLIENT + "\nreturn saCampaignState();")();
+const SA_BUILD_STATE = SA_BUILD.key;
+
 const PAGES = [
   {
     key: "home", path: "/",
@@ -55,17 +99,17 @@ const PAGES = [
   {
     key: "companyAccounts", path: "/services/company-accounts/",
     title: "Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet",
-    description: "Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire."
+    description: `Year-end accounts, CT600 and Companies House filing for limited companies, from ${money(minPrice("ct"))} a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire.`
   },
   {
     key: "selfAssessment", path: "/services/self-assessment/",
-    title: "Self Assessment Tax Returns: £180 a Year | Bromage & Co, Fleet",
-    description: "Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. £180 a year, from a Chartered Management Accountant in Fleet, Hampshire."
+    title: `Self Assessment Tax Returns from ${money(minPrice("sa") * 12)} a Year | Bromage & Co, Fleet`,
+    description: `Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. From ${money(minPrice("sa") * 12)} a year, by a Chartered Management Accountant in Fleet, Hampshire.`
   },
   {
     key: "managementAccounts", path: "/services/management-accounts/",
     title: "Management Accounts for Small Businesses | Bromage & Co",
-    description: "Monthly or quarterly management accounts from £55 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant."
+    description: `Monthly or quarterly management accounts from ${money(minPrice("ma"))} a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant.`
   },
   {
     key: "finance", path: "/outsourced-finance/",
@@ -106,8 +150,8 @@ const PAGES = [
     // The description follows the current price tier; this is only the
     // fallback for anything that reads the page without running it.
     key: "taxReturn", path: "/tax-return/",
-    title: "Self Assessment tax return from £180 | Bromage & Co",
-    description: "Your Self Assessment 2025/26 tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet, Hampshire. Fixed fee, no VAT."
+    title: SA_BUILD.title,
+    description: SA_BUILD.meta
   },
   {
     key: "saThanks", path: "/tax-return/thank-you/",
@@ -276,8 +320,8 @@ if (!faviconSrc || !faviconSrc.endsWith(".svg")) fail("the design no longer has 
 
 // ── 3a. Self Assessment campaign ─────────────────────────────────────────
 // The design's own campaign code is replaced by tools/sa-campaign-client.js,
-// so prices, dates and links come only from config/sa-campaign.json, the tier
-// follows London time, and the closed and finished states behave as briefed.
+// so prices, dates and links come only from Supabase (campaign_prices), the
+// tier follows London time, and the closed and finished states behave as briefed.
 {
   // Remove one top-level declaration, from its first line to the line that
   // closes it.
@@ -311,7 +355,86 @@ markup = replaceOnce(markup, "Everything most employees, pensioners and single-p
   "Everything most employees, sole traders, pensioners and single-property landlords need, in the fixed fee.", "the included intro");
 logic = replaceOnce(logic, `isTaxReturn: p === "taxReturn",`, `isTaxReturn: p === "taxReturn",\n      isSaThanks: p === "saThanks",`, "the tax return page flag");
 logic = replaceOnce(logic, `&& p !== "taxReturn",`, `&& p !== "taxReturn" && p !== "saThanks",`, "the shared call-to-action rule");
-logic = SA_CLIENT + "\n" + logic;
+
+// ── Prices: everything the design hard-coded now comes from Supabase ─────
+{
+  const cut = (startText, endText, replacement, what) => {
+    const a = logic.indexOf(startText);
+    const b = a === -1 ? -1 : logic.indexOf(endText, a);
+    if (a === -1 || b === -1) fail(`could not find ${what} in the design.`);
+    logic = logic.slice(0, a) + replacement + logic.slice(b + endText.length);
+  };
+  // The price list the page starts with is the one read from Supabase at
+  // build time; the live fetch replaces it when it arrives.
+  cut("const FALLBACK_TIERS = [", "\n];\n", "const FALLBACK_TIERS = __PRICE_ROWS;\n", "the fallback price list");
+  logic = replaceOnce(logic, `tiers: null, priceState: "loading",`, `tiers: __PRICE_ROWS, priceState: "live",`, "the initial price state");
+  // Campaign tiers and add-ons: read live, then re-render.
+  logic = replaceOnce(logic, `this.setState({ tiers: rows, priceState: "live" }, () => this.seedDefaults());`,
+    `saSetRows(__saCampaignRows, rows);
+      this.setState({ tiers: rows, priceState: "live" }, () => this.seedDefaults());`, "the live price update");
+  logic = replaceOnce(logic, "this.loadPrices();", "this.loadPrices();\n    this.loadCampaign();", "the price loading call");
+  logic = replaceOnce(logic, "  async loadPrices() {", `  async loadCampaign() {
+    try {
+      const res = await fetch(
+        PRICING.url.replace(/\\/$/, "") + "/rest/v1/campaign_prices?select=campaign,kind,key,label,price,price_basis,active_from,active_until,payment_link,sort_order&active=eq.true&campaign=eq." + encodeURIComponent(SA_CFG.campaign) + "&order=sort_order.asc",
+        { headers: { apikey: PRICING.anonKey, Authorization: "Bearer " + PRICING.anonKey } }
+      );
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const rows = await res.json();
+      if (!Array.isArray(rows) || !rows.some(r => r.kind === "tier")) throw new Error("no active campaign tiers");
+      __saCampaignRows = rows;
+      saSetRows(rows, this.state.tiers || __PRICE_ROWS);
+      this.setState({ saRev: Date.now() });
+    } catch (e) {
+      if (typeof console !== "undefined") console.warn("[pricing] campaign prices unreachable, using the prices the page was built with:", e.message);
+    }
+  }
+
+  async loadPrices() {`, "the price loader");
+  // Service list: match the database categories and drop the typed-in prices.
+  for (const [from, to] of [["accounts", "ct"], ["books", "bk"], ["mgmt", "ma"]])
+    logic = replaceOnce(logic, `priceKey: "${from}"`, `priceKey: "${to}"`, `the ${from} price key`);
+  // Payroll is the exception: its rates are not in builder_packages yet, so it
+  // keeps the design's own payroll constants (the package builder uses them too).
+  logic = logic.replace(/price: "[^"]*£[^"]*", priceKey: "(?!payroll")/g, `price: "", priceKey: "`);
+  // "Who I work with" cards.
+  logic = logic.replace(/(\{ num: "\d+", title: "[^"]*", body: "[^"]*", )price: "[^"]*£[^"]*"/g, `$1price: ""`);
+  logic = replaceOnce(logic, "audiences: AUDIENCES.map(a => ({ ...a,",
+    "audiences: AUDIENCES.map(a => ({ ...a, price: __audiencePrice(a, this.state.tiers || __PRICE_ROWS),", "the audience cards");
+  // Service pages: starting prices come from the price list.
+  logic = logic.replace(/cat: "(\w+)", fallback: \d+/g, (m, cat) => `cat: "${cat}", fallback: __minPrice(__PRICE_ROWS, "${cat}")`);
+  // Campaign add-ons.
+  cut("saPriceNotes: [", "\n      ],\n", "saPriceNotes: saAddonNotes(),\n", "the campaign add-on table");
+  logic = replaceOnce(logic, `"Spouse or partner return, £150"`, `"Spouse or partner return, {partner}"`, "the partner extra");
+  logic = replaceOnce(logic, "saExtras: SA_EXTRAS.map(label => ({ label })),", "saExtras: SA_EXTRAS.map(label => ({ label: saFill(label) })),", "the extras binding");
+  logic = replaceOnce(logic, "the fee is the tier price plus £100,", "the fee is {highIncome},", "the high income answer");
+  logic = replaceOnce(logic, "saFaq: SA_FAQ,", "saFaq: SA_FAQ.map(f => ({ ...f, a: saFill(f.a) })),", "the questions binding");
+  const left = logic.match(/["'`][^"'`\n]*£\d[^"'`\n]*["'`]/g) || [];
+  const allowed = /£1\.5 million|£(1,000|3,000|10|100,000|200,000|50,000|30,000|20,000)\b|£100 penalty|£100 penalty|charges a £100|The £100 penalty/;
+  const typed = left.filter(t => !allowed.test(t));
+  if (typed.length) console.warn("prices still typed into the design:\n  " + typed.join("\n  "));
+}
+const PRICE_HELPERS = `
+var __PRICE_ROWS = ${JSON.stringify(PRICES.builder_packages)};
+var __saCampaignRows = SA_SNAPSHOT.campaign_prices;
+function __minPrice(rows, cat) {
+  var p = (rows || []).filter(function (r) { return r.category === cat; }).map(function (r) { return Number(r.price); });
+  return p.length ? Math.min.apply(null, p) : null;
+}
+function __tierPrice(rows, cat, key) {
+  var r = (rows || []).filter(function (x) { return x.category === cat && x.tier_key === key; })[0];
+  return r ? Number(r.price) : null;
+}
+function __audiencePrice(a, rows) {
+  var n = null, from = true;
+  if (a.key === "companyAccounts") n = __minPrice(rows, "ct");
+  else if (a.key === "managementAccounts") n = __minPrice(rows, "ma");
+  else if (a.key === "selfAssessment") { n = __tierPrice(rows, SA_CFG.standardFee.category, SA_CFG.standardFee.tierKey); from = false; }
+  else return a.price;
+  return n == null ? "" : (from ? "From " : "") + saMoney(n) + " / month";
+}
+`;
+logic = SA_CLIENT + PRICE_HELPERS + "\n" + logic;
 
 markup = markup.split("within 24 hours").join("within one working day");
 markup = replaceOnce(markup, "Chartered management accountant in Fleet, Hampshire</h1>",
@@ -321,8 +444,30 @@ markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxR
 markup = replaceOnce(markup, "<span>Call and onboarding within one working day</span>",
   "<span>Louis calls within one working day</span>", "the tax return trust line");
 markup = replaceOnce(markup, "Partner returns and extras are confirmed on your call and invoiced separately.",
-  `Add a spouse or partner return for £${SA_CFG.partnerFee} at checkout. Any extras are agreed with you before work starts.`,
+  "{{ sa.partnerNote }}",
   "the booking section note");
+
+// Refunds: fully refundable until work starts on the return. The separate
+// promise (a full refund if Louis can't take the return on) stays as it is.
+logic = replaceOnce(logic,
+  `a: "Yes, fully. If you change your mind, tell Louis and the full amount goes back to the card you paid with."`,
+  `a: "Yes. Your payment is fully refundable until work starts on your return. Tell Louis and the full amount goes back to the card you paid with."`,
+  "the refund answer");
+for (const part of ["markup", "logic"]) {
+  let src = part === "markup" ? markup : logic;
+  src = src.replace(/\b(F|f)ully refundable(?! until)/g, (m, f) => `${f}ully refundable until work starts on your return`);
+  if (part === "markup") markup = src; else logic = src;
+}
+
+// The home page campaign card: the same dark rule on all four sides.
+markup = markup.split("border:0;border-top:2px solid #1f3d34;border-radius:0").join("border:2px solid #1f3d34;border-radius:0");
+
+// "About Louis": no photo yet, so no placeholder and no empty column. Add a
+// real photo in Claude Design and this falls away.
+{
+  const ph = markup.match(/(<div data-sa2="" style="[^"]*)grid-template-columns:minmax\(0,\.6fr\) minmax\(0,1\.4fr\)([^"]*">)\s*<div role="img" aria-label="Photo of Louis Bromage to be added"[^>]*>Photo of Louis<\/div>/);
+  if (ph) markup = markup.replace(ph[0], `${ph[1]}grid-template-columns:minmax(0,1fr)${ph[2]}`);
+}
 
 // The card-payment reassurance line only applies while online booking is open.
 {
@@ -458,13 +603,15 @@ function __topicFromLocation() {
 }
 function __applyMeta(key, topic) {
   const r = __routeFor(key);
-  const description = key === "taxReturn" ? saCampaignState().meta : r.description;
-  document.title = r.title;
+  const sa = key === "taxReturn" ? saCampaignState() : null;
+  const description = sa ? sa.meta : r.description;
+  const title = sa ? sa.title : r.title;
+  document.title = title;
   const set = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
   const url = ${JSON.stringify(SITE_URL)} + r.path;
   set('meta[name="description"]', "content", description);
   set('link[rel="canonical"]', "href", url);
-  set('meta[property="og:title"]', "content", r.title);
+  set('meta[property="og:title"]', "content", title);
   set('meta[property="og:description"]', "content", description);
   set('meta[property="og:url"]', "content", url);
 }
@@ -569,7 +716,9 @@ ${SA_CFG.googleAdsConversionSnippet || "<!-- PLACEHOLDER: Google Ads conversion 
 <script>
 ${SA_CLIENT}
 ${page.key === "taxReturn" ? `(function () {
-  var d = saCampaignState().meta;
+  var s = saCampaignState(), d = s.meta;
+  document.title = s.title;
+  document.querySelector('meta[property="og:title"]').setAttribute("content", s.title);
   document.querySelector('meta[name="description"]').setAttribute("content", d);
   document.querySelector('meta[property="og:description"]').setAttribute("content", d);
 })();` : ""}
@@ -662,6 +811,13 @@ async function renderState(page, state) {
   const tab = await context.newPage();
   const errors = [];
   tab.on("pageerror", e => errors.push(e.message));
+  // Answer the page's Supabase price requests with the rows this build read,
+  // so the pre-rendered page matches what a visitor's browser loads.
+  await tab.route(/\.supabase\.co\/rest\/v1\/(builder_packages|campaign_prices)\?/, route => {
+    const table = route.request().url().match(/rest\/v1\/(\w+)/)[1];
+    const rows = table === "campaign_prices" ? SA_ROWS : PRICES.builder_packages;
+    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(rows) });
+  });
   await tab.goto(`${ORIGIN}${page.path}?saPreview=${state}`, { waitUntil: "networkidle" });
   await tab.waitForFunction(() => {
     const r = document.getElementById("dc-root");
