@@ -1192,10 +1192,10 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
 <div>
   <div style="background:#f7f5f0;color:#1b1f1c;padding:clamp(56px,8vw,112px) clamp(20px,4.6vw,48px) 0">
-    <div data-stack="" style="display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(40px,6vw,96px);align-items:start">
+    <div style="display:flex;flex-direction:column;gap:clamp(44px,5vw,64px)">
       <div style="display:flex;flex-direction:column;gap:28px">
         <p style="margin:0;font:600 clamp(18px,1.9vw,21px)/1.3 Hanken Grotesk,sans-serif;color:#1f3d34">Chartered Management Accountant in Fleet, Hampshire</p>
-        <h1 style="margin:0;font:500 clamp(33px,4.3vw,58px)/1.04 'Cormorant Garamond',serif;letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance">Accounts and tax for sole traders, landlords and small companies. <span style="display:block;font-style:italic;color:#1f3d34">And advice when it matters.</span></h1>
+        <h1 style="margin:0;font:500 clamp(33px,5vw,68px)/1.04 'Cormorant Garamond',serif;letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance">Accounts and tax for sole traders, landlords and small companies. <span style="display:block;font-style:italic;color:#1f3d34">And advice when it matters.</span></h1>
         <p style="margin:0;font:400 clamp(18px,1.6vw,21px)/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);max-width:46ch;text-wrap:pretty">You deal with Louis directly. Fixed fees, agreed upfront.</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
           <a data-nav="" href="/contact/" sc-camel-on-click="{{ goContact }}" style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:20px 32px;font:600 17px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap" style-hover="background:#142b24;border-color:#142b24">Book a free call</a>
@@ -1203,26 +1203,26 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
         </div>
         <a data-nav="" href="/advisory/" sc-camel-on-click="{{ goAdvisory }}" style="align-self:flex-start;margin-top:12px;border:0;background:transparent;padding:2px 0;text-align:left;font:400 15px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74);text-decoration:underline;text-decoration-color:rgba(27,31,28,.3);text-underline-offset:4px" style-hover="color:#1f3d34;text-decoration-color:#1f3d34">Buying, selling or valuing a business? Advisory →</a>
       </div>
-      <div style="display:flex;flex-direction:column;gap:clamp(28px,3vw,40px);min-width:0">
+      <div data-stack="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,3.6vw,48px);align-items:stretch">
       <sc-if value="{{ saShowCard }}" hint-placeholder-val="{{ false }}">
         <div aria-label="Self Assessment 2025/26 offer" role="region" style="background:#efece4;border:2px solid #1f3d34;border-radius:0;padding:clamp(22px,2.4vw,30px);display:flex;flex-direction:column;gap:12px">
           <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34">Self Assessment 2025/26</div>
-          <div style="font:500 clamp(30px,3vw,38px)/1.05 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c;text-wrap:balance">{{ sa.cardHeading }}</div>
+          <div style="font:500 clamp(30px,3.4vw,46px)/1.05 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c;text-wrap:balance">{{ sa.cardHeading }}</div>
           <p style="margin:0;font:400 16.5px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-wrap:pretty">{{ sa.cardLine }}</p>
           <sc-if value="{{ sa.hasNext }}" hint-placeholder-val="{{ true }}">
             <div style="font:500 14.5px/1.4 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72)">{{ sa.nextLine }}</div>
           </sc-if>
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin-top:6px;padding-top:18px;border-top:1px solid rgba(27,31,28,.12)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin-top:auto;padding-top:18px;border-top:1px solid rgba(27,31,28,.12)">
             <a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturn }}" style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:18px 28px;font:600 16.5px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;cursor:pointer;padding:16px 24px;font-size:16px" style-hover="background:#142b24;border-color:#142b24">{{ sa.cardBook }}</a>
             <span style="font:400 14.5px/1.4 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72)">{{ sa.countdown }}</span>
           </div>
         </div>
       </sc-if>
-      <nav aria-label="Services" style="display:flex;flex-direction:column;border-top:1px solid #1b1f1c">
-        <div style="font:600 14px/1 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.66);padding:18px 0 6px">Services</div>
+      <nav aria-label="Services" style="display:flex;flex-direction:column;border-top:2px solid #1f3d34;min-width:0">
+        <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34;padding:clamp(22px,2.4vw,30px) 0 8px">Services</div>
         <sc-for list="{{ heroServices }}" as="h" hint-placeholder-count="5">
-          <a data-nav="" href="{{ h.href }}" sc-camel-on-click="{{ h.go }}" style="border:0;border-bottom:1px solid #dcd8cf;background:transparent;padding:18px 0;display:flex;justify-content:space-between;align-items:baseline;gap:16px;text-align:left;color:#1b1f1c" style-hover="color:#1f3d34">
-            <span style="font:500 clamp(23px,2.2vw,27px)/1.15 'Cormorant Garamond',serif;letter-spacing:-.01em">{{ h.label }}</span>
+          <a data-nav="" href="{{ h.href }}" sc-camel-on-click="{{ h.go }}" style="border:0;border-bottom:1px solid #dcd8cf;background:transparent;padding:15px 0;display:flex;justify-content:space-between;align-items:baseline;gap:16px;text-align:left;color:#1b1f1c" style-hover="color:#1f3d34">
+            <span style="font:500 clamp(22px,2vw,25px)/1.2 'Cormorant Garamond',serif;letter-spacing:-.01em">{{ h.label }}</span>
             <span style="font:500 18px/1 Hanken Grotesk,sans-serif;color:#1f3d34">→</span>
           </a>
         </sc-for>

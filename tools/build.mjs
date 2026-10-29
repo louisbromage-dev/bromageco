@@ -444,7 +444,7 @@ markup = markup.split("within 24 hours").join("within one working day");
   const hero = markup.match(/<h1 style="([^"]*)">Chartered management accountant in Fleet, Hampshire<\/h1>\s*<div role="text" style="([^"]*)">Your accountant, by name\. <span style="([^"]*)">Your fee, in writing\.<\/span><\/div>\s*<p style="([^"]*)">[^<]*<\/p>\s*<div style="([^"]*)">\s*<button sc-camel-on-click="\{\{ goContact \}\}" ([^>]*)>Book a consultation<\/button>\s*<button sc-camel-on-click="\{\{ goPackage \}\}" ([^>]*)>See our fees<\/button>\s*<\/div>/);
   if (!hero) fail("could not find the home page hero.");
   const [, eyebrowStyle, headingStyle, accentStyle, subStyle, buttonsStyle, primaryAttrs, secondaryAttrs] = hero;
-  const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(33px,4.3vw,58px)/1.04");
+  const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(33px,5vw,68px)/1.04");
   if (heading === headingStyle) fail("could not resize the home page heading.");
   markup = markup.replace(hero[0], `<p style="${eyebrowStyle}">Chartered Management Accountant in Fleet, Hampshire</p>
         <h1 style="${heading}">Accounts and tax for sole traders, landlords and small companies. <span style="${accentStyle}">And advice when it matters.</span></h1>
@@ -454,6 +454,33 @@ markup = markup.split("within 24 hours").join("within one working day");
           <button sc-camel-on-click="{{ goPackage }}" ${secondaryAttrs}>See prices</button>
         </div>
         <button sc-camel-on-click="{{ goAdvisory }}" style="align-self:flex-start;margin-top:12px;border:0;background:transparent;padding:2px 0;text-align:left;font:400 15px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74);text-decoration:underline;text-decoration-color:rgba(27,31,28,.3);text-underline-offset:4px" style-hover="color:#1f3d34;text-decoration-color:#1f3d34">Buying, selling or valuing a business? Advisory →</button>`);
+}
+
+// Home page hero layout: the text runs the full width, with the campaign card
+// and the Services list side by side underneath (stacked on phones; the
+// Services list takes the full width when the campaign card is not shown).
+{
+  const swap = (find, repl, what) => { markup = replaceOnce(markup, find, repl, what); };
+  swap(`<div data-stack="" style="display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(40px,6vw,96px);align-items:start">`,
+    `<div style="display:flex;flex-direction:column;gap:clamp(44px,5vw,64px)">`, "the hero grid");
+  swap(`<div style="display:flex;flex-direction:column;gap:clamp(28px,3vw,40px);min-width:0">`,
+    `<div data-stack="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,3.6vw,48px);align-items:stretch">`, "the hero side column");
+  // Services list: same rule as the card's border along its top, label level
+  // with the card's label, slightly tighter rows.
+  swap(`<nav aria-label="Services" style="display:flex;flex-direction:column;border-top:1px solid #1b1f1c">`,
+    `<nav aria-label="Services" style="display:flex;flex-direction:column;border-top:2px solid #1f3d34;min-width:0">`, "the hero services list");
+  // Card: a larger heading to fill the wider card, and the button row at the
+  // bottom, level with the end of the list.
+  swap(`font:500 clamp(30px,3vw,38px)/1.05 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c;text-wrap:balance">{{ sa.cardHeading }}`,
+    `font:500 clamp(30px,3.4vw,46px)/1.05 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c;text-wrap:balance">{{ sa.cardHeading }}`, "the campaign card heading");
+  swap(`margin-top:6px;padding-top:18px;border-top:1px solid rgba(27,31,28,.12)`,
+    `margin-top:auto;padding-top:18px;border-top:1px solid rgba(27,31,28,.12)`, "the campaign card button row");
+  swap(`<div style="font:600 14px/1 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.66);padding:18px 0 6px">Services</div>`,
+    `<div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34;padding:clamp(22px,2.4vw,30px) 0 8px">Services</div>`, "the hero services label");
+  swap(`style="border:0;border-bottom:1px solid #dcd8cf;background:transparent;padding:18px 0;display:flex;justify-content:space-between;align-items:baseline;gap:16px;text-align:left;color:#1b1f1c" style-hover="color:#1f3d34">
+            <span style="font:500 clamp(23px,2.2vw,27px)/1.15 'Cormorant Garamond',serif;letter-spacing:-.01em">{{ h.label }}</span>`,
+    `style="border:0;border-bottom:1px solid #dcd8cf;background:transparent;padding:15px 0;display:flex;justify-content:space-between;align-items:baseline;gap:16px;text-align:left;color:#1b1f1c" style-hover="color:#1f3d34">
+            <span style="font:500 clamp(22px,2vw,25px)/1.2 'Cormorant Garamond',serif;letter-spacing:-.01em">{{ h.label }}</span>`, "the hero services rows");
 }
 markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxReturnLink }}"`,
   `<a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturnLink }}"`, "the campaign banner link");
