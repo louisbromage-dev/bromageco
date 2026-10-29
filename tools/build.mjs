@@ -437,8 +437,24 @@ function __audiencePrice(a, rows) {
 logic = SA_CLIENT + PRICE_HELPERS + "\n" + logic;
 
 markup = markup.split("within 24 hours").join("within one working day");
-markup = replaceOnce(markup, "Chartered management accountant in Fleet, Hampshire</h1>",
-  "Chartered Management Accountant in Fleet, Hampshire</h1>", "the home page heading");
+// Home page hero: new copy, with the design's own styles. The headline is
+// the page's single H1 (the accent line is part of it); the eyebrow is a
+// paragraph. Only copy, heading size and links change here.
+{
+  const hero = markup.match(/<h1 style="([^"]*)">Chartered management accountant in Fleet, Hampshire<\/h1>\s*<div role="text" style="([^"]*)">Your accountant, by name\. <span style="([^"]*)">Your fee, in writing\.<\/span><\/div>\s*<p style="([^"]*)">[^<]*<\/p>\s*<div style="([^"]*)">\s*<button sc-camel-on-click="\{\{ goContact \}\}" ([^>]*)>Book a consultation<\/button>\s*<button sc-camel-on-click="\{\{ goPackage \}\}" ([^>]*)>See our fees<\/button>\s*<\/div>/);
+  if (!hero) fail("could not find the home page hero.");
+  const [, eyebrowStyle, headingStyle, accentStyle, subStyle, buttonsStyle, primaryAttrs, secondaryAttrs] = hero;
+  const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(33px,4.3vw,58px)/1.04");
+  if (heading === headingStyle) fail("could not resize the home page heading.");
+  markup = markup.replace(hero[0], `<p style="${eyebrowStyle}">Chartered Management Accountant in Fleet, Hampshire</p>
+        <h1 style="${heading}">Accounts and tax for sole traders, landlords and small companies. <span style="${accentStyle}">And advice when it matters.</span></h1>
+        <p style="${subStyle}">You deal with Louis directly. Fixed fees, agreed upfront.</p>
+        <div style="${buttonsStyle}">
+          <button sc-camel-on-click="{{ goContact }}" ${primaryAttrs}>Book a free call</button>
+          <button sc-camel-on-click="{{ goPackage }}" ${secondaryAttrs}>See prices</button>
+        </div>
+        <button sc-camel-on-click="{{ goAdvisory }}" style="align-self:flex-start;margin-top:12px;border:0;background:transparent;padding:2px 0;text-align:left;font:400 15px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74);text-decoration:underline;text-decoration-color:rgba(27,31,28,.3);text-underline-offset:4px" style-hover="color:#1f3d34;text-decoration-color:#1f3d34">Buying, selling or valuing a business? Advisory →</button>`);
+}
 markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxReturnLink }}"`,
   `<a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturnLink }}"`, "the campaign banner link");
 markup = replaceOnce(markup, "<span>Call and onboarding within one working day</span>",
