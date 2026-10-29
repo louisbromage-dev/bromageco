@@ -301,6 +301,14 @@ logic = logic.split("within 24 hours").join("within one working day");
 logic = replaceOnce(logic, "const SA_FAQ = [", "const SA_FAQ = [\n" +
   '  { q: "What if you can\\u2019t take me on?", a: "Then your payment is refunded in full. Louis will tell you on your onboarding call, within one working day of booking, and the money goes back to the card you paid with." },',
   "the Self Assessment questions");
+// Self-employment and CIS income are part of the fixed fee, not an extra.
+logic = replaceOnce(logic, `const SA_INCLUDED = ["Employment and pension income", `,
+  `const SA_INCLUDED = ["Employment and pension income", "Self-employment or CIS income", `, "the included list");
+logic = replaceOnce(logic, `const SA_EXTRAS = ["Self-employment or CIS income", `, `const SA_EXTRAS = [`, "the extras list");
+logic = replaceOnce(logic, `a: "Self-employment or CIS income, additional properties, capital gains and foreign income are added`,
+  `a: "Additional properties, capital gains and foreign income are added`, "the complex return answer");
+markup = replaceOnce(markup, "Everything most employees, pensioners and single-property landlords need, in the fixed fee.",
+  "Everything most employees, sole traders, pensioners and single-property landlords need, in the fixed fee.", "the included intro");
 logic = replaceOnce(logic, `isTaxReturn: p === "taxReturn",`, `isTaxReturn: p === "taxReturn",\n      isSaThanks: p === "saThanks",`, "the tax return page flag");
 logic = replaceOnce(logic, `&& p !== "taxReturn",`, `&& p !== "taxReturn" && p !== "saThanks",`, "the shared call-to-action rule");
 logic = SA_CLIENT + "\n" + logic;
@@ -328,8 +336,8 @@ markup = replaceOnce(markup, "Partner returns and extras are confirmed on your c
 if (markup.includes("[data-saprice] [data-sanote]{display:none}"))
   markup = markup.replace("[data-saprice] [data-sanote]{display:none}", "[data-saprice] [data-sanote]{display:none !important}");
 
-// Book buttons become links straight to the current Stripe payment link, each
-// tagged with where it was clicked (client_reference_id).
+// Book buttons on the campaign page become links straight to the current
+// Stripe payment link, each tagged with where it was clicked (client_reference_id).
 const asLink = (button, href, label) => {
   const m = button.match(/^<button sc-camel-on-click="\{\{ \w+ \}\}" style="([^"]*)"([^>]*)>[\s\S]*<\/button>$/);
   if (!m) fail("could not convert a campaign button into a link.");
@@ -338,7 +346,8 @@ const asLink = (button, href, label) => {
 {
   const card = markup.match(/<button sc-camel-on-click="\{\{ goTaxReturn \}\}"[^>]*>Book my tax return<\/button>/);
   if (!card) fail("could not find the home page campaign card button.");
-  markup = markup.replace(card[0], asLink(card[0], "sa.cardHref", "sa.cardBook"));
+  // The card's button opens the campaign page (it stays a navigation link).
+  markup = markup.replace(card[0], card[0].replace(">Book my tax return</button>", ">{{ sa.cardBook }}</button>"));
   const hero = markup.match(/<button sc-camel-on-click="\{\{ scrollBook \}\}"[^>]*>Book my tax return<\/button>/);
   if (!hero) fail("could not find the tax return page hero button.");
   markup = markup.replace(hero[0], asLink(hero[0], "sa.heroHref", "sa.bookLabel"));

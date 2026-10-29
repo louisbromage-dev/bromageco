@@ -90,12 +90,11 @@ function saCampaignState() {
     return saWithSource(t.link, source);
   };
   v.bannerHref = "/tax-return/";
-  v.cardHref = book("home-card");
   v.heroHref = book("tax-return-hero");
   v.pricingHref = book("tax-return-pricing");
   v.footerHref = book("tax-return-footer");
   v.bookLabel = over ? "Get in touch" : closed ? "Call " + c.phone : "Book my tax return";
-  v.cardBook = closed ? "Call " + c.phone : "Book my tax return";
+  v.cardBook = closed ? "Late booking details" : "Book my tax return";
   v.pricingLabel = closed ? "Call " + c.phone + " →" : "Secure my tax return →";
   v.showPhoneLink = !closed;
 

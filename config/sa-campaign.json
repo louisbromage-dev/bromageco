@@ -3,11 +3,18 @@
   "timeZone": "Europe/London",
   "standardFee": 300,
   "partnerFee": 150,
-  "highIncome": { "from": 100000, "to": 200000, "surcharge": 100 },
+  "highIncome": {
+    "from": 100000,
+    "to": 200000,
+    "surcharge": 100
+  },
   "phone": "07387 835 746",
   "phoneHref": "tel:+447387835746",
   "email": "enquiries@bromageco.com",
-  "filingDeadline": { "date": "2027-01-31", "label": "31 January 2027" },
+  "filingDeadline": {
+    "date": "2027-01-31",
+    "label": "31 January 2027"
+  },
   "tiers": [
     {
       "key": "november",
@@ -50,7 +57,15 @@
       "link": null
     }
   ],
-  "sources": ["banner", "home-card", "tax-return-hero", "tax-return-pricing", "tax-return-footer"],
-  "productionHosts": ["bromageco.com", "www.bromageco.com"],
+  "sources": [
+    "banner",
+    "tax-return-hero",
+    "tax-return-pricing",
+    "tax-return-footer"
+  ],
+  "productionHosts": [
+    "bromageco.com",
+    "www.bromageco.com"
+  ],
   "googleAdsConversionSnippet": ""
 }

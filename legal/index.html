@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"AccountingService","@id":"https://bromageco.com/#business","name":"Bromage & Co Accounting","legalName":"Bromage & Co Accounting Ltd","alternateName":"Fileo & Co Accounting","url":"https://bromageco.com/","logo":"https://bromageco.com/icon-512.png","image":"https://bromageco.com/social-card.png","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis.","telephone":"+44 7387 835746","email":"enquiries@bromageco.com","founder":{"@type":"Person","name":"Louis Bromage","jobTitle":"CIMA Chartered Management Accountant"},"address":{"@type":"PostalAddress","addressLocality":"Fleet","addressRegion":"Hampshire","addressCountry":"GB"},"areaServed":[{"@type":"Country","name":"United Kingdom"}],"identifier":{"@type":"PropertyValue","propertyID":"Companies House company number","value":"17052920"},"knowsAbout":["Year-end accounts","Corporation tax","Self assessment","VAT","Bookkeeping","Payroll","Management accounts","Making Tax Digital","Business valuations"]},{"@context":"https://schema.org","@type":"WebPage","@id":"https://bromageco.com/legal/","url":"https://bromageco.com/legal/","name":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920.","isPartOf":{"@type":"WebSite","name":"Bromage & Co Accounting","url":"https://bromageco.com/"},"about":{"@id":"https://bromageco.com/#business"}}]</script>
 <script>
-var SA_CFG = {"taxYear":"2025/26","timeZone":"Europe/London","standardFee":300,"partnerFee":150,"highIncome":{"from":100000,"to":200000,"surcharge":100},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","filingDeadline":{"date":"2027-01-31","label":"31 January 2027"},"tiers":[{"key":"november","until":"2026-11-30","untilLabel":"30 November 2026","untilShort":"30 November","price":180,"note":"Early bird","laterText":"in November","link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00"},{"key":"december","until":"2026-12-31","untilLabel":"31 December 2026","untilShort":"31 December","price":230,"note":"December","laterText":"in December","link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01"},{"key":"january","until":"2027-01-20","untilLabel":"20 January 2027","untilShort":"20 January","price":300,"note":"Standard fee","laterText":"in January","link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02"},{"key":"closed","until":"2027-01-31","untilLabel":"After 20 January 2027","untilShort":"31 January","price":350,"note":"By phone, subject to capacity","laterText":"after 20 January, by phone and subject to capacity","link":null}],"sources":["banner","home-card","tax-return-hero","tax-return-pricing","tax-return-footer"],"productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
+var SA_CFG = {"taxYear":"2025/26","timeZone":"Europe/London","standardFee":300,"partnerFee":150,"highIncome":{"from":100000,"to":200000,"surcharge":100},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","filingDeadline":{"date":"2027-01-31","label":"31 January 2027"},"tiers":[{"key":"november","until":"2026-11-30","untilLabel":"30 November 2026","untilShort":"30 November","price":180,"note":"Early bird","laterText":"in November","link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00"},{"key":"december","until":"2026-12-31","untilLabel":"31 December 2026","untilShort":"31 December","price":230,"note":"December","laterText":"in December","link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01"},{"key":"january","until":"2027-01-20","untilLabel":"20 January 2027","untilShort":"20 January","price":300,"note":"Standard fee","laterText":"in January","link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02"},{"key":"closed","until":"2027-01-31","untilLabel":"After 20 January 2027","untilShort":"31 January","price":350,"note":"By phone, subject to capacity","laterText":"after 20 January, by phone and subject to capacity","link":null}],"sources":["banner","tax-return-hero","tax-return-pricing","tax-return-footer"],"productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
 // Self Assessment campaign: works out which price tier applies right now, in
 // the visitor's browser, and everything the site shows for it. The build
 // injects this file twice: into every page's <head> (so the pre-rendered page
@@ -116,12 +116,11 @@ function saCampaignState() {
     return saWithSource(t.link, source);
   };
   v.bannerHref = "/tax-return/";
-  v.cardHref = book("home-card");
   v.heroHref = book("tax-return-hero");
   v.pricingHref = book("tax-return-pricing");
   v.footerHref = book("tax-return-footer");
   v.bookLabel = over ? "Get in touch" : closed ? "Call " + c.phone : "Book my tax return";
-  v.cardBook = closed ? "Call " + c.phone : "Book my tax return";
+  v.cardBook = closed ? "Late booking details" : "Book my tax return";
   v.pricingLabel = closed ? "Call " + c.phone + " →" : "Secure my tax return →";
   v.showPhoneLink = !closed;
 
@@ -1061,7 +1060,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
             <div style="font:500 14.5px/1.4 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72)">{{ sa.nextLine }}</div>
           </sc-if>
           <div style="display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;margin-top:6px;padding-top:18px;border-top:1px solid rgba(27,31,28,.12)">
-            <a href="{{ sa.cardHref }}" style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:18px 28px;font:600 16.5px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;cursor:pointer;padding:16px 24px;font-size:16px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center" style-hover="background:#142b24;border-color:#142b24">{{ sa.cardBook }}</a>
+            <a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturn }}" style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:18px 28px;font:600 16.5px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;cursor:pointer;padding:16px 24px;font-size:16px" style-hover="background:#142b24;border-color:#142b24">{{ sa.cardBook }}</a>
             <span style="font:400 14.5px/1.4 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72)">{{ sa.countdown }}</span>
           </div>
         </div>
@@ -2227,7 +2226,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
   <div data-sa2="" style="padding:clamp(48px,6vw,88px) clamp(20px,4.6vw,48px);border-bottom:1px solid #dcd8cf;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(32px,5vw,72px)">
     <div style="display:flex;flex-direction:column;gap:18px">
       <h2 style="margin:0;font:500 clamp(32px,4.4vw,46px)/1.05 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c">What's included</h2>
-      <p style="margin:0;font:400 17px/1.65 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-wrap:pretty">Everything most employees, pensioners and single-property landlords need, in the fixed fee.</p>
+      <p style="margin:0;font:400 17px/1.65 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-wrap:pretty">Everything most employees, sole traders, pensioners and single-property landlords need, in the fixed fee.</p>
       <ul style="list-style:none;margin:0;padding:0;border-top:1px solid #1b1f1c">
         <sc-for list="{{ saIncluded }}" as="i" hint-placeholder-count="6">
           <li style="display:flex;gap:14px;padding:13px 0;border-bottom:1px solid #e7e3da;font:400 16px/1.5 Hanken Grotesk,sans-serif;color:#1b1f1c"><span aria-hidden="true" style="width:7px;height:7px;background:#1f3d34;flex:none;margin-top:9px"></span><span>{{ i.label }}</span></li>
@@ -2408,7 +2407,7 @@ function __applyMeta(key, topic) {
   set('meta[property="og:description"]', "content", description);
   set('meta[property="og:url"]', "content", url);
 }
-var SA_CFG = {"taxYear":"2025/26","timeZone":"Europe/London","standardFee":300,"partnerFee":150,"highIncome":{"from":100000,"to":200000,"surcharge":100},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","filingDeadline":{"date":"2027-01-31","label":"31 January 2027"},"tiers":[{"key":"november","until":"2026-11-30","untilLabel":"30 November 2026","untilShort":"30 November","price":180,"note":"Early bird","laterText":"in November","link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00"},{"key":"december","until":"2026-12-31","untilLabel":"31 December 2026","untilShort":"31 December","price":230,"note":"December","laterText":"in December","link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01"},{"key":"january","until":"2027-01-20","untilLabel":"20 January 2027","untilShort":"20 January","price":300,"note":"Standard fee","laterText":"in January","link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02"},{"key":"closed","until":"2027-01-31","untilLabel":"After 20 January 2027","untilShort":"31 January","price":350,"note":"By phone, subject to capacity","laterText":"after 20 January, by phone and subject to capacity","link":null}],"sources":["banner","home-card","tax-return-hero","tax-return-pricing","tax-return-footer"],"productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
+var SA_CFG = {"taxYear":"2025/26","timeZone":"Europe/London","standardFee":300,"partnerFee":150,"highIncome":{"from":100000,"to":200000,"surcharge":100},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","filingDeadline":{"date":"2027-01-31","label":"31 January 2027"},"tiers":[{"key":"november","until":"2026-11-30","untilLabel":"30 November 2026","untilShort":"30 November","price":180,"note":"Early bird","laterText":"in November","link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00"},{"key":"december","until":"2026-12-31","untilLabel":"31 December 2026","untilShort":"31 December","price":230,"note":"December","laterText":"in December","link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01"},{"key":"january","until":"2027-01-20","untilLabel":"20 January 2027","untilShort":"20 January","price":300,"note":"Standard fee","laterText":"in January","link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02"},{"key":"closed","until":"2027-01-31","untilLabel":"After 20 January 2027","untilShort":"31 January","price":350,"note":"By phone, subject to capacity","laterText":"after 20 January, by phone and subject to capacity","link":null}],"sources":["banner","tax-return-hero","tax-return-pricing","tax-return-footer"],"productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
 // Self Assessment campaign: works out which price tier applies right now, in
 // the visitor's browser, and everything the site shows for it. The build
 // injects this file twice: into every page's <head> (so the pre-rendered page
@@ -2501,12 +2500,11 @@ function saCampaignState() {
     return saWithSource(t.link, source);
   };
   v.bannerHref = "/tax-return/";
-  v.cardHref = book("home-card");
   v.heroHref = book("tax-return-hero");
   v.pricingHref = book("tax-return-pricing");
   v.footerHref = book("tax-return-footer");
   v.bookLabel = over ? "Get in touch" : closed ? "Call " + c.phone : "Book my tax return";
-  v.cardBook = closed ? "Call " + c.phone : "Book my tax return";
+  v.cardBook = closed ? "Late booking details" : "Book my tax return";
   v.pricingLabel = closed ? "Call " + c.phone + " →" : "Secure my tax return →";
   v.showPhoneLink = !closed;
 
@@ -2575,8 +2573,8 @@ const SA_STRIPE = {};
 function saState() { return saCampaignState(); }
 
 // Stripe Payment Links, one per tier. In each link's settings, set "After payment" to redirect to https://bromageco.com/tax-return?paid=1
-const SA_INCLUDED = ["Employment and pension income", "Bank interest", "Dividends", "One rental property", "High Income Child Benefit Charge", "Pension and Gift Aid relief"];
-const SA_EXTRAS = ["Self-employment or CIS income", "Additional rental properties", "Capital gains", "Foreign income", "Spouse or partner return, £150", "Income over £100,000"];
+const SA_INCLUDED = ["Employment and pension income", "Self-employment or CIS income", "Bank interest", "Dividends", "One rental property", "High Income Child Benefit Charge", "Pension and Gift Aid relief"];
+const SA_EXTRAS = ["Additional rental properties", "Capital gains", "Foreign income", "Spouse or partner return, £150", "Income over £100,000"];
 const SA_STEPS = [
   { title: "Book and pay", body: "Pay securely by card through Stripe. Your price is held from that moment, and the payment is fully refundable." },
   { title: "Onboarding call", body: "Louis calls you within one working day to talk through your income, confirm your ID and send your engagement letter." },
@@ -2590,7 +2588,7 @@ const SA_FAQ = [
   { q: "What counts as \u201ccomplete records\u201d?", a: "Everything needed to prepare your return in one go: P60s and any P11D, bank interest and dividend figures, rental income and costs, pension contributions and Gift Aid, and anything else for the income sources you tick. You get a checklist when you book. Your price is set on the date your payment and complete records have both arrived." },
   { q: "What if I'm late with my records?", a: "Your return will still be done. If your complete records arrive after the date for your tier, the fee for the next tier applies. We'll tell you before that happens, never after." },
   { q: "Do I need a UTR?", a: "Yes, a Unique Taxpayer Reference is needed to file. If you're new to Self Assessment and don't have one, tell us when you book and we'll help you register. HMRC usually posts it within 15 working days, so it's worth starting early." },
-  { q: "What if my return is more complex?", a: "Self-employment or CIS income, additional properties, capital gains and foreign income are added at a fixed price, agreed before you pay. If your income is between £100,000 and £200,000, the fee is the tier price plus £100, including a short tax-saving review. Over £200,000, Louis will quote individually." }
+  { q: "What if my return is more complex?", a: "Additional properties, capital gains and foreign income are added at a fixed price, agreed before you pay. If your income is between £100,000 and £200,000, the fee is the tier price plus £100, including a short tax-saving review. Over £200,000, Louis will quote individually." }
 ];
 const SA_INCOME = ["Employment or pension", "Bank interest", "Dividends", "Rental property", "Self-employment or CIS", "Capital gains", "Foreign income", "Child Benefit (HICBC)", "Income over £100,000", "Not sure"];
 
