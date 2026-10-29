@@ -31,10 +31,15 @@ const SITE_NAME = "Bromage & Co Accounting";
 // reached it uses the copy saved by the last build that could
 // (config/prices-snapshot.json) and says so.
 const SNAPSHOT_FILE = path.join(ROOT, "config", "prices-snapshot.json");
-const PRICES = await (async () => {
+const SUPABASE = (() => {
   const raw = fs.readFileSync(EXPORT, "utf8");
-  const url = (raw.match(/url: \\"(https:\/\/[a-z0-9]+\.supabase\.co)\\"/) || [])[1];
-  const key = (raw.match(/anonKey: \\"(eyJ[A-Za-z0-9._-]+)\\"/) || [])[1];
+  return {
+    url: (raw.match(/url: \\"(https:\/\/[a-z0-9]+\.supabase\.co)\\"/) || [])[1],
+    anonKey: (raw.match(/anonKey: \\"(eyJ[A-Za-z0-9._-]+)\\"/) || [])[1]
+  };
+})();
+const PRICES = await (async () => {
+  const { url, anonKey: key } = SUPABASE;
   const get = async (table, query) => {
     const res = await fetch(`${url}/rest/v1/${table}?${query}`, { headers: { apikey: key, Authorization: "Bearer " + key }, signal: AbortSignal.timeout(15000) });
     if (!res.ok) throw new Error(`${table}: HTTP ${res.status}`);
@@ -84,6 +89,38 @@ const SA_CLIENT = `var SA_CFG = ${JSON.stringify(SA_CFG)};\nvar SA_SNAPSHOT = ${
 const SA_STATES = [...SA_ROWS.filter(r => r.kind === "tier").sort((x, y) => x.sort_order - y.sort_order).map(r => r.key), "over"];
 const SA_BUILD = new Function(SA_CLIENT + "\nreturn saCampaignState();")();
 const SA_BUILD_STATE = SA_BUILD.key;
+
+// Google tag (Consent Mode v2), cookie banner, phone clicks and the booking
+// event. The tag ID lives in config/site.json and nowhere else.
+const SITE_CFG = JSON.parse(fs.readFileSync(path.join(ROOT, "config", "site.json"), "utf8"));
+if (!/^(G|AW|GT)-[A-Z0-9]+$/.test(SITE_CFG.googleTagId || "")) fail("config/site.json needs a googleTagId such as G-XXXXXXX.");
+const TRACKING = {
+  tagId: SITE_CFG.googleTagId,
+  consentKey: "bc-consent",
+  privacyHref: "/legal/",
+  supabaseUrl: SUPABASE.url,
+  anonKey: SUPABASE.anonKey,
+  campaign: SA_CFG.campaign,
+  tiers: SA_ROWS.filter(r => r.kind === "tier").map(r => ({ key: r.key, price: Number(r.price) }))
+};
+const toolFile = f => fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), f), "utf8");
+const TRACKING_HEAD = toolFile("tracking-head.js");
+const TRACKING_BODY = toolFile("tracking-body.js");
+const BANNER_CSS = `#cc{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#f7f5f0;border-top:1px solid #1f3d34;box-shadow:0 -6px 20px rgba(27,31,28,.06)}
+#cc[hidden]{display:none}
+.cc-inner{max-width:1180px;margin:0 auto;box-sizing:border-box;padding:16px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:14px 32px;flex-wrap:wrap}
+.cc-text{margin:0;flex:1 1 440px;font:400 15px/1.5 "Hanken Grotesk",system-ui,sans-serif;color:#1b1f1c}
+.cc-text a{color:#1f3d34;font-weight:600;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.cc-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:0 0 auto}
+.cc-btn{min-width:132px;padding:14px 22px;border-radius:2px;font:600 15.5px/1 "Hanken Grotesk",system-ui,sans-serif;cursor:pointer}
+.cc-primary{border:1px solid #1f3d34;background:#1f3d34;color:#fff}
+.cc-primary:hover{background:#142b24;border-color:#142b24}
+.cc-secondary{border:1px solid #1b1f1c;background:transparent;color:#1b1f1c}
+.cc-secondary:hover{background:rgba(27,31,28,.05)}
+.cc-btn:focus-visible,.cc-text a:focus-visible,[data-cookie-settings]:focus-visible{outline:2px solid #1f3d34;outline-offset:3px}
+html.cc-open [data-mobbar]{display:none!important}
+html.cc-open body{padding-bottom:var(--cc-h,0px)!important}
+@media (max-width:620px){.cc-inner{padding:12px 16px 14px}.cc-text{flex-basis:100%;font-size:14px}.cc-actions{width:100%}.cc-btn{min-width:0}}`;
 
 const PAGES = [
   {
@@ -155,8 +192,8 @@ const PAGES = [
   },
   {
     key: "saThanks", path: "/tax-return/thank-you/",
-    title: "Thank you for booking | Bromage & Co",
-    description: "Thank you for booking your Self Assessment tax return with Bromage & Co.",
+    title: "Booking confirmed | Bromage & Co",
+    description: "Thank you, your Self Assessment booking with Bromage & Co is confirmed.",
     robots: "noindex,follow", sitemap: false
   }
 ];
@@ -559,15 +596,24 @@ const asLink = (button, href, label) => {
     </div>` + markup.slice(to + "</sc-if>".length);
 }
 
-// Thank-you page, reached from the Stripe payment links. The Google Ads
-// conversion tag goes in config/sa-campaign.json (googleAdsConversionSnippet).
+// Thank-you page, reached from the Stripe payment links
+// (/tax-return/thank-you/?tier=<tier>&session_id=cs_...). The booking is
+// counted by Google Ads when this page loads; tools/tracking-body.js sends the
+// purchase value once per Checkout session.
 markup = replaceOnce(markup, "<!-- ══ SHARED CTA + FOOTER ══ -->", `<!-- ══ TAX RETURN THANK YOU ══ -->
 <sc-if value="{{ isSaThanks }}" hint-placeholder-val="{{ false }}">
-<div style="padding:clamp(56px,8vw,112px) clamp(20px,4.6vw,48px);border-bottom:1px solid #dcd8cf;display:flex;flex-direction:column;gap:24px">
+<div style="padding:clamp(56px,8vw,112px) clamp(20px,4.6vw,48px);border-bottom:1px solid #dcd8cf;display:flex;flex-direction:column;gap:28px">
   <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34">Self Assessment ${SA_CFG.taxYear}</div>
-  <h1 style="margin:0;font:500 clamp(44px,6.4vw,84px)/1 'Cormorant Garamond',serif;letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance">Thank you for booking.</h1>
-  <p style="margin:0;font:400 clamp(18px,1.7vw,21px)/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);max-width:58ch;text-wrap:pretty">Louis will call you within one working day to take you through onboarding: a quick ID check and the list of records we need.</p>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
+  <h1 style="margin:0;font:500 clamp(40px,6vw,80px)/1.02 'Cormorant Garamond',serif;letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance;max-width:16ch">Thank you, your booking is confirmed.</h1>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
+    <div style="font:600 15px/1.3 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74)">What happens next</div>
+    <ol style="list-style:none;margin:0;padding:0;border-top:1px solid #1b1f1c">
+    <li style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:baseline;padding:18px 0;border-bottom:1px solid #dcd8cf"><span aria-hidden="true" style="font:500 22px/1.1 'Cormorant Garamond',serif;color:#44705c">01</span><span style="font:400 clamp(17px,1.5vw,19px)/1.5 Hanken Grotesk,sans-serif;color:#1b1f1c">Louis will call you within one working day.</span></li>
+    <li style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:baseline;padding:18px 0;border-bottom:1px solid #dcd8cf"><span aria-hidden="true" style="font:500 22px/1.1 'Cormorant Garamond',serif;color:#44705c">02</span><span style="font:400 clamp(17px,1.5vw,19px)/1.5 Hanken Grotesk,sans-serif;color:#1b1f1c">A quick ID check, which the law requires.</span></li>
+    <li style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:baseline;padding:18px 0;border-bottom:1px solid #dcd8cf"><span aria-hidden="true" style="font:500 22px/1.1 'Cormorant Garamond',serif;color:#44705c">03</span><span style="font:400 clamp(17px,1.5vw,19px)/1.5 Hanken Grotesk,sans-serif;color:#1b1f1c">Your records checklist, so you can send everything in one go.</span></li>
+    </ol>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
     <a href="${SA_CFG.phoneHref}" style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:20px 32px;font:600 17px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;text-decoration:none" style-hover="background:#142b24;border-color:#142b24">Call ${SA_CFG.phone}</a>
     <a href="mailto:${SA_CFG.email}" style="border:1px solid #1b1f1c;background:transparent;color:#1b1f1c;padding:20px 30px;font:600 17px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;text-decoration:none" style-hover="background:rgba(27,31,28,.05)">${SA_CFG.email}</a>
   </div>
@@ -575,6 +621,25 @@ markup = replaceOnce(markup, "<!-- ══ SHARED CTA + FOOTER ══ -->", `<!--
 </sc-if>
 
 <!-- ══ SHARED CTA + FOOTER ══ -->`, "the shared footer marker");
+
+// Cookies: footer "Cookie settings" link (handled by tools/tracking-body.js),
+// no search snippets from the top banners, the privacy notice's cookie
+// paragraph, and no campaign banner on the thank-you page.
+{
+  const legal = markup.match(/<button sc-camel-on-click="\{\{ goLegal \}\}" style="([^"]*)"([^>]*)>Legal &amp; privacy<\/button>/);
+  if (!legal) fail("could not find the footer Legal & privacy link.");
+  markup = markup.replace(legal[0], legal[0] + `\n    <button type="button" data-cookie-settings="" style="${legal[1].replace(/;?margin-top:[^;]*/, "")}"${legal[2]}>Cookie settings</button>`);
+  markup = replaceOnce(markup, `<div role="region" aria-label="Self Assessment offer"`, `<div data-nosnippet="" role="region" aria-label="Self Assessment offer"`, "the campaign banner");
+  const rebrand = markup.match(/<div (style="[^"]*")>\s*<span [^>]*>Fileo &amp; Co Accounting is now Bromage &amp; Co\./);
+  if (!rebrand) fail("could not find the rebrand notice.");
+  markup = markup.replace(rebrand[0], rebrand[0].replace(`<div ${rebrand[1]}>`, `<div data-nosnippet="" ${rebrand[1]}>`));
+  logic = replaceOnce(logic,
+    `{ num: "08", title: "Cookies and tracking", body: "This site sets no advertising or analytics cookies and does not track you between sites. One small record is stored in your own browser, remembering that you closed the rebrand notice so it does not reappear. Nothing about it reaches us." }`,
+    `{ num: "08", title: "Cookies", body: "We use Google advertising cookies to measure which of our adverts lead to bookings. They only run if you choose Accept in the cookie notice, and you can change your choice at any time with \\u201cCookie settings\\u201d at the foot of every page. Your browser also keeps a small note of your cookie choice and of any notice you have closed; that note stays on your device." }`,
+    "the privacy notice cookie paragraph");
+  logic = replaceOnce(logic, `showSaBanner: saV.live && this.state.saHidden !== saV.tier.key,`,
+    `showSaBanner: saV.live && this.state.saHidden !== saV.tier.key && p !== "saThanks",`, "the campaign banner rule");
+}
 
 // ── 3a2. Site details that live in config/site.json ──────────────────────
 // Google review count and profile link. Until both are filled in, the site
@@ -729,9 +794,6 @@ function shell(page, { head = "", body = "", variants = {}, robots = page.robots
     isPartOf: { "@type": "WebSite", name: SITE_NAME, url: SITE_URL + "/" },
     about: { "@id": ORG["@id"] }
   }];
-  const conversion = page.key === "saThanks" ? `
-<!-- Google Ads conversion tag: set googleAdsConversionSnippet in config/sa-campaign.json and rebuild. -->
-${SA_CFG.googleAdsConversionSnippet || "<!-- PLACEHOLDER: Google Ads conversion tag not supplied yet. -->"}` : "";
   return `<!DOCTYPE html>
 <html lang="en-GB">
 <head>
@@ -767,7 +829,12 @@ ${page.key === "taxReturn" ? `(function () {
 })();` : ""}
 </script>
 <style>x-dc{display:none!important}html:not(.sa-ok) [data-sa-dyn]{visibility:hidden}</style>
-<noscript><style>[data-sa-dyn]{visibility:visible!important}</style></noscript>${conversion}
+<noscript><style>[data-sa-dyn]{visibility:visible!important}</style></noscript>
+<script>
+var BC_TRACKING = ${scriptJson({ ...TRACKING, thankYouPage: page.key === "saThanks" })};
+${TRACKING_HEAD}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=${TRACKING.tagId}"></script>
+<style>${BANNER_CSS}</style>
 ${head}
 <script>window.__resources = {};</script>
 <script defer src="${reactSrc}"></script>
@@ -830,6 +897,9 @@ ${head}
   });
 })();
 </script>
+<section id="cc" role="region" aria-label="Cookie choice" aria-live="polite" data-nosnippet hidden></section>
+<script>
+${TRACKING_BODY}</script>
 </body>
 </html>
 `;

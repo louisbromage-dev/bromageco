@@ -44,6 +44,13 @@ Still typed into the design (not in Supabase yet): payroll (£40 base + £7 per 
 - **Which price shows** is worked out in the visitor's browser in London time (`tools/sa-campaign-client.js`), so the site never needs a deploy when a tier changes. Each page is pre-rendered in every state and switches to today's before it is shown, so an old price never flashes.
 - **Preview any state** on a preview deployment (ignored on bromageco.com): add `?saPreview=november`, `december`, `january`, `closed` or `over`, or a London date such as `?saPreview=2026-12-01`.
 - **Book buttons** on `/tax-return/` go straight to the live Stripe payment link with `client_reference_id` set to where they were clicked: `tax-return-hero`, `tax-return-pricing` or `tax-return-footer`. The banner and the home page card open `/tax-return/`.
-- **Thank-you page:** `/tax-return/thank-you/` (not indexed). Paste the Google Ads conversion tag into `googleAdsConversionSnippet` in `config/sa-campaign.json` and rebuild.
+- **Thank-you page:** `/tax-return/thank-you/` (not indexed, not in the sitemap). Each Stripe payment link redirects to `/tax-return/thank-you?tier=<november|december|january>&session_id={CHECKOUT_SESSION_ID}`.
 - **Google reviews:** fill in `config/site.json` (count and profile link). Until then the site says "Rated 5.0 on Google" with no link.
 - The original brief is in `design/sa-campaign-handover.md`.
+
+## Google tag and cookies
+
+- **Tag ID:** `googleTagId` in `config/site.json` (currently `G-SCL14250DK`), and nowhere else.
+- **Consent Mode v2** (`tools/tracking-head.js`, in every page's head before gtag.js): `ad_storage`, `ad_user_data`, `ad_personalization` and `analytics_storage` start "denied", `url_passthrough` is on. Accept grants all four; Reject keeps them denied. The choice is kept in the browser (`bc-consent`); if storage is unavailable the banner shows again and consent stays denied.
+- **Cookie banner and events** (`tools/tracking-body.js`): the banner at the foot of the screen, "Cookie settings" in the footer to reopen it, `phone_click` on every tel: link, and on the thank-you page one `purchase` event per Stripe Checkout session (`session_id` starting `cs_`), valued at the price of the tier in the URL from Supabase. No labelled conversion events: Google Ads counts a booking when the thank-you page loads.
+- No names, emails or phone numbers go into URLs or events.

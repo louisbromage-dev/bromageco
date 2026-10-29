@@ -1,4 +1,6 @@
 {
+  "_note": "Site-wide settings. googleTagId is the public Google tag ID (Google Ads and Analytics); it is not a secret.",
+  "googleTagId": "G-SCL14250DK",
   "googleReviews": {
     "count": null,
     "profileUrl": ""

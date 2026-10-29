@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"AccountingService","@id":"https://bromageco.com/#business","name":"Bromage & Co Accounting","legalName":"Bromage & Co Accounting Ltd","alternateName":"Fileo & Co Accounting","url":"https://bromageco.com/","logo":"https://bromageco.com/icon-512.png","image":"https://bromageco.com/social-card.png","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis.","telephone":"+44 7387 835746","email":"enquiries@bromageco.com","founder":{"@type":"Person","name":"Louis Bromage","jobTitle":"CIMA Chartered Management Accountant"},"address":{"@type":"PostalAddress","addressLocality":"Fleet","addressRegion":"Hampshire","addressCountry":"GB"},"areaServed":[{"@type":"Country","name":"United Kingdom"}],"identifier":{"@type":"PropertyValue","propertyID":"Companies House company number","value":"17052920"},"knowsAbout":["Year-end accounts","Corporation tax","Self assessment","VAT","Bookkeeping","Payroll","Management accounts","Making Tax Digital","Business valuations"]},{"@context":"https://schema.org","@type":"WebPage","@id":"https://bromageco.com/about/","url":"https://bromageco.com/about/","name":"About Louis Bromage, Chartered Management Accountant | Bromage & Co","description":"A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients.","isPartOf":{"@type":"WebSite","name":"Bromage & Co Accounting","url":"https://bromageco.com/"},"about":{"@id":"https://bromageco.com/#business"}}]</script>
 <script>
-var SA_CFG = {"_note":"Wording and contact details for the Self Assessment campaign. Prices, dates, Stripe links and add-ons live in Supabase (public.campaign_prices); the standard fee is the builder_packages row named below, times 12 months.","campaign":"sa-2025-26","taxYear":"2025/26","timeZone":"Europe/London","standardFee":{"category":"sa","tierKey":"professional","months":12},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
+var SA_CFG = {"_note":"Wording and contact details for the Self Assessment campaign. Prices, dates, Stripe links and add-ons live in Supabase (public.campaign_prices); the standard fee is the builder_packages row named below, times 12 months.","campaign":"sa-2025-26","taxYear":"2025/26","timeZone":"Europe/London","standardFee":{"category":"sa","tierKey":"professional","months":12},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","productionHosts":["bromageco.com","www.bromageco.com"]};
 var SA_SNAPSHOT = {"campaign_prices":[{"campaign":"sa-2025-26","kind":"tier","key":"november","label":"Early bird","price":180,"price_basis":"fixed","active_from":"2026-10-29","active_until":"2026-11-30","payment_link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00","sort_order":1},{"campaign":"sa-2025-26","kind":"tier","key":"december","label":"December","price":230,"price_basis":"fixed","active_from":"2026-12-01","active_until":"2026-12-31","payment_link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01","sort_order":2},{"campaign":"sa-2025-26","kind":"tier","key":"january","label":"Standard fee","price":300,"price_basis":"fixed","active_from":"2027-01-01","active_until":"2027-01-20","payment_link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02","sort_order":3},{"campaign":"sa-2025-26","kind":"tier","key":"closed","label":"By phone, subject to capacity","price":350,"price_basis":"fixed","active_from":"2027-01-21","active_until":"2027-01-31","payment_link":null,"sort_order":4},{"campaign":"sa-2025-26","kind":"addon","key":"partner","label":"Spouse or partner return","price":150,"price_basis":"fixed","active_from":null,"active_until":null,"payment_link":null,"sort_order":10},{"campaign":"sa-2025-26","kind":"addon","key":"income-100k-200k","label":"Income £100,000 to £200,000, including a short tax-saving review","price":100,"price_basis":"plus_tier","active_from":null,"active_until":null,"payment_link":null,"sort_order":11},{"campaign":"sa-2025-26","kind":"addon","key":"income-over-200k","label":"Income over £200,000","price":null,"price_basis":"quote","active_from":null,"active_until":null,"payment_link":null,"sort_order":12}],"builder_packages":[{"name":"Starter SA","category":"sa","tier_key":"starter","price":15,"short_desc":"Employed with one or two additional income sources.","includes":["SA100 preparation & filing","Employment income review","Basic reliefs & allowances"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"Professional SA","category":"sa","tier_key":"professional","price":25,"short_desc":"Self-employed individual with trading income.","includes":["Everything in Starter","Self-employment pages","Expense review & maximisation"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"Comprehensive SA","category":"sa","tier_key":"comprehensive","price":35,"short_desc":"Multiple income streams or complex personal tax affairs.","includes":["Everything in Professional","Rental, investment & foreign income","Capital gains tax review"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3}]};
 // Self Assessment campaign: works out which price tier applies right now, in
 // the visitor's browser, and everything the site shows for it.
@@ -270,6 +270,58 @@ saSetRows(SA_SNAPSHOT.campaign_prices, SA_SNAPSHOT.builder_packages);
 </script>
 <style>x-dc{display:none!important}html:not(.sa-ok) [data-sa-dyn]{visibility:hidden}</style>
 <noscript><style>[data-sa-dyn]{visibility:visible!important}</style></noscript>
+<script>
+var BC_TRACKING = {"tagId":"G-SCL14250DK","consentKey":"bc-consent","privacyHref":"/legal/","supabaseUrl":"https://biumvfliagyebarcoyzv.supabase.co","anonKey":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpdW12ZmxpYWd5ZWJhcmNveXp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMDUzODksImV4cCI6MjA5MTg4MTM4OX0.Jjm_GmKpmdRwt5cK966nmwxzDLbhRsXPRMjLk7ctNvw","campaign":"sa-2025-26","tiers":[{"key":"november","price":180},{"key":"december","price":230},{"key":"january","price":300},{"key":"closed","price":350}],"thankYouPage":false};
+// Google tag with Consent Mode v2. Runs in every page's <head>, before
+// gtag.js loads. BC_TRACKING is defined just above this by the build, from
+// config/site.json (googleTagId). Plain ES5.
+//
+// Everything starts denied. If the visitor accepted on an earlier visit (and
+// their browser kept the choice), consent is granted before the tag starts.
+
+window.dataLayer = window.dataLayer || [];
+function gtag() { window.dataLayer.push(arguments); }
+
+gtag("consent", "default", {
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+  analytics_storage: "denied"
+});
+gtag("set", "url_passthrough", true);
+
+(function () {
+  var choice = null;
+  try { choice = window.localStorage.getItem(BC_TRACKING.consentKey); } catch (e) {}
+  if (choice === "granted") {
+    gtag("consent", "update", {
+      ad_storage: "granted",
+      ad_user_data: "granted",
+      ad_personalization: "granted",
+      analytics_storage: "granted"
+    });
+  }
+})();
+
+gtag("js", new Date());
+gtag("config", BC_TRACKING.tagId);
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SCL14250DK"></script>
+<style>#cc{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#f7f5f0;border-top:1px solid #1f3d34;box-shadow:0 -6px 20px rgba(27,31,28,.06)}
+#cc[hidden]{display:none}
+.cc-inner{max-width:1180px;margin:0 auto;box-sizing:border-box;padding:16px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:14px 32px;flex-wrap:wrap}
+.cc-text{margin:0;flex:1 1 440px;font:400 15px/1.5 "Hanken Grotesk",system-ui,sans-serif;color:#1b1f1c}
+.cc-text a{color:#1f3d34;font-weight:600;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.cc-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:0 0 auto}
+.cc-btn{min-width:132px;padding:14px 22px;border-radius:2px;font:600 15.5px/1 "Hanken Grotesk",system-ui,sans-serif;cursor:pointer}
+.cc-primary{border:1px solid #1f3d34;background:#1f3d34;color:#fff}
+.cc-primary:hover{background:#142b24;border-color:#142b24}
+.cc-secondary{border:1px solid #1b1f1c;background:transparent;color:#1b1f1c}
+.cc-secondary:hover{background:rgba(27,31,28,.05)}
+.cc-btn:focus-visible,.cc-text a:focus-visible,[data-cookie-settings]:focus-visible{outline:2px solid #1f3d34;outline-offset:3px}
+html.cc-open [data-mobbar]{display:none!important}
+html.cc-open body{padding-bottom:var(--cc-h,0px)!important}
+@media (max-width:620px){.cc-inner{padding:12px 16px 14px}.cc-text{flex-basis:100%;font-size:14px}.cc-actions{width:100%}.cc-btn{min-width:0}}</style>
 <style id="prerender-css">.sc-placeholder { background: color-mix(in srgb, currentcolor 8%, transparent 92%); border: 1px solid color-mix(in srgb, currentcolor, transparent); border-radius: 2px; box-sizing: border-box; overflow: hidden; }
 @keyframes sc-shine { 
   0% { background-position: 100% 50%; }
@@ -291,6 +343,26 @@ html.sc-dc-streaming .sc-placeholder:nth-child(n+9 of .sc-placeholder)::before, 
 }
 x-dc { display: none !important; }
 html:not(.sa-ok) [data-sa-dyn] { visibility: hidden; }
+#cc { position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 60; background: rgb(247, 245, 240); border-top: 1px solid rgb(31, 61, 52); box-shadow: rgba(27, 31, 28, 0.06) 0px -6px 20px; }
+#cc[hidden] { display: none; }
+.cc-inner { max-width: 1180px; margin: 0px auto; box-sizing: border-box; padding: 16px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: space-between; gap: 14px 32px; flex-wrap: wrap; }
+.cc-text { margin: 0px; flex: 1 1 440px; font: 400 15px / 1.5 "Hanken Grotesk", system-ui, sans-serif; color: rgb(27, 31, 28); }
+.cc-text a { color: rgb(31, 61, 52); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.cc-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 0 0 auto; }
+.cc-btn { min-width: 132px; padding: 14px 22px; border-radius: 2px; font: 600 15.5px / 1 "Hanken Grotesk", system-ui, sans-serif; cursor: pointer; }
+.cc-primary { border: 1px solid rgb(31, 61, 52); background: rgb(31, 61, 52); color: rgb(255, 255, 255); }
+.cc-primary:hover { background: rgb(20, 43, 36); border-color: rgb(20, 43, 36); }
+.cc-secondary { border: 1px solid rgb(27, 31, 28); background: transparent; color: rgb(27, 31, 28); }
+.cc-secondary:hover { background: rgba(27, 31, 28, 0.05); }
+.cc-btn:focus-visible, .cc-text a:focus-visible, [data-cookie-settings]:focus-visible { outline: rgb(31, 61, 52) solid 2px; outline-offset: 3px; }
+html.cc-open [data-mobbar] { display: none !important; }
+html.cc-open body { padding-bottom: var(--cc-h,0px) !important; }
+@media (max-width: 620px) {
+  .cc-inner { padding: 12px 16px 14px; }
+  .cc-text { flex-basis: 100%; font-size: 14px; }
+  .cc-actions { width: 100%; }
+  .cc-btn { min-width: 0px; }
+}
 .fx { display: flex; }
 .col { display: flex; flex-direction: column; }
 .grid { display: grid; }
@@ -441,7 +513,7 @@ details[open] > summary [data-plus] { transform: rotate(45deg); }
 <script defer src="/assets/js/dc-runtime-8fe7df7440.js"></script>
 </head>
 <body>
-<div id="prerender"><div class="sc-host" data-sc-name="Root"><div style="max-width: 1180px; margin: 0px auto; background: rgb(247, 245, 240);"><div role="region" aria-label="Self Assessment offer" style="background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);" data-sa-dyn="0">
+<div id="prerender"><div class="sc-host" data-sc-name="Root"><div style="max-width: 1180px; margin: 0px auto; background: rgb(247, 245, 240);"><div data-nosnippet="" role="region" aria-label="Self Assessment offer" style="background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);" data-sa-dyn="0">
   <a data-nav="" href="/tax-return/" class="pqeg4wu" style="font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;"><span class="sc-interp">Self Assessment 2025/26: £180 if you book by 30 November →</span></a>
   <button aria-label="Dismiss Self Assessment notice" class="p87zbhn" style="border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;">×</button></div><div style="position: sticky; top: 0px; z-index: 30; background: rgb(247, 245, 240); border-bottom: 1px solid rgb(220, 216, 207);">
   <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px clamp(16px, 4vw, 48px);">
@@ -578,6 +650,7 @@ details[open] > summary [data-plus] { transform: rotate(45deg); }
       <a data-nav="" href="/contact/" class="p1g5cp8b" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 14.5px / 1.5 &quot;Hanken Grotesk&quot;, sans-serif; color: rgba(27, 31, 28, 0.8);"><span class="sc-interp">Contact</span></a>
     
     <a data-nav="" href="/legal/" class="p1g5cp8b" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 14.5px / 1.5 &quot;Hanken Grotesk&quot;, sans-serif; color: rgba(27, 31, 28, 0.8); margin-top: 5px;">Legal &amp; privacy</a>
+    <button type="button" data-cookie-settings="" class="p1g5cp8b" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 14.5px / 1.5 &quot;Hanken Grotesk&quot;, sans-serif; color: rgba(27, 31, 28, 0.8);">Cookie settings</button>
   </div>
   <div style="display: flex; flex-direction: column; gap: 9px;">
     <div style="font: 600 13.5px / 1 &quot;Hanken Grotesk&quot;, sans-serif; color: rgba(27, 31, 28, 0.74);">Get in touch</div>
@@ -608,7 +681,7 @@ details[open] > summary [data-plus] { transform: rotate(45deg); }
   // The page was pre-rendered for one campaign state. Swap in the parts that
   // differ for today's state before anything is painted, so the price shown
   // is never stale, then honour any banner the visitor has dismissed.
-  var V = {"0":{"november":"\u003cdiv role=\"region\" aria-label=\"Self Assessment offer\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);\" data-sa-dyn=\"0\">\n  \u003ca data-nav=\"\" href=\"/tax-return/\" class=\"pqeg4wu\" style=\"font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;\">\u003cspan class=\"sc-interp\">Self Assessment 2025/26: £180 if you book by 30 November →\u003c/span>\u003c/a>\n  \u003cbutton aria-label=\"Dismiss Self Assessment notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;\">×\u003c/button>\u003c/div>","december":"\u003cdiv role=\"region\" aria-label=\"Self Assessment offer\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);\" data-sa-dyn=\"0\">\n  \u003ca data-nav=\"\" href=\"/tax-return/\" class=\"pqeg4wu\" style=\"font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;\">\u003cspan class=\"sc-interp\">Self Assessment 2025/26: £230 if you book by 31 December →\u003c/span>\u003c/a>\n  \u003cbutton aria-label=\"Dismiss Self Assessment notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;\">×\u003c/button>\u003c/div>","january":"\u003cdiv role=\"region\" aria-label=\"Self Assessment offer\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);\" data-sa-dyn=\"0\">\n  \u003ca data-nav=\"\" href=\"/tax-return/\" class=\"pqeg4wu\" style=\"font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;\">\u003cspan class=\"sc-interp\">Self Assessment 2025/26: £300 if you book by 20 January →\u003c/span>\u003c/a>\n  \u003cbutton aria-label=\"Dismiss Self Assessment notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;\">×\u003c/button>\u003c/div>","closed":"\u003cdiv role=\"region\" aria-label=\"Self Assessment offer\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);\" data-sa-dyn=\"0\">\n  \u003ca data-nav=\"\" href=\"/tax-return/\" class=\"pqeg4wu\" style=\"font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;\">\u003cspan class=\"sc-interp\">Online bookings have closed. Call 07387 835 746 to check if we have capacity.\u003c/span>\u003c/a>\n  \u003cbutton aria-label=\"Dismiss Self Assessment notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;\">×\u003c/button>\u003c/div>","over":"\u003cdiv style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px;\" data-sa-dyn=\"0\">\n  \u003cspan style=\"font: 400 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; text-align: center; text-wrap: pretty;\">Fileo &amp; Co Accounting is now Bromage &amp; Co. Same accountant, same company number.\u003c/span>\n  \u003cbutton aria-label=\"Dismiss notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto;\">×\u003c/button>\u003c/div>"}}, built = "november";
+  var V = {"0":{"november":"\u003cdiv data-nosnippet=\"\" role=\"region\" aria-label=\"Self Assessment offer\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);\" data-sa-dyn=\"0\">\n  \u003ca data-nav=\"\" href=\"/tax-return/\" class=\"pqeg4wu\" style=\"font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;\">\u003cspan class=\"sc-interp\">Self Assessment 2025/26: £180 if you book by 30 November →\u003c/span>\u003c/a>\n  \u003cbutton aria-label=\"Dismiss Self Assessment notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;\">×\u003c/button>\u003c/div>","december":"\u003cdiv data-nosnippet=\"\" role=\"region\" aria-label=\"Self Assessment offer\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);\" data-sa-dyn=\"0\">\n  \u003ca data-nav=\"\" href=\"/tax-return/\" class=\"pqeg4wu\" style=\"font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;\">\u003cspan class=\"sc-interp\">Self Assessment 2025/26: £230 if you book by 31 December →\u003c/span>\u003c/a>\n  \u003cbutton aria-label=\"Dismiss Self Assessment notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;\">×\u003c/button>\u003c/div>","january":"\u003cdiv data-nosnippet=\"\" role=\"region\" aria-label=\"Self Assessment offer\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);\" data-sa-dyn=\"0\">\n  \u003ca data-nav=\"\" href=\"/tax-return/\" class=\"pqeg4wu\" style=\"font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;\">\u003cspan class=\"sc-interp\">Self Assessment 2025/26: £300 if you book by 20 January →\u003c/span>\u003c/a>\n  \u003cbutton aria-label=\"Dismiss Self Assessment notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;\">×\u003c/button>\u003c/div>","closed":"\u003cdiv data-nosnippet=\"\" role=\"region\" aria-label=\"Self Assessment offer\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);\" data-sa-dyn=\"0\">\n  \u003ca data-nav=\"\" href=\"/tax-return/\" class=\"pqeg4wu\" style=\"font: 500 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;\">\u003cspan class=\"sc-interp\">Online bookings have closed. Call 07387 835 746 to check if we have capacity.\u003c/span>\u003c/a>\n  \u003cbutton aria-label=\"Dismiss Self Assessment notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto; cursor: pointer;\">×\u003c/button>\u003c/div>","over":"\u003cdiv data-nosnippet=\"\" style=\"background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px;\" data-sa-dyn=\"0\">\n  \u003cspan style=\"font: 400 15.5px / 1.45 &quot;Hanken Grotesk&quot;, sans-serif; text-align: center; text-wrap: pretty;\">Fileo &amp; Co Accounting is now Bromage &amp; Co. Same accountant, same company number.\u003c/span>\n  \u003cbutton aria-label=\"Dismiss notice\" class=\"p87zbhn\" style=\"border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px / 1 &quot;Hanken Grotesk&quot;, sans-serif; flex: 0 0 auto;\">×\u003c/button>\u003c/div>"}}, built = "november";
   var st = saCampaignState().key, pre = document.getElementById("prerender");
   if (st !== built) {
     var nodes = pre.querySelectorAll("[data-sa-dyn]");
@@ -945,13 +1018,13 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 <div style="max-width:1180px;margin:0 auto;background:#f7f5f0;">
 
 <sc-if value="{{ showSaBanner }}" hint-placeholder-val="{{ false }}">
-<div role="region" aria-label="Self Assessment offer" style="background:#f1eee6;color:#1b1f1c;padding:8px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:center;gap:12px;border-bottom:1px solid #dcd8cf">
+<div data-nosnippet="" role="region" aria-label="Self Assessment offer" style="background:#f1eee6;color:#1b1f1c;padding:8px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:center;gap:12px;border-bottom:1px solid #dcd8cf">
   <a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturnLink }}" style="font:500 15.5px/1.45 Hanken Grotesk,sans-serif;color:#1b1f1c;text-align:center;text-wrap:pretty;text-decoration:underline;text-decoration-color:rgba(27,31,28,.35);text-underline-offset:4px" style-hover="color:#1f3d34;text-decoration-color:#1f3d34">{{ sa.banner }}</a>
   <button sc-camel-on-click="{{ dismissSaBanner }}" aria-label="Dismiss Self Assessment notice" style="border:0;background:transparent;color:rgba(27,31,28,.75);width:32px;height:32px;border-radius:50%;font:400 20px/1 Hanken Grotesk,sans-serif;flex:none;cursor:pointer" style-hover="background:rgba(27,31,28,.08)">×</button>
 </div>
 </sc-if>
 <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ true }}">
-<div style="background:#f1eee6;color:#1b1f1c;padding:8px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:center;gap:12px">
+<div data-nosnippet="" style="background:#f1eee6;color:#1b1f1c;padding:8px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:center;gap:12px">
   <span style="font:400 15.5px/1.45 Hanken Grotesk,sans-serif;text-align:center;text-wrap:pretty">Fileo &amp; Co Accounting is now Bromage &amp; Co. Same accountant, same company number.</span>
   <button sc-camel-on-click="{{ dismissBanner }}" aria-label="Dismiss notice" style="border:0;background:transparent;color:rgba(27,31,28,.75);width:32px;height:32px;border-radius:50%;font:400 20px/1 Hanken Grotesk,sans-serif;flex:none" style-hover="background:rgba(27,31,28,.08)">×</button>
 </div>
@@ -2286,11 +2359,18 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 
 <!-- ══ TAX RETURN THANK YOU ══ -->
 <sc-if value="{{ isSaThanks }}" hint-placeholder-val="{{ false }}">
-<div style="padding:clamp(56px,8vw,112px) clamp(20px,4.6vw,48px);border-bottom:1px solid #dcd8cf;display:flex;flex-direction:column;gap:24px">
+<div style="padding:clamp(56px,8vw,112px) clamp(20px,4.6vw,48px);border-bottom:1px solid #dcd8cf;display:flex;flex-direction:column;gap:28px">
   <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34">Self Assessment 2025/26</div>
-  <h1 style="margin:0;font:500 clamp(44px,6.4vw,84px)/1 'Cormorant Garamond',serif;letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance">Thank you for booking.</h1>
-  <p style="margin:0;font:400 clamp(18px,1.7vw,21px)/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);max-width:58ch;text-wrap:pretty">Louis will call you within one working day to take you through onboarding: a quick ID check and the list of records we need.</p>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
+  <h1 style="margin:0;font:500 clamp(40px,6vw,80px)/1.02 'Cormorant Garamond',serif;letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance;max-width:16ch">Thank you, your booking is confirmed.</h1>
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
+    <div style="font:600 15px/1.3 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74)">What happens next</div>
+    <ol style="list-style:none;margin:0;padding:0;border-top:1px solid #1b1f1c">
+    <li style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:baseline;padding:18px 0;border-bottom:1px solid #dcd8cf"><span aria-hidden="true" style="font:500 22px/1.1 'Cormorant Garamond',serif;color:#44705c">01</span><span style="font:400 clamp(17px,1.5vw,19px)/1.5 Hanken Grotesk,sans-serif;color:#1b1f1c">Louis will call you within one working day.</span></li>
+    <li style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:baseline;padding:18px 0;border-bottom:1px solid #dcd8cf"><span aria-hidden="true" style="font:500 22px/1.1 'Cormorant Garamond',serif;color:#44705c">02</span><span style="font:400 clamp(17px,1.5vw,19px)/1.5 Hanken Grotesk,sans-serif;color:#1b1f1c">A quick ID check, which the law requires.</span></li>
+    <li style="display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:baseline;padding:18px 0;border-bottom:1px solid #dcd8cf"><span aria-hidden="true" style="font:500 22px/1.1 'Cormorant Garamond',serif;color:#44705c">03</span><span style="font:400 clamp(17px,1.5vw,19px)/1.5 Hanken Grotesk,sans-serif;color:#1b1f1c">Your records checklist, so you can send everything in one go.</span></li>
+    </ol>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
     <a href="tel:+447387835746" style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:20px 32px;font:600 17px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;text-decoration:none" style-hover="background:#142b24;border-color:#142b24">Call 07387 835 746</a>
     <a href="mailto:enquiries@bromageco.com" style="border:1px solid #1b1f1c;background:transparent;color:#1b1f1c;padding:20px 30px;font:600 17px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;text-decoration:none" style-hover="background:rgba(27,31,28,.05)">enquiries@bromageco.com</a>
   </div>
@@ -2322,6 +2402,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
       <a data-nav="" href="{{ n.href }}" sc-camel-on-click="{{ n.go }}" style="border:0;background:transparent;padding:0;text-align:left;font:400 14.5px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8)" style-hover="color:#44705c">{{ n.label }}</a>
     </sc-for>
     <a data-nav="" href="/legal/" sc-camel-on-click="{{ goLegal }}" style="border:0;background:transparent;padding:0;text-align:left;font:400 14.5px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);margin-top:5px" style-hover="color:#44705c">Legal &amp; privacy</a>
+    <button type="button" data-cookie-settings="" style="border:0;background:transparent;padding:0;text-align:left;font:400 14.5px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8)" style-hover="color:#44705c">Cookie settings</button>
   </div>
   <div style="display:flex;flex-direction:column;gap:9px">
     <div style="font:600 13.5px/1 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74)">Get in touch</div>
@@ -2355,7 +2436,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 
 </script>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180},&quot;previewDate&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;live&quot;,&quot;options&quot;:[&quot;live&quot;,&quot;2026-11-10&quot;,&quot;2026-11-30&quot;,&quot;2026-12-15&quot;,&quot;2027-01-10&quot;,&quot;2027-01-25&quot;,&quot;2027-02-05&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Self Assessment campaign&quot;}}">
-const __ROUTES = [{"key":"home","path":"/","title":"Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."},{"key":"services","path":"/services/","title":"Accounting & Tax Services for Small Businesses | Bromage & Co","description":"Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."},{"key":"companyAccounts","path":"/services/company-accounts/","title":"Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet","description":"Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"selfAssessment","path":"/services/self-assessment/","title":"Self Assessment Tax Returns from £180 a Year | Bromage & Co, Fleet","description":"Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. From £180 a year, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"managementAccounts","path":"/services/management-accounts/","title":"Management Accounts for Small Businesses | Bromage & Co","description":"Monthly or quarterly management accounts from £200 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant."},{"key":"finance","path":"/outsourced-finance/","title":"Outsourced Finance & Part-Time FD Support | Bromage & Co","description":"Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."},{"key":"advisory","path":"/advisory/","title":"Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co","description":"Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a Chartered Management Accountant, scoped as projects with the fee fixed first."},{"key":"package","path":"/packages/","title":"Accounting Package Prices: Build Your Quote Online | Bromage & Co","description":"Build your accounting package and see the fixed monthly price instantly. Published prices for limited companies, sole traders, partnerships and personal tax. No call needed."},{"key":"mtd","path":"/making-tax-digital/","title":"Making Tax Digital for Income Tax: What You Need to Do | Bromage & Co","description":"Making Tax Digital for Income Tax starts April 2026 for sole traders and landlords over £50,000, then £30,000 from April 2027. What changes, and how Bromage & Co can handle the quarterly updates for you."},{"key":"about","path":"/about/","title":"About Louis Bromage, Chartered Management Accountant | Bromage & Co","description":"A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients."},{"key":"contact","path":"/contact/","title":"Contact Bromage & Co Accounting | Fleet, Hampshire","description":"Talk to Louis about your accounts, tax or finance. Call 07387 835 746, email enquiries@bromageco.com or send a message. Questions are always free."},{"key":"legal","path":"/legal/","title":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."},{"key":"taxReturn","path":"/tax-return/","title":"Self Assessment tax return from £180 | Bromage & Co","description":"Your Self Assessment 2025/26 tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. £180 if you book by 30 November, normally £300. Fixed fee, no VAT."},{"key":"saThanks","path":"/tax-return/thank-you/","title":"Thank you for booking | Bromage & Co","description":"Thank you for booking your Self Assessment tax return with Bromage & Co."}];
+const __ROUTES = [{"key":"home","path":"/","title":"Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."},{"key":"services","path":"/services/","title":"Accounting & Tax Services for Small Businesses | Bromage & Co","description":"Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."},{"key":"companyAccounts","path":"/services/company-accounts/","title":"Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet","description":"Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"selfAssessment","path":"/services/self-assessment/","title":"Self Assessment Tax Returns from £180 a Year | Bromage & Co, Fleet","description":"Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. From £180 a year, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"managementAccounts","path":"/services/management-accounts/","title":"Management Accounts for Small Businesses | Bromage & Co","description":"Monthly or quarterly management accounts from £200 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant."},{"key":"finance","path":"/outsourced-finance/","title":"Outsourced Finance & Part-Time FD Support | Bromage & Co","description":"Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."},{"key":"advisory","path":"/advisory/","title":"Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co","description":"Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a Chartered Management Accountant, scoped as projects with the fee fixed first."},{"key":"package","path":"/packages/","title":"Accounting Package Prices: Build Your Quote Online | Bromage & Co","description":"Build your accounting package and see the fixed monthly price instantly. Published prices for limited companies, sole traders, partnerships and personal tax. No call needed."},{"key":"mtd","path":"/making-tax-digital/","title":"Making Tax Digital for Income Tax: What You Need to Do | Bromage & Co","description":"Making Tax Digital for Income Tax starts April 2026 for sole traders and landlords over £50,000, then £30,000 from April 2027. What changes, and how Bromage & Co can handle the quarterly updates for you."},{"key":"about","path":"/about/","title":"About Louis Bromage, Chartered Management Accountant | Bromage & Co","description":"A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients."},{"key":"contact","path":"/contact/","title":"Contact Bromage & Co Accounting | Fleet, Hampshire","description":"Talk to Louis about your accounts, tax or finance. Call 07387 835 746, email enquiries@bromageco.com or send a message. Questions are always free."},{"key":"legal","path":"/legal/","title":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."},{"key":"taxReturn","path":"/tax-return/","title":"Self Assessment tax return from £180 | Bromage & Co","description":"Your Self Assessment 2025/26 tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. £180 if you book by 30 November, normally £300. Fixed fee, no VAT."},{"key":"saThanks","path":"/tax-return/thank-you/","title":"Booking confirmed | Bromage & Co","description":"Thank you, your Self Assessment booking with Bromage & Co is confirmed."}];
 const __routeFor = key => __ROUTES.find(r => r.key === key) || __ROUTES[0];
 function __pageFromLocation() {
   if (typeof window === "undefined") return "home";
@@ -2381,7 +2462,7 @@ function __applyMeta(key, topic) {
   set('meta[property="og:description"]', "content", description);
   set('meta[property="og:url"]', "content", url);
 }
-var SA_CFG = {"_note":"Wording and contact details for the Self Assessment campaign. Prices, dates, Stripe links and add-ons live in Supabase (public.campaign_prices); the standard fee is the builder_packages row named below, times 12 months.","campaign":"sa-2025-26","taxYear":"2025/26","timeZone":"Europe/London","standardFee":{"category":"sa","tierKey":"professional","months":12},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","productionHosts":["bromageco.com","www.bromageco.com"],"googleAdsConversionSnippet":""};
+var SA_CFG = {"_note":"Wording and contact details for the Self Assessment campaign. Prices, dates, Stripe links and add-ons live in Supabase (public.campaign_prices); the standard fee is the builder_packages row named below, times 12 months.","campaign":"sa-2025-26","taxYear":"2025/26","timeZone":"Europe/London","standardFee":{"category":"sa","tierKey":"professional","months":12},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","productionHosts":["bromageco.com","www.bromageco.com"]};
 var SA_SNAPSHOT = {"campaign_prices":[{"campaign":"sa-2025-26","kind":"tier","key":"november","label":"Early bird","price":180,"price_basis":"fixed","active_from":"2026-10-29","active_until":"2026-11-30","payment_link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00","sort_order":1},{"campaign":"sa-2025-26","kind":"tier","key":"december","label":"December","price":230,"price_basis":"fixed","active_from":"2026-12-01","active_until":"2026-12-31","payment_link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01","sort_order":2},{"campaign":"sa-2025-26","kind":"tier","key":"january","label":"Standard fee","price":300,"price_basis":"fixed","active_from":"2027-01-01","active_until":"2027-01-20","payment_link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02","sort_order":3},{"campaign":"sa-2025-26","kind":"tier","key":"closed","label":"By phone, subject to capacity","price":350,"price_basis":"fixed","active_from":"2027-01-21","active_until":"2027-01-31","payment_link":null,"sort_order":4},{"campaign":"sa-2025-26","kind":"addon","key":"partner","label":"Spouse or partner return","price":150,"price_basis":"fixed","active_from":null,"active_until":null,"payment_link":null,"sort_order":10},{"campaign":"sa-2025-26","kind":"addon","key":"income-100k-200k","label":"Income £100,000 to £200,000, including a short tax-saving review","price":100,"price_basis":"plus_tier","active_from":null,"active_until":null,"payment_link":null,"sort_order":11},{"campaign":"sa-2025-26","kind":"addon","key":"income-over-200k","label":"Income over £200,000","price":null,"price_basis":"quote","active_from":null,"active_until":null,"payment_link":null,"sort_order":12}],"builder_packages":[{"name":"Starter SA","category":"sa","tier_key":"starter","price":15,"short_desc":"Employed with one or two additional income sources.","includes":["SA100 preparation & filing","Employment income review","Basic reliefs & allowances"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"Professional SA","category":"sa","tier_key":"professional","price":25,"short_desc":"Self-employed individual with trading income.","includes":["Everything in Starter","Self-employment pages","Expense review & maximisation"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"Comprehensive SA","category":"sa","tier_key":"comprehensive","price":35,"short_desc":"Multiple income streams or complex personal tax affairs.","includes":["Everything in Professional","Rental, investment & foreign income","Capital gains tax review"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3}]};
 // Self Assessment campaign: works out which price tier applies right now, in
 // the visitor's browser, and everything the site shows for it.
@@ -3018,7 +3099,7 @@ const PRIVACY = [
   { num: "05", title: "Who else sees it", body: "HMRC and Companies House, where a filing requires it. The software used to do your books, principally Xero, and HMRC-recognised filing software. Our insurer or CIMA, only if a claim or complaint makes it necessary. Your data is never sold, never added to a marketing list, and never passed to anyone else without your instruction." },
   { num: "06", title: "How long it is kept", body: "Seven years after the engagement ends, which is the period tax and company law require, and then it is deleted. Identification records taken for anti-money-laundering purposes are kept for five years after the relationship ends." },
   { num: "07", title: "Your rights", body: "You can ask for a copy of what is held about you, ask for anything inaccurate to be corrected, and ask for deletion where no legal duty requires it to be kept. Ask by email and you will get an answer within one month. If you are unhappy with how your data has been handled, you can complain to the Information Commissioner's Office at ico.org.uk." },
-  { num: "08", title: "Cookies and tracking", body: "This site sets no advertising or analytics cookies and does not track you between sites. One small record is stored in your own browser, remembering that you closed the rebrand notice so it does not reappear. Nothing about it reaches us." },
+  { num: "08", title: "Cookies", body: "We use Google advertising cookies to measure which of our adverts lead to bookings. They only run if you choose Accept in the cookie notice, and you can change your choice at any time with \u201cCookie settings\u201d at the foot of every page. Your browser also keeps a small note of your cookie choice and of any notice you have closed; that note stays on your device." },
 ];
 
 const FAQ = [
@@ -3405,7 +3486,7 @@ class Component extends DCLogic {
         toggle: () => this.setState(s => ({ finOpen: s.finOpen === i ? -1 : i }))
       })),
       showBanner: this.state.banner && !saV.live,
-      showSaBanner: saV.live && this.state.saHidden !== saV.tier.key,
+      showSaBanner: saV.live && this.state.saHidden !== saV.tier.key && p !== "saThanks",
       dismissSaBanner: () => this.dismissSaBanner(saV.tier.key),
       sa: saV,
       saShowCard: saV.live,
@@ -3658,6 +3739,131 @@ class Component extends DCLogic {
     var a = e.target.closest && e.target.closest("a[data-nav]");
     if (a && document.getElementById("dc-root")) e.preventDefault();
   });
+})();
+</script>
+<section id="cc" role="region" aria-label="Cookie choice" aria-live="polite" data-nosnippet hidden></section>
+<script>
+// Cookie banner, phone-click events and the booking (purchase) event. Runs
+// at the end of every page. BC_TRACKING is defined just above this by the
+// build. Plain ES5.
+
+(function () {
+  var cfg = BC_TRACKING;
+  var ALL = ["ad_storage", "ad_user_data", "ad_personalization", "analytics_storage"];
+  var root = document.documentElement;
+
+  function consentAll(state) {
+    var c = {};
+    for (var i = 0; i < ALL.length; i++) c[ALL[i]] = state;
+    return c;
+  }
+  function readChoice() {
+    try { return window.localStorage.getItem(cfg.consentKey); } catch (e) { return null; }
+  }
+  function saveChoice(v) {
+    try { window.localStorage.setItem(cfg.consentKey, v); } catch (e) {}
+  }
+
+  // ── Cookie banner ──────────────────────────────────────────────────────
+  // A fixed bar at the foot of the screen. The page stays usable and can be
+  // scrolled clear of it; the phone action bar steps aside while it shows.
+  var bar = document.getElementById("cc");
+
+  function setHeight() {
+    root.style.setProperty("--cc-h", bar.offsetHeight + "px");
+  }
+  function closeBanner() {
+    bar.hidden = true;
+    bar.innerHTML = "";
+    root.classList.remove("cc-open");
+    root.style.removeProperty("--cc-h");
+    window.removeEventListener("resize", setHeight);
+  }
+  function openBanner(focusFirst) {
+    bar.hidden = false;
+    root.classList.add("cc-open");
+    // Filled after it is shown, so screen readers announce it (the region is
+    // aria-live) without moving the visitor's focus.
+    setTimeout(function () {
+      bar.innerHTML =
+        '<div class="cc-inner">' +
+          '<p class="cc-text">We use cookies to see which of our adverts bring us clients. They only run if you agree, and you can change your mind at any time. ' +
+          '<a href="' + cfg.privacyHref + '">Privacy and cookies</a></p>' +
+          '<div class="cc-actions">' +
+            '<button type="button" class="cc-btn cc-primary" data-cc-choice="granted">Accept</button>' +
+            '<button type="button" class="cc-btn cc-secondary" data-cc-choice="denied">Reject</button>' +
+          '</div>' +
+        '</div>';
+      setHeight();
+      window.addEventListener("resize", setHeight);
+      if (focusFirst) bar.querySelector("button").focus();
+    }, 50);
+  }
+  function choose(v) {
+    saveChoice(v);
+    gtag("consent", "update", consentAll(v === "granted" ? "granted" : "denied"));
+    closeBanner();
+  }
+
+  bar.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-cc-choice]");
+    if (b) choose(b.getAttribute("data-cc-choice"));
+  });
+
+  // "Cookie settings" in the footer reopens the banner, and phone links
+  // report a phone_click. Listened for on the document because the footer
+  // and links are redrawn by the page's design runtime.
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest) return;
+    if (e.target.closest("[data-cookie-settings]")) {
+      e.preventDefault();
+      openBanner(true);
+      return;
+    }
+    if (e.target.closest('a[href^="tel:"]') && typeof window.gtag === "function") {
+      gtag("event", "phone_click");
+    }
+  }, true);
+
+  var choice = readChoice();
+  if (choice !== "granted" && choice !== "denied") openBanner(false);
+
+  // ── Booking confirmed (thank-you page only) ────────────────────────────
+  // Stripe redirects to /tax-return/thank-you/?tier=<tier>&session_id=cs_...
+  // Send one purchase event per Checkout session, valued at the price of the
+  // tier the customer paid through, read from Supabase.
+  if (!cfg.thankYouPage) return;
+  var params = new URLSearchParams(window.location.search);
+  var sessionId = params.get("session_id") || "";
+  var tier = params.get("tier") || "";
+  if (sessionId.indexOf("cs_") !== 0) return;
+
+  var SENT = "bc-purchase-sent", sent = [];
+  try { sent = JSON.parse(window.sessionStorage.getItem(SENT) || "[]"); } catch (e) {}
+  if (sent.indexOf(sessionId) !== -1) return;
+  sent.push(sessionId);
+  try { window.sessionStorage.setItem(SENT, JSON.stringify(sent)); } catch (e) {}
+
+  function send(price) {
+    var p = { transaction_id: sessionId, currency: "GBP" };
+    if (price != null && isFinite(price)) p.value = price;
+    gtag("event", "purchase", p);
+  }
+  function fromBuild() {
+    for (var i = 0; i < cfg.tiers.length; i++) if (cfg.tiers[i].key === tier) return cfg.tiers[i].price;
+    return null;
+  }
+  if (!/^[a-z0-9-]+$/.test(tier)) { send(null); return; }
+  try {
+    fetch(cfg.supabaseUrl + "/rest/v1/campaign_prices?select=price&kind=eq.tier&active=eq.true&campaign=eq." +
+      encodeURIComponent(cfg.campaign) + "&key=eq." + encodeURIComponent(tier),
+      { headers: { apikey: cfg.anonKey, Authorization: "Bearer " + cfg.anonKey } })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .then(function (rows) { send(rows && rows.length ? Number(rows[0].price) : null); })
+      .catch(function () { send(fromBuild()); });
+  } catch (e) {
+    send(fromBuild());
+  }
 })();
 </script>
 </body>
