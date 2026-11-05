@@ -790,13 +790,22 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   // Each serif element is restyled by its tag and what it contains:
   //   h1 (the hero included)  EB Garamond 500, line height 1.1
   //   h2, h3                  EB Garamond 600, line height 1.15
+  //   other titles            EB Garamond 600 at their existing size and spacing,
+  //                           so every heading has the same weight whatever its tag
   //   prices                  the sans, 600
   //   the logo                unchanged
   //   anything else           EB Garamond at its existing weight and spacing
+  //                           (figures, step numbers, options, the quote)
   const SERIF = /font:(italic )?(\d{3})( italic)? ((?:clamp\([^)]*\)|[\d.]+px))\/([\d.]+) 'Cormorant Garamond',serif/;
   const LOGO = /^(<span aria-hidden="true" style="width:34px;height:34px|B<span style="color:#6f8f7c">C<\/span>)/;
   const PRICE = /^\s*(£|\{\{ (t\.priceLabel|svc\.priceFig) \}\})/;
-  const count = { logo: 0, price: 0 };
+  const TITLE = new RegExp("^\\s*(" + [
+    /\{\{ (sa\.cardHeading|a\.title|f\.q|r\.title|saThanksHeading) \}\}/, // card, FAQ and section item titles
+    /Your package is ready|Thank you\{\{ sentName \}\}/,                     // form confirmations
+    /Reply within one working day|Fixed fee and engagement letter|Deadlines met early|Records held securely/, // "How we work"
+    /Pay through your tax code|Know where you stand on MTD/                 // "Why file early"
+  ].map(r => r.source).join("|") + ")");
+  const count = { logo: 0, price: 0, title: 0 };
   markup = markup.replace(/ style="([^"]*'Cormorant Garamond',serif[^"]*)"/g, (attr, style, at) => {
     const tag = markup.slice(markup.lastIndexOf("<", at) + 1, at).match(/^[a-z][a-z0-9-]*/)[0];
     const content = markup.slice(markup.indexOf(">", at) + 1, markup.indexOf(">", at) + 120);
@@ -816,6 +825,9 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
       font = `font:${italic}500 ${size}/1.1 var(--font-heading)`;
     } else if (tag === "h2" || tag === "h3") {
       font = `font:${italic}600 ${size}/1.15 var(--font-heading)`;
+    } else if (tag === "h4" || tag === "summary" || TITLE.test(content)) {
+      count.title++;
+      font = `font:${italic}600 ${size}/${lineHeight} var(--font-heading)`;
     } else {
       font = `font:${italic}${weight} ${size}/${lineHeight} var(--font-heading)`;
     }
@@ -823,6 +835,7 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   });
   if (count.logo !== 4) fail(`expected the logo in 4 places, found ${count.logo}.`);
   if (count.price !== 5) fail(`expected 5 serif prices, found ${count.price}. Check PRICE in the typography step.`);
+  if (count.title !== 25) fail(`expected 25 serif titles, found ${count.title}. Check TITLE in the typography step.`);
   // EB Garamond sets wider than the serif it replaces; at up to 120px the tax
   // return headline broke onto a third line on desktop.
   markup = replaceOnce(markup, `font:500 clamp(48px,8.6vw,120px)/1.1 var(--font-heading)`,

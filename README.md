@@ -31,7 +31,7 @@ If the build stops with "the design has changed shape", a part of the design the
 
 - Two CSS variables, set in every page's head: `--font-heading` (EB Garamond) and `--font-body` (Hanken Grotesk). To swap a font, change `FONTS` in the typography step of `tools/build.mjs` and rebuild.
 - **EB Garamond** (500 and 600, with italics, latin and latin-ext) comes from Google Fonts and is served from `/assets/fonts` like the site's other fonts. The files are in `design/fonts/eb-garamond`.
-- **Headings:** h1 and the hero headline at 500, h2 and h3 at 600. Card titles, questions and figures that used the design's serif use EB Garamond too.
+- **Headings:** h1 and the hero headline at 500. Every other heading is 600, whatever its tag: h2, h3, card and step titles, FAQ questions and the campaign card heading. Figures, step numbers and options in the serif stay at 500.
 - **Sans:** body text, navigation, buttons, forms, the top banners and all prices.
 - The logo keeps its original typeface (Cormorant Garamond).
 
