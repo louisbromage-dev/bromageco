@@ -35,6 +35,13 @@ If the build stops with "the design has changed shape", a part of the design the
 - **Sans:** body text, navigation, buttons, forms, the top banners and all prices.
 - The logo keeps its original typeface (Cormorant Garamond).
 
+## Colours
+
+- Set once as CSS variables in every page's head, from `THEME` in the colour step of `tools/build.mjs`: `--bg` (#FCFCFA, page), `--bg-alt` (#F3F6F4, tinted sections), `--surface` (#FFFFFF, cards, forms and inputs), `--border` (#E3E8E5), `--border-soft`, `--border-strong`, `--border-input` (form fields, 3:1 against white), `--accent` (#1f3d34), `--accent-dark` and `--on-accent`. Change a value there and rebuild.
+- The design's beige and tan colours are pointed at these variables by the build, which stops if any are left. Drawings (the Fleet map) take the equivalent colour directly, as SVG attributes cannot read variables.
+- Tinted sections: the top banners, the referral band, the questions sections, the tax return prices and "Why file early", the package builder, and on Insights the key dates panel and "More insights".
+- Every text colour meets WCAG AA (4.5:1, or 3:1 for large text) on every background.
+
 ## Prices
 
 Every price on the site comes from Supabase (project `biumvfliagyebarcoyzv`), read in the visitor's browser with the public anon key:

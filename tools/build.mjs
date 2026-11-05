@@ -106,7 +106,7 @@ const TRACKING = {
 const toolFile = f => fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), f), "utf8");
 const TRACKING_HEAD = toolFile("tracking-head.js");
 const TRACKING_BODY = toolFile("tracking-body.js");
-const BANNER_CSS = `#cc{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#f7f5f0;border-top:1px solid #1f3d34;box-shadow:0 -6px 20px rgba(27,31,28,.06)}
+const BANNER_CSS = `#cc{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--bg);border-top:1px solid #1f3d34;box-shadow:0 -6px 20px rgba(27,31,28,.06)}
 #cc[hidden]{display:none}
 .cc-inner{max-width:1180px;margin:0 auto;box-sizing:border-box;padding:16px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:14px 32px;flex-wrap:wrap}
 .cc-text{margin:0;flex:1 1 440px;font:400 15px/1.5 var(--font-body);color:#1b1f1c}
@@ -908,6 +908,79 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   markup = markup.replace(/<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com">\s*/, "");
 }
 
+// ── 3d. Colours ──────────────────────────────────────────────────────────
+// A near-white scheme, set once as CSS variables in every page's head. To
+// change a colour, change THEME and rebuild. The design's warm beige and
+// tan tones are pointed at these variables here.
+const THEME = {
+  "bg": "#FCFCFA",            // page background
+  "bg-alt": "#F3F6F4",        // tinted sections: banners, FAQs, prices
+  "surface": "#FFFFFF",       // cards, forms and inputs
+  "border": "#E3E8E5",        // dividers and card borders
+  "border-soft": "#ECF0ED",   // the lightest dividers, inside lists
+  "border-strong": "#CFD8D3", // outlines that need a little more weight
+  "border-input": "#879690",  // form fields (3:1 against white, WCAG 1.4.11)
+  "accent": "#1f3d34",        // headings, buttons and accents
+  "accent-dark": "#142b24",   // button hover
+  "on-accent": "#FCFCFA"      // text on the accent green
+};
+const THEME_CSS = `:root{${Object.entries(THEME).map(([k, v]) => `--${k}:${v}`).join(";")}}`;
+{
+  // SVG presentation attributes cannot read CSS variables, so drawings get
+  // the equivalent colour itself.
+  const SVG = { "#fbfaf6": THEME.bg, "#f1eee6": THEME["bg-alt"], "#e2ddd2": THEME.border, "#c9c2b4": "#C3CEC8", "#6b665b": "#5C6A63", "#dcd8cf": THEME.border };
+  const recolour = s => s
+    .replace(/\b(fill|stroke|stop-color)="(#[0-9a-fA-F]{6})"/g, (m, a, c) => SVG[c.toLowerCase()] ? `${a}="${SVG[c.toLowerCase()]}"` : m)
+    .replace(/rgba\(251,\s*248,\s*242,/g, "rgba(252,252,250,")
+    .replace(/(^|[^-])color:\s*#f7f5f0/gi, "$1color:var(--on-accent)")
+    .replace(/#fbf8f2/gi, "var(--on-accent)")
+    .replace(/#f7f5f0|#fbfaf6/gi, "var(--bg)")
+    .replace(/#f1eee6|#efece4|#f3ede3/gi, "var(--bg-alt)")
+    .replace(/#dcd8cf|#ebe3d6/gi, "var(--border)")
+    .replace(/#e7e3da/gi, "var(--border-soft)")
+    .replace(/background:\s*#fff(fff)?\b/gi, "background:var(--surface)")
+    // The Fleet area map's road and label colours, set as styles.
+    .replace(/#c9c2b4/gi, "#C3CEC8").replace(/#6b665b/gi, "#5C6A63").replace(/#e2ddd2/gi, "var(--border)");
+  logic = replaceOnce(logic, `fg: e.key === this.state.entity ? "#f7f5f0" : "#1b1f1c",`,
+    `fg: e.key === this.state.entity ? "var(--on-accent)" : "#1b1f1c",`, "the business type button colours");
+  markup = recolour(markup);
+  logic = recolour(logic);
+  const WARM = /#(f7f5f0|fbf8f2|fbfaf6|f1eee6|efece4|f3ede3|dcd8cf|ebe3d6|e7e3da|e2ddd2|c9c2b4|6b665b)\b|251,\s*248,\s*242/i;
+  const left = (markup + logic).match(WARM);
+  if (left) fail(`a beige colour (${left[0]}) was left behind by the colour step.`);
+
+  // Unselected options in the package builder and forms are white cards.
+  for (const [find, repl] of [
+    [`bg: on ? "#1f3d34" : "transparent",`, `bg: on ? "#1f3d34" : "var(--surface)",`],
+    [`bg: tOn ? "#1f3d34" : "transparent",`, `bg: tOn ? "#1f3d34" : "var(--surface)",`],
+    [`noneBg: on ? "transparent" : "rgba(47,85,70,.16)",`, `noneBg: on ? "var(--surface)" : "rgba(47,85,70,.16)",`],
+    [`bg: e.key === this.state.entity ? "#1f3d34" : "#fff",`, `bg: e.key === this.state.entity ? "#1f3d34" : "var(--surface)",`]
+  ]) logic = replaceOnce(logic, find, repl, "a package builder option colour");
+
+  // Form fields: white, with a border that meets 3:1.
+  let fields = 0;
+  markup = markup.replace(/<(input|textarea|select)\b[^>]*>/g, tag => tag.replace(/border:1px solid rgba\(27,31,28,\.[23]\d?\)/, () => { fields++; return "border:1px solid var(--border-input)"; }));
+  if (fields < 6) fail(`expected at least 6 form fields with a border, found ${fields}.`);
+
+  // The home page campaign card is a white card.
+  markup = markup.replace(/(<div[^>]*aria-label="Self Assessment 2025\/26 offer"[^>]*style="[^"]*?)background:var\(--bg-alt\)/, (m, pre) => pre + "background:var(--surface)");
+  if (!/aria-label="Self Assessment 2025\/26 offer"[^>]*background:var\(--surface\)|background:var\(--surface\)[^>]*aria-label="Self Assessment 2025\/26 offer"/.test(markup))
+    fail("could not make the home page campaign card white.");
+
+  // Tinted sections, alternating with the page: questions, prices and the
+  // package builder (the referral band and "Why file early" already were).
+  const tint = (find, count, what) => {
+    const n = markup.split(find).length - 1;
+    if (n !== count) fail(`expected ${count} of ${what}, found ${n}.`);
+    markup = markup.split(find).join(find.replace(`style="`, `style="background:var(--bg-alt);`));
+  };
+  tint(`<div data-stack="" style="padding:70px clamp(20px,4.6vw,44px);display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;border-bottom:1px solid var(--border)">`, 2, "the home and outsourced finance questions");
+  tint(`<div data-stack="" style="padding:64px clamp(20px,4.6vw,44px);display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;border-bottom:1px solid var(--border)">`, 1, "the service page questions");
+  tint(`<div data-sa2="" style="padding:clamp(48px,6vw,88px) clamp(20px,4.6vw,48px);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:clamp(28px,3.5vw,40px)">`, 1, "the tax return prices");
+  tint(`<div data-sa2="" style="padding:clamp(48px,6vw,88px) clamp(20px,4.6vw,48px);border-bottom:1px solid var(--border);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,72px);align-items:start">`, 1, "the tax return questions");
+  tint(`<div data-stack="" style="display:grid;grid-template-columns:1fr 340px;border-bottom:1px solid var(--border)">`, 1, "the package builder");
+}
+
 // ── 4. Page shell ─────────────────────────────────────────────────────────
 
 const ORG = {
@@ -957,7 +1030,7 @@ function shell(page, { head = "", body = "", variants = {}, robots = page.robots
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#1f3d34">
+<meta name="theme-color" content="${THEME.bg}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${SITE_NAME.replace("&", "&amp;")}">
 <meta property="og:locale" content="en_GB">
@@ -980,7 +1053,7 @@ ${page.key === "taxReturn" ? `(function () {
 })();` : ""}
 </script>
 <link rel="preload" href="${FONT_PRELOAD}" as="font" type="font/woff2" crossorigin>
-<style data-fonts>${FONT_CSS}</style>
+<style data-fonts>${THEME_CSS}${FONT_CSS}</style>
 <style>x-dc{display:none!important}html:not(.sa-ok) [data-sa-dyn]{visibility:hidden}</style>
 <noscript><style>[data-sa-dyn]{visibility:visible!important}</style></noscript>
 <script>
@@ -1227,7 +1300,7 @@ fs.writeFileSync(path.join(ROOT, "404.html"),
   await tab.goto(ORIGIN + "/");
   await tab.waitForFunction(() => document.fonts.ready.then(() => true));
   await tab.setContent(`<html><head>${pageCss("home")}</head><body style="margin:0">
-    <div style="width:1200px;height:630px;background:#1f3d34;color:#f4f1ea;display:flex;flex-direction:column;justify-content:center;padding:0 96px;box-sizing:border-box">
+    <div style="width:1200px;height:630px;background:#1f3d34;color:${THEME["on-accent"]};display:flex;flex-direction:column;justify-content:center;padding:0 96px;box-sizing:border-box">
       <div style="font:500 128px/1 'Cormorant Garamond',Georgia,serif;letter-spacing:-.02em">Bromage &amp; Co</div>
       <div style="font:500 44px/1.2 'Cormorant Garamond',Georgia,serif;margin-top:48px;max-width:900px">Your accountant, by name. <i style="color:#b9cabf">Your fee, in writing.</i></div>
       <div style="font:500 24px/1.4 'Hanken Grotesk',sans-serif;color:#d3dcd5;margin-top:22px">Chartered Management Accountant · Fleet, Hampshire</div>

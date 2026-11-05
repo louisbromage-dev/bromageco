@@ -231,7 +231,7 @@ function saCampaignState() {
       priceLabel: saMoney(x.price),
       current: cur, past: past, aria: cur ? "true" : "false",
       bg: cur ? "#e9efe9" : "transparent",
-      priceInk: cur ? "#1f3d34" : past ? "rgba(27,31,28,.45)" : "#1b1f1c"
+      priceInk: cur ? "#1f3d34" : past ? "rgba(27,31,28,.66)" : "#1b1f1c"
     });
   }
   return v;
