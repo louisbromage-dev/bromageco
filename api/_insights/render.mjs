@@ -213,9 +213,9 @@ export function listContent({ posts, keyDates, category = "all", failed = false 
     ? `<p class="ins-empty">Insights could not be loaded just now. Please try again in a few minutes.</p>`
     : posts.length
       ? `<ol class="ins-list">${posts.map(p => postItem(p, "h2", category !== "all" && categoryKey(p.category) !== category)).join("")}</ol><p class="ins-empty" data-ins-empty${visible ? " hidden" : ""}>Nothing on this topic yet. <a href="/insights/" data-ins-filter="all">See all insights</a>.</p>`
-      : `<p class="ins-empty">The first notes are on their way. New ones are published here on Tuesdays.</p>`;
+      : `<p class="ins-empty">The first notes are on their way. New ones are published here twice a week.</p>`;
   return `<div class="ins">
-<div class="ins-intro"><div><p class="ins-eyebrow">Insights</p><h1 class="ins-h1">Tax and money changes, and what they mean for you.</h1></div><p class="ins-lede">Short notes, published on Tuesdays, on the tax, legal and economic changes that affect small businesses and personal finances. What changed, who it affects and what to do about it.</p></div>
+<div class="ins-intro"><div><p class="ins-eyebrow">Insights</p><h1 class="ins-h1">Tax and money changes, and what they mean for you.</h1></div><p class="ins-lede">Short notes, published twice a week, on the tax, legal and economic changes that affect small businesses and personal finances. What changed, who it affects and what to do about it.</p></div>
 <div class="ins-main"><section aria-label="Latest insights" data-ins-list>${filter}${list}</section>${keyDatesBlock(keyDates || [])}</div>
 </div>`;
 }
@@ -262,7 +262,7 @@ export function fillPage(template, { title, description, url, robots = "index,fo
 }
 
 const LIST_TITLE = "Small business tax and money insights | Bromage & Co";
-const LIST_DESCRIPTION = "Short notes, published on Tuesdays, on the tax, legal and economic changes that affect small businesses and personal finances, and what they mean for you.";
+const LIST_DESCRIPTION = "Short notes, published twice a week, on the tax, legal and economic changes that affect small businesses and personal finances, and what they mean for you.";
 
 export async function listPage({ category }) {
   const cat = CATEGORIES.some(c => c.key === category) ? category : "all";
