@@ -109,10 +109,10 @@ const TRACKING_BODY = toolFile("tracking-body.js");
 const BANNER_CSS = `#cc{position:fixed;left:0;right:0;bottom:0;z-index:60;background:#f7f5f0;border-top:1px solid #1f3d34;box-shadow:0 -6px 20px rgba(27,31,28,.06)}
 #cc[hidden]{display:none}
 .cc-inner{max-width:1180px;margin:0 auto;box-sizing:border-box;padding:16px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:14px 32px;flex-wrap:wrap}
-.cc-text{margin:0;flex:1 1 440px;font:400 15px/1.5 "Hanken Grotesk",system-ui,sans-serif;color:#1b1f1c}
+.cc-text{margin:0;flex:1 1 440px;font:400 15px/1.5 var(--font-body);color:#1b1f1c}
 .cc-text a{color:#1f3d34;font-weight:600;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 .cc-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:0 0 auto}
-.cc-btn{min-width:132px;padding:14px 22px;border-radius:2px;font:600 15.5px/1 "Hanken Grotesk",system-ui,sans-serif;cursor:pointer}
+.cc-btn{min-width:132px;padding:14px 22px;border-radius:2px;font:600 15.5px/1 var(--font-body);cursor:pointer}
 .cc-primary{border:1px solid #1f3d34;background:#1f3d34;color:#fff}
 .cc-primary:hover{background:#142b24;border-color:#142b24}
 .cc-secondary{border:1px solid #1b1f1c;background:transparent;color:#1b1f1c}
@@ -757,6 +757,88 @@ logic = replaceOnce(logic, `goLink: a.link ? () => this.go(a.link) : undefined,`
   `goLink: a.link ? () => this.go(a.link) : undefined, linkHref: a.link ? __routeFor(a.link).path : undefined,`,
   "the service page side link");
 
+// ── 3c. Typography ───────────────────────────────────────────────────────
+// Two fonts, each set once as a CSS variable in every page's head, so either
+// can be swapped by changing FONTS:
+//   --font-heading  EB Garamond: headings, titles and figures
+//   --font-body     Hanken Grotesk: text, navigation, buttons, forms and prices
+// EB Garamond comes from Google Fonts and is served from /assets/fonts (the
+// files are in design/fonts/eb-garamond). The design sets fonts inline on
+// each element, so every serif and sans declaration is pointed at a variable
+// here. The logo keeps its own typeface.
+const FONTS = {
+  heading: `"EB Garamond", Georgia, "Times New Roman", serif`,
+  body: `"Hanken Grotesk", system-ui, sans-serif`
+};
+const FONT_DIR = path.join(ROOT, "design", "fonts", "eb-garamond");
+let FONT_CSS = fs.readFileSync(path.join(FONT_DIR, "eb-garamond.css"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+let FONT_PRELOAD = "";
+fs.mkdirSync(path.join(OUT_ASSETS, "fonts"), { recursive: true });
+for (const f of fs.readdirSync(FONT_DIR).filter(f => f.endsWith(".woff2"))) {
+  const buf = fs.readFileSync(path.join(FONT_DIR, f));
+  const rel = `/assets/fonts/${f.replace(/\.woff2$/, "")}-${hash(buf)}.woff2`;
+  if (!FONT_CSS.includes(`url(${f})`)) fail(`design/fonts/eb-garamond/eb-garamond.css does not use ${f}.`);
+  fs.writeFileSync(path.join(ROOT, rel), buf);
+  FONT_CSS = FONT_CSS.split(`url(${f})`).join(`url(${rel})`);
+  if (f === "eb-garamond-normal-latin.woff2") FONT_PRELOAD = rel;
+}
+if (!FONT_PRELOAD) fail("design/fonts/eb-garamond has no eb-garamond-normal-latin.woff2.");
+FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h2,h3{text-wrap:balance}` +
+  FONT_CSS.replace(/\s*\n\s*/g, "");
+
+{
+  // Each serif element is restyled by its tag and what it contains:
+  //   h1 (the hero included)  EB Garamond 500, line height 1.1
+  //   h2, h3                  EB Garamond 600, line height 1.15
+  //   prices                  the sans, 600
+  //   the logo                unchanged
+  //   anything else           EB Garamond at its existing weight and spacing
+  const SERIF = /font:(italic )?(\d{3})( italic)? ((?:clamp\([^)]*\)|[\d.]+px))\/([\d.]+) 'Cormorant Garamond',serif/;
+  const LOGO = /^(<span aria-hidden="true" style="width:34px;height:34px|B<span style="color:#6f8f7c">C<\/span>)/;
+  const PRICE = /^\s*(£|\{\{ (t\.priceLabel|svc\.priceFig) \}\})/;
+  const count = { logo: 0, price: 0 };
+  markup = markup.replace(/ style="([^"]*'Cormorant Garamond',serif[^"]*)"/g, (attr, style, at) => {
+    const tag = markup.slice(markup.lastIndexOf("<", at) + 1, at).match(/^[a-z][a-z0-9-]*/)[0];
+    const content = markup.slice(markup.indexOf(">", at) + 1, markup.indexOf(">", at) + 120);
+    const m = style.match(SERIF);
+    if (!m) fail(`a serif style on <${tag}> has an unexpected shape: ${style}`);
+    const [decl, italic1, weight, italic2, size, lineHeight] = m;
+    const italic = italic1 || italic2 ? "italic " : "";
+    if (LOGO.test(content)) { count.logo++; return attr; }
+    let font;
+    if (PRICE.test(content)) {
+      // The sans sets larger than the serif at the same size, so prices are
+      // scaled to keep each figure's footprint.
+      count.price++;
+      font = `font:600 ${Math.round(parseFloat(size) * 0.8)}px/${lineHeight} var(--font-body);letter-spacing:-.02em`;
+      style = style.replace(/;?letter-spacing:[^;]*/, "");
+    } else if (tag === "h1") {
+      font = `font:${italic}500 ${size}/1.1 var(--font-heading)`;
+    } else if (tag === "h2" || tag === "h3") {
+      font = `font:${italic}600 ${size}/1.15 var(--font-heading)`;
+    } else {
+      font = `font:${italic}${weight} ${size}/${lineHeight} var(--font-heading)`;
+    }
+    return ` style="${style.replace(decl, font)}"`;
+  });
+  if (count.logo !== 4) fail(`expected the logo in 4 places, found ${count.logo}.`);
+  if (count.price !== 5) fail(`expected 5 serif prices, found ${count.price}. Check PRICE in the typography step.`);
+  // EB Garamond sets wider than the serif it replaces; at up to 120px the tax
+  // return headline broke onto a third line on desktop.
+  markup = replaceOnce(markup, `font:500 clamp(48px,8.6vw,120px)/1.1 var(--font-heading)`,
+    `font:500 clamp(48px,7vw,96px)/1.1 var(--font-heading)`, "the tax return headline size");
+
+  // The sans, wherever the design names it (but not its @font-face rules).
+  const SANS = /'?Hanken Grotesk'?,(system-ui,)?sans-serif/g;
+  markup = markup.replace(/ style="[^"]*"|font-family:Hanken Grotesk,system-ui,sans-serif/g, s => s.replace(SANS, "var(--font-body)"));
+  logic = logic.replace(SANS, "var(--font-body)");
+  if (/Hanken Grotesk'?,/.test(markup + logic)) fail("a sans style was left behind by the typography step.");
+
+  // Every font is served from this site, so the design's preconnect to
+  // Google Fonts only opens a connection that is never used.
+  markup = markup.replace(/<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com">\s*/, "");
+}
+
 // ── 4. Page shell ─────────────────────────────────────────────────────────
 
 const ORG = {
@@ -828,6 +910,8 @@ ${page.key === "taxReturn" ? `(function () {
   document.querySelector('meta[property="og:description"]').setAttribute("content", d);
 })();` : ""}
 </script>
+<link rel="preload" href="${FONT_PRELOAD}" as="font" type="font/woff2" crossorigin>
+<style data-fonts>${FONT_CSS}</style>
 <style>x-dc{display:none!important}html:not(.sa-ok) [data-sa-dyn]{visibility:hidden}</style>
 <noscript><style>[data-sa-dyn]{visibility:visible!important}</style></noscript>
 <script>
@@ -944,7 +1028,7 @@ async function renderState(page, state) {
     const hashOf = s => { let x = 2166136261; for (let i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36); };
     const rename = {};
     const css = [];
-    for (const el of document.head.querySelectorAll("style")) {
+    for (const el of document.head.querySelectorAll("style:not([data-fonts])")) {
       let rules;
       try { rules = [...el.sheet.cssRules]; } catch { css.push(el.textContent); continue; }
       for (const r of rules) {
