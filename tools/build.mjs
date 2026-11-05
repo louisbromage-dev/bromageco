@@ -813,6 +813,41 @@ markup = replaceOnce(markup, `<!-- ══ SHARED CTA + FOOTER ══ -->`,
 
 <!-- ══ SHARED CTA + FOOTER ══ -->`, "the shared footer");
 
+// ── 3b3. Header ──────────────────────────────────────────────────────────
+// The desktop header, refined: a drawn chevron for Services instead of a
+// text arrow, a finer underline under the current page (also announced to
+// screen readers), hover states that show, a quieter phone number with an
+// icon so "Book a call" is the one call to action, a little more space
+// between links on wide screens, and a lightly frosted sticky bar.
+logic = replaceOnce(logic, `          color: active ? "#1f3d34" : "#1b1f1c",\n`,
+  `          color: active ? "#1f3d34" : "#1b1f1c",
+          current: active ? "page" : undefined,
+          caretTurn: subOpen ? "rotate(180deg)" : "none",
+`, "the nav item colours");
+markup = replaceOnce(markup,
+  `sc-camel-on-click="{{ n.go }}" style="border:0;background:transparent;padding:10px 0;font:500 15.5px/1 Hanken Grotesk,sans-serif;white-space:nowrap;color:{{ n.color }};box-shadow:inset 0 -2px 0 {{ n.rule }}" style-hover="color:#1f3d34">`,
+  `sc-camel-on-click="{{ n.go }}" data-navlink="" aria-current="{{ n.current }}" style="border:0;background:transparent;padding:10px 0;font:500 15px/1 Hanken Grotesk,sans-serif;letter-spacing:.01em;white-space:nowrap;color:{{ n.color }};text-decoration:underline 2px {{ n.rule }};text-underline-offset:9px">`,
+  "the desktop nav links");
+markup = replaceOnce(markup,
+  `<button sc-camel-on-click="{{ n.toggle }}" aria-label="More services" aria-expanded="{{ n.subOpen }}" style="border:0;background:transparent;padding:10px 4px;font:400 13px/1 Hanken Grotesk,sans-serif;color:{{ n.color }}" style-hover="color:#1f3d34">{{ n.caret }}</button>`,
+  `<button sc-camel-on-click="{{ n.toggle }}" aria-label="More services" aria-expanded="{{ n.subOpen }}" data-navcaret="" style="border:0;background:transparent;padding:10px 2px 10px 5px;display:inline-flex;align-items:center;color:{{ n.color }}"><svg aria-hidden="true" width="10" height="10" sc-camel-view-box="0 0 10 10" style="display:block;transition:transform .15s ease;transform:{{ n.caretTurn }}"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>`,
+  "the services menu arrow");
+markup = replaceOnce(markup,
+  `<div style="display:flex;align-items:center;gap:16px">\n      <a data-desk="" href="tel:+447387835746" style="font:600 15.5px/1 Hanken Grotesk,sans-serif;color:#1f3d34;text-decoration:none;white-space:nowrap" style-hover="color:#142b24">07387 835 746</a>`,
+  `<div data-navactions="" style="display:flex;align-items:center;gap:22px">\n      <a data-desk="" data-navphone="" href="tel:+447387835746" style="font:500 15px/1 Hanken Grotesk,sans-serif;letter-spacing:.01em;color:#1b1f1c;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:8px"><svg aria-hidden="true" width="15" height="15" sc-camel-view-box="0 0 24 24" style="display:block;flex:none;color:#1f3d34"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"></path></svg>07387 835 746</a>`,
+  "the header phone number");
+markup = replaceOnce(markup, `<div data-desk="" data-desknav="" style="display:flex;align-items:center;gap:26px">`,
+  `<div data-desk="" data-desknav="" style="display:flex;align-items:center;gap:clamp(22px,2.2vw,34px)">`, "the desktop nav spacing");
+markup = replaceOnce(markup, `<div style="background:#fff;border-radius:2px;min-width:280px;display:flex;flex-direction:column;padding:8px;box-shadow:0 16px 40px rgba(27,31,28,.14)">`,
+  `<div style="background:#fff;border:1px solid #dcd8cf;border-radius:2px;min-width:280px;display:flex;flex-direction:column;padding:8px;box-shadow:0 16px 40px rgba(27,31,28,.12)">`, "the services dropdown");
+markup = replaceOnce(markup, `<div style="position:sticky;top:0;z-index:30;background:#f7f5f0;border-bottom:1px solid #dcd8cf">`,
+  `<div style="position:sticky;top:0;z-index:30;background:color-mix(in srgb,#f7f5f0 92%,transparent);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid #dcd8cf">`, "the sticky header");
+markup = replaceOnce(markup, `@media (min-width:901px) and (max-width:1080px){ [data-deskbar]{gap:14px !important} [data-desknav]{gap:14px !important} }`,
+  `@media (min-width:901px) and (max-width:1080px){ [data-deskbar]{gap:14px !important} [data-desknav]{gap:14px !important} }
+@media (min-width:901px) and (max-width:1080px){ [data-navactions]{gap:14px !important} [data-navphone] svg{display:none !important} }
+[data-navlink]:not([aria-current]):hover{color:#1f3d34 !important;text-decoration-color:var(--border-strong) !important}
+[data-navcaret]:hover,[data-navphone]:hover{color:#1f3d34 !important}`, "the header hover styles");
+
 // ── 3c. Typography ───────────────────────────────────────────────────────
 // Two fonts, each set once as a CSS variable in every page's head, so either
 // can be swapped by changing FONTS:

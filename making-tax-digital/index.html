@@ -411,13 +411,12 @@ html.cc-open body { padding-bottom: var(--cc-h,0px) !important; }
 .b0 { border-width: medium; border-style: none; border-color: currentcolor; border-image: none; }
 .pqeg4wu:hover { color: rgb(31, 61, 52) !important; text-decoration-color: rgb(31, 61, 52) !important; }
 .p87zbhn:hover { background: rgba(27, 31, 28, 0.08) !important; }
-.p1vyj9ns:hover { color: rgb(31, 61, 52) !important; }
 .p1xcrfm6:hover { background: var(--bg-alt) !important; }
-.p1ldr14k:hover { color: rgb(20, 43, 36) !important; }
 .pu56o2r:hover { background: rgb(20, 43, 36) !important; }
 .piw6xlt:hover { background: rgba(27, 31, 28, 0.06) !important; }
 .p1oz089f:hover { background: rgb(20, 43, 36) !important; border-color: rgb(20, 43, 36) !important; }
 .pnzar06:hover { background: rgba(27, 31, 28, 0.05) !important; }
+.p1vyj9ns:hover { color: rgb(31, 61, 52) !important; }
 .p1g5cp8b:hover { color: rgb(68, 112, 92) !important; }
 .ph3c4kf:hover { background: rgba(47, 85, 70, 0.08) !important; }
 .pb8v8x0:hover { background: rgba(47, 85, 70, 0.07) !important; }
@@ -426,6 +425,7 @@ html.cc-open body { padding-bottom: var(--cc-h,0px) !important; }
 .p1168ym4:focus { border-color: rgb(68, 112, 92) !important; }
 .p1ksttb7:hover { background: rgba(47, 85, 70, 0.14) !important; border-color: rgb(68, 112, 92) !important; }
 .pp5z3li:hover { background: var(--bg-alt) !important; border-color: var(--border) !important; }
+.p1ldr14k:hover { color: rgb(20, 43, 36) !important; }
 @font-face { font-family: "Cormorant Garamond"; font-style: italic; font-weight: 500; font-display: swap; src: url("/assets/fonts/font-7df5efb254.woff2") format("woff2"); unicode-range: U+460-52F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
 @font-face { font-family: "Cormorant Garamond"; font-style: italic; font-weight: 500; font-display: swap; src: url("/assets/fonts/font-05c0ceae1b.woff2") format("woff2"); unicode-range: U+301, U+400-45F, U+490-491, U+4B0-4B1, U+2116; }
 @font-face { font-family: "Cormorant Garamond"; font-style: italic; font-weight: 500; font-display: swap; src: url("/assets/fonts/font-ad2e5588e0.woff2") format("woff2"); unicode-range: U+102-103, U+110-111, U+128-129, U+168-169, U+1A0-1A1, U+1AF-1B0, U+300-301, U+303-304, U+308-309, U+323, U+329, U+1EA0-1EF9, U+20AB; }
@@ -472,6 +472,12 @@ a[data-nav] { color: buttontext; text-decoration: none; display: inline-block; t
   [data-deskbar] { gap: 14px !important; }
   [data-desknav] { gap: 14px !important; }
 }
+@media (min-width: 901px) and (max-width: 1080px) {
+  [data-navactions] { gap: 14px !important; }
+  [data-navphone] svg { display: none !important; }
+}
+[data-navlink]:not([aria-current]):hover { color: rgb(31, 61, 52) !important; text-decoration-color: var(--border-strong) !important; }
+[data-navcaret]:hover, [data-navphone]:hover { color: rgb(31, 61, 52) !important; }
 @media (max-width: 1100px) {
   [data-refband] { grid-template-columns: 1fr !important; }
 }
@@ -521,52 +527,52 @@ details[open] > summary [data-plus] { transform: rotate(45deg); }
 <body>
 <div id="prerender"><div class="sc-host" data-sc-name="Root"><div style="max-width: 1180px; margin: 0px auto; background: var(--bg);"><div data-nosnippet="" role="region" aria-label="Self Assessment offer" style="background: var(--bg-alt); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid var(--border);" data-sa-dyn="0">
   <a data-nav="" href="/tax-return/" class="pqeg4wu" style="font: 500 15.5px/1.45 var(--font-body); color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;"><span class="sc-interp">Self Assessment 2025/26: £180 if you book by 30 November →</span></a>
-  <button aria-label="Dismiss Self Assessment notice" class="p87zbhn" style="border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px/1 var(--font-body); flex: 0 0 auto; cursor: pointer;">×</button></div><div style="position: sticky; top: 0px; z-index: 30; background: var(--bg); border-bottom: 1px solid var(--border);">
+  <button aria-label="Dismiss Self Assessment notice" class="p87zbhn" style="border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px/1 var(--font-body); flex: 0 0 auto; cursor: pointer;">×</button></div><div style="position: sticky; top: 0px; z-index: 30; background: color-mix(in srgb,var(--bg) 92%,transparent); backdrop-filter: saturate(1.2) blur(10px); border-bottom: 1px solid var(--border);">
   <div data-deskbar="" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px clamp(16px, 4vw, 48px);">
     <a data-nav="" href="/" aria-label="Bromage and Co, home" style="border: 0px; background: transparent; padding: 6px 0px; font: 500 28px / 1 &quot;Cormorant Garamond&quot;, serif; letter-spacing: -0.015em; color: rgb(27, 31, 28); white-space: nowrap; display: inline-flex; align-items: center; gap: 11px;"><span aria-hidden="true" style="width: 34px; height: 34px; border: 1px solid rgb(27, 31, 28); border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; font: 600 19px / 1 &quot;Cormorant Garamond&quot;, serif; color: rgb(27, 31, 28); letter-spacing: -0.02em;">B<span style="color: rgb(111, 143, 124);">C</span></span><span>Bromage<span style="color: rgb(111, 143, 124);">&amp;</span>Co</span></a>
-    <div data-desk="" data-desknav="" style="display: flex; align-items: center; gap: 26px;">
+    <div data-desk="" data-desknav="" style="display: flex; align-items: center; gap: clamp(22px, 2.2vw, 34px);">
       
         <div style="position: relative; display: flex; align-items: center; gap: 2px;">
-          <a data-nav="" href="/services/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(31, 61, 52); box-shadow: rgb(31, 61, 52) 0px -2px 0px inset;"><span class="sc-interp">Services</span></a>
+          <a data-nav="" href="/services/" data-navlink="" aria-current="page" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; white-space: nowrap; color: rgb(31, 61, 52); text-decoration: underline 2px rgb(31, 61, 52); text-underline-offset: 9px;"><span class="sc-interp">Services</span></a>
           
-            <button aria-label="More services" aria-expanded="false" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 4px; font: 400 13px/1 var(--font-body); color: rgb(31, 61, 52);"><span class="sc-interp">▾</span></button>
+            <button aria-label="More services" aria-expanded="false" data-navcaret="" style="border: 0px; background: transparent; padding: 10px 2px 10px 5px; display: inline-flex; align-items: center; color: rgb(31, 61, 52);"><svg aria-hidden="true" width="10" height="10" viewBox="0 0 10 10" style="display: block; transition: transform 0.15s; transform: none;"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           
           
         </div>
       
         <div style="position: relative; display: flex; align-items: center; gap: 2px;">
-          <a data-nav="" href="/advisory/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(27, 31, 28); box-shadow: transparent 0px -2px 0px inset;"><span class="sc-interp">Advisory</span></a>
+          <a data-nav="" href="/advisory/" data-navlink="" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; white-space: nowrap; color: rgb(27, 31, 28); text-decoration: underline 2px transparent; text-underline-offset: 9px;"><span class="sc-interp">Advisory</span></a>
           
           
         </div>
       
         <div style="position: relative; display: flex; align-items: center; gap: 2px;">
-          <a data-nav="" href="/packages/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(27, 31, 28); box-shadow: transparent 0px -2px 0px inset;"><span class="sc-interp">Prices</span></a>
+          <a data-nav="" href="/packages/" data-navlink="" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; white-space: nowrap; color: rgb(27, 31, 28); text-decoration: underline 2px transparent; text-underline-offset: 9px;"><span class="sc-interp">Prices</span></a>
           
           
         </div>
       
         <div style="position: relative; display: flex; align-items: center; gap: 2px;">
-          <a data-nav="" href="/insights/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(27, 31, 28); box-shadow: transparent 0px -2px 0px inset;"><span class="sc-interp">Insights</span></a>
+          <a data-nav="" href="/insights/" data-navlink="" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; white-space: nowrap; color: rgb(27, 31, 28); text-decoration: underline 2px transparent; text-underline-offset: 9px;"><span class="sc-interp">Insights</span></a>
           
           
         </div>
       
         <div style="position: relative; display: flex; align-items: center; gap: 2px;">
-          <a data-nav="" href="/about/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(27, 31, 28); box-shadow: transparent 0px -2px 0px inset;"><span class="sc-interp">About</span></a>
+          <a data-nav="" href="/about/" data-navlink="" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; white-space: nowrap; color: rgb(27, 31, 28); text-decoration: underline 2px transparent; text-underline-offset: 9px;"><span class="sc-interp">About</span></a>
           
           
         </div>
       
         <div style="position: relative; display: flex; align-items: center; gap: 2px;">
-          <a data-nav="" href="/contact/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(27, 31, 28); box-shadow: transparent 0px -2px 0px inset;"><span class="sc-interp">Contact</span></a>
+          <a data-nav="" href="/contact/" data-navlink="" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; white-space: nowrap; color: rgb(27, 31, 28); text-decoration: underline 2px transparent; text-underline-offset: 9px;"><span class="sc-interp">Contact</span></a>
           
           
         </div>
       
     </div>
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <a data-desk="" href="tel:+447387835746" class="p1ldr14k" style="font: 600 15.5px/1 var(--font-body); color: rgb(31, 61, 52); text-decoration: none; white-space: nowrap;">07387 835 746</a>
+    <div data-navactions="" style="display: flex; align-items: center; gap: 22px;">
+      <a data-desk="" data-navphone="" href="tel:+447387835746" style="font: 500 15px/1 var(--font-body); letter-spacing: 0.01em; color: rgb(27, 31, 28); text-decoration: none; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" style="display: block; flex: 0 0 auto; color: rgb(31, 61, 52);"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"></path></svg>07387 835 746</a>
       <button data-desk="" class="pu56o2r" style="border: 0px; background: rgb(31, 61, 52); color: rgb(255, 255, 255); padding: 14px 22px; font: 600 15px/1 var(--font-body); border-radius: 2px; white-space: nowrap;">Book a call</button>
       <button data-mob="" aria-expanded="false" class="piw6xlt" style="display: none; border: 1.5px solid rgb(27, 31, 28); background: transparent; color: rgb(27, 31, 28); padding: 12px 20px; border-radius: 2px; font: 600 15px/1 var(--font-body);"><span class="sc-interp">Menu</span></button>
     </div>
@@ -1021,6 +1027,9 @@ a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-alig
 ::selection{background:rgba(47,85,70,.2)}
 @media (max-width:900px){ [data-desk]{display:none !important} [data-mob]{display:inline-flex !important} }
 @media (min-width:901px) and (max-width:1080px){ [data-deskbar]{gap:14px !important} [data-desknav]{gap:14px !important} }
+@media (min-width:901px) and (max-width:1080px){ [data-navactions]{gap:14px !important} [data-navphone] svg{display:none !important} }
+[data-navlink]:not([aria-current]):hover{color:#1f3d34 !important;text-decoration-color:var(--border-strong) !important}
+[data-navcaret]:hover,[data-navphone]:hover{color:#1f3d34 !important}
 @media (max-width:1100px){ [data-refband]{grid-template-columns:1fr !important} }
 @media (max-width:820px){ [data-creds]{grid-template-columns:1fr !important} [data-creds] > div{border-bottom:1px solid var(--border-soft);padding:16px 0 !important;flex-direction:row !important;justify-content:space-between;align-items:baseline;gap:16px !important} [data-creds] > div:last-child{border-bottom:0} }
 @media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
@@ -1057,19 +1066,19 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 </div>
 </sc-if>
 
-<div style="position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--border)">
+<div style="position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(1.2) blur(10px);border-bottom:1px solid var(--border)">
   <div data-deskbar="" style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(16px,4vw,48px)">
     <a data-nav="" href="/" sc-camel-on-click="{{ goHome }}" aria-label="Bromage and Co, home" style="border:0;background:transparent;padding:6px 0;font:500 28px/1 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c;white-space:nowrap;display:inline-flex;align-items:center;gap:11px"><span aria-hidden="true" style="width:34px;height:34px;border:1px solid #1b1f1c;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;flex:none;font:600 19px/1 'Cormorant Garamond',serif;color:#1b1f1c;letter-spacing:-.02em">B<span style="color:#6f8f7c">C</span></span><span>Bromage<span style="color:#6f8f7c">&amp;</span>Co</span></a>
-    <div data-desk="" data-desknav="" style="display:flex;align-items:center;gap:26px">
+    <div data-desk="" data-desknav="" style="display:flex;align-items:center;gap:clamp(22px,2.2vw,34px)">
       <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
         <div sc-camel-on-mouse-enter="{{ n.enter }}" sc-camel-on-mouse-leave="{{ n.leave }}" style="position:relative;display:flex;align-items:center;gap:2px">
-          <a data-nav="" href="{{ n.href }}" sc-camel-on-click="{{ n.go }}" style="border:0;background:transparent;padding:10px 0;font:500 15.5px/1 var(--font-body);white-space:nowrap;color:{{ n.color }};box-shadow:inset 0 -2px 0 {{ n.rule }}" style-hover="color:#1f3d34">{{ n.label }}</a>
+          <a data-nav="" href="{{ n.href }}" sc-camel-on-click="{{ n.go }}" data-navlink="" aria-current="{{ n.current }}" style="border:0;background:transparent;padding:10px 0;font:500 15px/1 var(--font-body);letter-spacing:.01em;white-space:nowrap;color:{{ n.color }};text-decoration:underline 2px {{ n.rule }};text-underline-offset:9px">{{ n.label }}</a>
           <sc-if value="{{ n.hasSub }}" hint-placeholder-val="{{ false }}">
-            <button sc-camel-on-click="{{ n.toggle }}" aria-label="More services" aria-expanded="{{ n.subOpen }}" style="border:0;background:transparent;padding:10px 4px;font:400 13px/1 var(--font-body);color:{{ n.color }}" style-hover="color:#1f3d34">{{ n.caret }}</button>
+            <button sc-camel-on-click="{{ n.toggle }}" aria-label="More services" aria-expanded="{{ n.subOpen }}" data-navcaret="" style="border:0;background:transparent;padding:10px 2px 10px 5px;display:inline-flex;align-items:center;color:{{ n.color }}"><svg aria-hidden="true" width="10" height="10" sc-camel-view-box="0 0 10 10" style="display:block;transition:transform .15s ease;transform:{{ n.caretTurn }}"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
           </sc-if>
           <sc-if value="{{ n.subOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:100%;left:-16px;padding-top:10px;z-index:40">
-              <div style="background:var(--surface);border-radius:2px;min-width:280px;display:flex;flex-direction:column;padding:8px;box-shadow:0 16px 40px rgba(27,31,28,.14)">
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:2px;min-width:280px;display:flex;flex-direction:column;padding:8px;box-shadow:0 16px 40px rgba(27,31,28,.12)">
                 <sc-for list="{{ n.sub }}" as="s" hint-placeholder-count="4">
                   <a data-nav="" href="{{ s.href }}" sc-camel-on-click="{{ s.go }}" style="border:0;border-radius:2px;background:transparent;padding:{{ s.pad }};text-align:left;display:flex;flex-direction:column;gap:4px;color:#1b1f1c" style-hover="background:var(--bg-alt)">
                     <span style="font:{{ s.font }};white-space:nowrap;color:{{ s.color }}">{{ s.label }}</span>
@@ -1084,8 +1093,8 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
         </div>
       </sc-for>
     </div>
-    <div style="display:flex;align-items:center;gap:16px">
-      <a data-desk="" href="tel:+447387835746" style="font:600 15.5px/1 var(--font-body);color:#1f3d34;text-decoration:none;white-space:nowrap" style-hover="color:#142b24">07387 835 746</a>
+    <div data-navactions="" style="display:flex;align-items:center;gap:22px">
+      <a data-desk="" data-navphone="" href="tel:+447387835746" style="font:500 15px/1 var(--font-body);letter-spacing:.01em;color:#1b1f1c;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:8px"><svg aria-hidden="true" width="15" height="15" sc-camel-view-box="0 0 24 24" style="display:block;flex:none;color:#1f3d34"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"></path></svg>07387 835 746</a>
       <button data-desk="" sc-camel-on-click="{{ goContact }}" style="border:0;background:#1f3d34;color:#fff;padding:14px 22px;font:600 15px/1 var(--font-body);border-radius:2px;white-space:nowrap" style-hover="background:#142b24">Book a call</button>
       <button data-mob="" sc-camel-on-click="{{ toggleMobileMenu }}" aria-expanded="{{ mobileMenu }}" style="display:none;border:1.5px solid #1b1f1c;background:transparent;color:#1b1f1c;padding:12px 20px;border-radius:2px;font:600 15px/1 var(--font-body)" style-hover="background:rgba(27,31,28,.06)">{{ menuLabel }}</button>
     </div>
@@ -3480,6 +3489,8 @@ class Component extends DCLogic {
         return {
           label: n.label,
           color: active ? "#1f3d34" : "#1b1f1c",
+          current: active ? "page" : undefined,
+          caretTurn: subOpen ? "rotate(180deg)" : "none",
           rule: active ? "#1f3d34" : "transparent",
           href: __routeFor(n.key).path, go: () => this.go(n.key),
           hasSub,
