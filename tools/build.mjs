@@ -20,7 +20,7 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const EXPORT = path.join(ROOT, "design", "export.html");
-const SITE_URL = "https://bromageco.com";
+const SITE_URL = "https://www.bromageco.com";
 const SITE_NAME = "Bromage & Co Accounting";
 
 // ── Prices from Supabase ──────────────────────────────────────────────────
