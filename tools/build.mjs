@@ -195,6 +195,18 @@ const PAGES = [
     title: "Booking confirmed | Bromage & Co",
     description: "Thank you, your Self Assessment booking with Bromage & Co is confirmed.",
     robots: "noindex,follow", sitemap: false
+  },
+  // Insights are served by api/insights.mjs from Supabase. The build renders
+  // only the frame of these two pages (header, footer, banners), with
+  // %%…%% placeholders the function fills in, and writes them to
+  // api/_insights/site.mjs instead of to a file of their own.
+  {
+    key: "insights", path: "/insights/", template: "list",
+    title: "%%TITLE%%", description: "%%DESCRIPTION%%", robots: "%%ROBOTS%%", sitemap: false
+  },
+  {
+    key: "insight", path: "/insights/__post__/", template: "post",
+    title: "%%TITLE%%", description: "%%DESCRIPTION%%", robots: "%%ROBOTS%%", sitemap: false
   }
 ];
 
@@ -697,11 +709,19 @@ if (linkCount < 15) fail(`only ${linkCount} navigation buttons found; the design
 // Page logic: read the page from the URL, keep the URL, title and
 // description in step when the page changes, and support back/forward.
 const ROUTER = `
-const __ROUTES = ${JSON.stringify(PAGES.map(({ key, path, title, description }) => ({ key, path, title, description })))};
+const __ROUTES = ${JSON.stringify(PAGES.map(({ key, path, title, description, template }) => template ? { key, path } : { key, path, title, description }))};
 const __routeFor = key => __ROUTES.find(r => r.key === key) || __ROUTES[0];
+// Insights pages are written by the server (api/insights.mjs), so they keep
+// the title and description they were served with.
+const __servedMeta = typeof document === "undefined" ? null : {
+  title: document.title,
+  description: (document.querySelector('meta[name="description"]') || {}).content,
+  url: (document.querySelector('link[rel="canonical"]') || {}).href
+};
 function __pageFromLocation() {
   if (typeof window === "undefined") return "home";
   const p = window.location.pathname.replace(/\\/index\\.html$/, "/").replace(/\\/?$/, "/");
+  if (/^\\/insights\\/[^/]+\\/$/.test(p)) return "insight";
   const hit = __ROUTES.find(r => r.path === p);
   return hit ? hit.key : "home";
 }
@@ -711,12 +731,13 @@ function __topicFromLocation() {
 }
 function __applyMeta(key, topic) {
   const r = __routeFor(key);
+  const served = (key === "insights" || key === "insight") && __servedMeta;
   const sa = key === "taxReturn" ? saCampaignState() : null;
-  const description = sa ? sa.meta : r.description;
-  const title = sa ? sa.title : r.title;
+  const description = served ? served.description : sa ? sa.meta : r.description;
+  const title = served ? served.title : sa ? sa.title : r.title;
   document.title = title;
   const set = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
-  const url = ${JSON.stringify(SITE_URL)} + r.path;
+  const url = served ? served.url : ${JSON.stringify(SITE_URL)} + r.path;
   set('meta[name="description"]', "content", description);
   set('link[rel="canonical"]', "href", url);
   set('meta[property="og:title"]', "content", title);
@@ -756,6 +777,41 @@ logic = replaceOnce(logic, `goPage: pageKey ? () => this.go(pageKey) : undefined
 logic = replaceOnce(logic, `goLink: a.link ? () => this.go(a.link) : undefined,`,
   `goLink: a.link ? () => this.go(a.link) : undefined, linkHref: a.link ? __routeFor(a.link).path : undefined,`,
   "the service page side link");
+
+// ── 3b2. Insights ────────────────────────────────────────────────────────
+// "Insights" joins the header, mobile menu and footer after Prices. The
+// pages themselves come from api/insights.mjs: it fills the frame rendered
+// here with the posts and key dates from Supabase, and hands the design the
+// same HTML (window.__INSIGHTS_HTML) so nothing changes when it takes over.
+// Opening Insights from another page always loads it from the server.
+logic = replaceOnce(logic, `  { key: "package", label: "Prices" },\n`,
+  `  { key: "package", label: "Prices" },\n  { key: "insights", label: "Insights" },\n`, "the design's page list");
+logic = replaceOnce(logic, `const active = p === n.key || (hasSub &&`,
+  `const active = p === n.key || (n.key === "insights" && p === "insight") || (hasSub &&`, "the active nav item rule");
+logic = replaceOnce(logic, `      isLegal: p === "legal",\n`,
+  `      isLegal: p === "legal",
+      isInsights: p === "insights" || p === "insight",
+      insightsHtml: { __html: (typeof window !== "undefined" && window.__INSIGHTS_HTML) || "" },
+`, "the legal page flag");
+logic = replaceOnce(logic, `  go(page, topic) {\n`,
+  `  go(page, topic) {
+    if (page === "insights" && typeof window !== "undefined") { window.location.assign(__routeFor("insights").path); return; }
+`, "the go() navigation method");
+// With the extra item the desktop header ran 65px wider than the screen
+// between 901px and about 970px, so it tightens its spacing there.
+markup = replaceOnce(markup, `<div style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(16px,4vw,48px)">`,
+  `<div data-deskbar="" style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(16px,4vw,48px)">`, "the header bar");
+markup = replaceOnce(markup, `<div data-desk="" style="display:flex;align-items:center;gap:26px">\n      <sc-for list="{{ nav }}"`,
+  `<div data-desk="" data-desknav="" style="display:flex;align-items:center;gap:26px">\n      <sc-for list="{{ nav }}"`, "the desktop nav");
+markup = replaceOnce(markup, `@media (max-width:900px){ [data-desk]{display:none !important} [data-mob]{display:inline-flex !important} }`,
+  `@media (max-width:900px){ [data-desk]{display:none !important} [data-mob]{display:inline-flex !important} }
+@media (min-width:901px) and (max-width:1080px){ [data-deskbar]{gap:14px !important} [data-desknav]{gap:14px !important} }`, "the desktop header breakpoint");
+markup = replaceOnce(markup, `<!-- ══ SHARED CTA + FOOTER ══ -->`,
+  `<sc-if value="{{ isInsights }}" hint-placeholder-val="{{ false }}">
+<div data-insights="" sc-camel-dangerously-set-inner-h-t-m-l="{{ insightsHtml }}"></div>
+</sc-if>
+
+<!-- ══ SHARED CTA + FOOTER ══ -->`, "the shared footer");
 
 // ── 3c. Typography ───────────────────────────────────────────────────────
 // Two fonts, each set once as a CSS variable in every page's head, so either
@@ -878,7 +934,7 @@ const ORG = {
 const scriptJson = v => JSON.stringify(v).replace(/</g, "\\u003c");
 
 function shell(page, { head = "", body = "", variants = {}, robots = page.robots || "index,follow" }) {
-  const url = SITE_URL + page.path;
+  const url = page.template ? "%%URL%%" : SITE_URL + page.path;
   const ld = [ORG, {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -933,7 +989,7 @@ ${TRACKING_HEAD}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=${TRACKING.tagId}"></script>
 <style>${BANNER_CSS}</style>
 ${head}
-<script>window.__resources = {};</script>
+${page.template ? `<script>window.__INSIGHTS_HTML = "%%INSIGHTS_HTML%%";</script>\n<!--%%INSIGHTS_HEAD%%-->\n` : ""}<script>window.__resources = {};</script>
 <script defer src="${reactSrc}"></script>
 <script defer src="${reactDomSrc}"></script>
 <script defer src="${runtimeSrc}"></script>
@@ -997,7 +1053,7 @@ ${head}
 <section id="cc" role="region" aria-label="Cookie choice" aria-live="polite" data-nosnippet hidden></section>
 <script>
 ${TRACKING_BODY}</script>
-</body>
+${page.template ? "<!--%%INSIGHTS_BODY%%-->\n" : ""}</body>
 </html>
 `;
 }
@@ -1115,9 +1171,21 @@ await mergeTab.close();
 
 // Second pass: full pages with the rendered content and styles inline.
 const pageCss = key => `<style id="prerender-css">${rendered[key].css.replace(/<\/style/gi, "<\\/style")}</style>`;
+const insightTemplates = {};
 for (const page of PAGES) {
-  fs.writeFileSync(outFile(page.path), shell(page, { head: pageCss(page.key), body: rendered[page.key].html, variants: rendered[page.key].variants }));
+  const html = shell(page, { head: pageCss(page.key), body: rendered[page.key].html, variants: rendered[page.key].variants });
+  if (page.template) {
+    for (const mark of ["%%INSIGHTS_HTML%%", "<!--%%INSIGHTS_HEAD%%-->", "<!--%%INSIGHTS_BODY%%-->", "%%TITLE%%", "%%DESCRIPTION%%", "%%URL%%", "%%ROBOTS%%"])
+      if (!html.includes(mark)) fail(`the ${page.key} page frame has no ${mark}.`);
+    if (!/<div data-insights=""[^>]*>%%INSIGHTS_HTML%%<\/div>/.test(html)) fail(`the ${page.key} page frame did not render its content area.`);
+    insightTemplates[page.template] = html;
+  } else {
+    fs.writeFileSync(outFile(page.path), html);
+  }
 }
+// Nothing may be left at /insights/: a file there would be served instead of
+// the function.
+fs.rmSync(path.join(ROOT, "insights"), { recursive: true, force: true });
 
 // Not-found page: the home page content, marked noindex.
 const notFound = { ...PAGES[0], title: "Page not found | " + SITE_NAME };
@@ -1174,13 +1242,23 @@ server.close();
 
 // ── 6. Sitemap and robots.txt ─────────────────────────────────────────────
 
+// The sitemap is served by api/sitemap.mjs so that it lists each insight as
+// soon as it is published; the build supplies the fixed pages. A sitemap.xml
+// file would be served instead of the function, so there must not be one.
 const today = new Date().toISOString().slice(0, 10);
-fs.writeFileSync(path.join(ROOT, "sitemap.xml"),
-  `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${PAGES.filter(p => p.sitemap !== false).map(p => `  <url><loc>${SITE_URL}${p.path}</loc><lastmod>${today}</lastmod></url>`).join("\n")}
-</urlset>
-`);
+fs.rmSync(path.join(ROOT, "sitemap.xml"), { force: true });
 fs.writeFileSync(path.join(ROOT, "robots.txt"), `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
-console.log("done: " + PAGES.length + " pages written");
+// Everything api/insights.mjs and api/sitemap.mjs need from the build.
+fs.mkdirSync(path.join(ROOT, "api", "_insights"), { recursive: true });
+fs.writeFileSync(path.join(ROOT, "api", "_insights", "site.mjs"),
+  `// Written by tools/build.mjs; do not edit. Rebuild the site to change it.
+export const SITE_URL = ${JSON.stringify(SITE_URL)};
+export const SITE_NAME = ${JSON.stringify(SITE_NAME)};
+export const ORG_ID = ${JSON.stringify(ORG["@id"])};
+export const SUPABASE = ${JSON.stringify(SUPABASE)};
+export const STATIC_PAGES = ${JSON.stringify(PAGES.filter(p => p.sitemap !== false && !p.template).map(p => ({ loc: SITE_URL + p.path, lastmod: today })), null, 1)};
+export const TEMPLATES = ${JSON.stringify(insightTemplates)};
+`);
+
+console.log(`done: ${PAGES.filter(p => !p.template).length} pages written, plus the insights page frames in api/_insights/site.mjs`);

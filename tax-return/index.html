@@ -474,6 +474,10 @@ a[data-nav] { color: buttontext; text-decoration: none; display: inline-block; t
   [data-desk] { display: none !important; }
   [data-mob] { display: inline-flex !important; }
 }
+@media (min-width: 901px) and (max-width: 1080px) {
+  [data-deskbar] { gap: 14px !important; }
+  [data-desknav] { gap: 14px !important; }
+}
 @media (max-width: 1100px) {
   [data-refband] { grid-template-columns: 1fr !important; }
 }
@@ -524,9 +528,9 @@ details[open] > summary [data-plus] { transform: rotate(45deg); }
 <div id="prerender"><div class="sc-host" data-sc-name="Root"><div style="max-width: 1180px; margin: 0px auto; background: rgb(247, 245, 240);"><div data-nosnippet="" role="region" aria-label="Self Assessment offer" style="background: rgb(241, 238, 230); color: rgb(27, 31, 28); padding: 8px clamp(16px, 4vw, 48px); display: flex; align-items: center; justify-content: center; gap: 12px; border-bottom: 1px solid rgb(220, 216, 207);" data-sa-dyn="0">
   <a data-nav="" href="/tax-return/" class="pqeg4wu" style="font: 500 15.5px/1.45 var(--font-body); color: rgb(27, 31, 28); text-align: center; text-wrap: pretty; text-decoration: underline rgba(27, 31, 28, 0.35); text-underline-offset: 4px;"><span class="sc-interp">Self Assessment 2025/26: £180 if you book by 30 November →</span></a>
   <button aria-label="Dismiss Self Assessment notice" class="p87zbhn" style="border: 0px; background: transparent; color: rgba(27, 31, 28, 0.75); width: 32px; height: 32px; border-radius: 50%; font: 400 20px/1 var(--font-body); flex: 0 0 auto; cursor: pointer;">×</button></div><div style="position: sticky; top: 0px; z-index: 30; background: rgb(247, 245, 240); border-bottom: 1px solid rgb(220, 216, 207);">
-  <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px clamp(16px, 4vw, 48px);">
+  <div data-deskbar="" style="display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px clamp(16px, 4vw, 48px);">
     <a data-nav="" href="/" aria-label="Bromage and Co, home" style="border: 0px; background: transparent; padding: 6px 0px; font: 500 28px / 1 &quot;Cormorant Garamond&quot;, serif; letter-spacing: -0.015em; color: rgb(27, 31, 28); white-space: nowrap; display: inline-flex; align-items: center; gap: 11px;"><span aria-hidden="true" style="width: 34px; height: 34px; border: 1px solid rgb(27, 31, 28); border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; font: 600 19px / 1 &quot;Cormorant Garamond&quot;, serif; color: rgb(27, 31, 28); letter-spacing: -0.02em;">B<span style="color: rgb(111, 143, 124);">C</span></span><span>Bromage<span style="color: rgb(111, 143, 124);">&amp;</span>Co</span></a>
-    <div data-desk="" style="display: flex; align-items: center; gap: 26px;">
+    <div data-desk="" data-desknav="" style="display: flex; align-items: center; gap: 26px;">
       
         <div style="position: relative; display: flex; align-items: center; gap: 2px;">
           <a data-nav="" href="/services/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(27, 31, 28); box-shadow: transparent 0px -2px 0px inset;"><span class="sc-interp">Services</span></a>
@@ -544,6 +548,12 @@ details[open] > summary [data-plus] { transform: rotate(45deg); }
       
         <div style="position: relative; display: flex; align-items: center; gap: 2px;">
           <a data-nav="" href="/packages/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(27, 31, 28); box-shadow: transparent 0px -2px 0px inset;"><span class="sc-interp">Prices</span></a>
+          
+          
+        </div>
+      
+        <div style="position: relative; display: flex; align-items: center; gap: 2px;">
+          <a data-nav="" href="/insights/" class="p1vyj9ns" style="border: 0px; background: transparent; padding: 10px 0px; font: 500 15.5px/1 var(--font-body); white-space: nowrap; color: rgb(27, 31, 28); box-shadow: transparent 0px -2px 0px inset;"><span class="sc-interp">Insights</span></a>
           
           
         </div>
@@ -843,6 +853,8 @@ details[open] > summary [data-plus] { transform: rotate(45deg); }
       <a data-nav="" href="/advisory/" class="p1g5cp8b" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 14.5px/1.5 var(--font-body); color: rgba(27, 31, 28, 0.8);"><span class="sc-interp">Advisory</span></a>
     
       <a data-nav="" href="/packages/" class="p1g5cp8b" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 14.5px/1.5 var(--font-body); color: rgba(27, 31, 28, 0.8);"><span class="sc-interp">Prices</span></a>
+    
+      <a data-nav="" href="/insights/" class="p1g5cp8b" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 14.5px/1.5 var(--font-body); color: rgba(27, 31, 28, 0.8);"><span class="sc-interp">Insights</span></a>
     
       <a data-nav="" href="/making-tax-digital/" class="p1g5cp8b" style="border: 0px; background: transparent; padding: 0px; text-align: left; font: 400 14.5px/1.5 var(--font-body); color: rgba(27, 31, 28, 0.8);"><span class="sc-interp">Making Tax Digital</span></a>
     
@@ -1194,6 +1206,7 @@ a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-alig
 :focus-visible{outline:2px solid #1f3d34;outline-offset:2px;border-radius:4px}
 ::selection{background:rgba(47,85,70,.2)}
 @media (max-width:900px){ [data-desk]{display:none !important} [data-mob]{display:inline-flex !important} }
+@media (min-width:901px) and (max-width:1080px){ [data-deskbar]{gap:14px !important} [data-desknav]{gap:14px !important} }
 @media (max-width:1100px){ [data-refband]{grid-template-columns:1fr !important} }
 @media (max-width:820px){ [data-creds]{grid-template-columns:1fr !important} [data-creds] > div{border-bottom:1px solid #e7e3da;padding:16px 0 !important;flex-direction:row !important;justify-content:space-between;align-items:baseline;gap:16px !important} [data-creds] > div:last-child{border-bottom:0} }
 @media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
@@ -1231,9 +1244,9 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 </sc-if>
 
 <div style="position:sticky;top:0;z-index:30;background:#f7f5f0;border-bottom:1px solid #dcd8cf">
-  <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(16px,4vw,48px)">
+  <div data-deskbar="" style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px clamp(16px,4vw,48px)">
     <a data-nav="" href="/" sc-camel-on-click="{{ goHome }}" aria-label="Bromage and Co, home" style="border:0;background:transparent;padding:6px 0;font:500 28px/1 'Cormorant Garamond',serif;letter-spacing:-.015em;color:#1b1f1c;white-space:nowrap;display:inline-flex;align-items:center;gap:11px"><span aria-hidden="true" style="width:34px;height:34px;border:1px solid #1b1f1c;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;flex:none;font:600 19px/1 'Cormorant Garamond',serif;color:#1b1f1c;letter-spacing:-.02em">B<span style="color:#6f8f7c">C</span></span><span>Bromage<span style="color:#6f8f7c">&amp;</span>Co</span></a>
-    <div data-desk="" style="display:flex;align-items:center;gap:26px">
+    <div data-desk="" data-desknav="" style="display:flex;align-items:center;gap:26px">
       <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
         <div sc-camel-on-mouse-enter="{{ n.enter }}" sc-camel-on-mouse-leave="{{ n.leave }}" style="position:relative;display:flex;align-items:center;gap:2px">
           <a data-nav="" href="{{ n.href }}" sc-camel-on-click="{{ n.go }}" style="border:0;background:transparent;padding:10px 0;font:500 15.5px/1 var(--font-body);white-space:nowrap;color:{{ n.color }};box-shadow:inset 0 -2px 0 {{ n.rule }}" style-hover="color:#1f3d34">{{ n.label }}</a>
@@ -2577,6 +2590,10 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 </div>
 </sc-if>
 
+<sc-if value="{{ isInsights }}" hint-placeholder-val="{{ false }}">
+<div data-insights="" sc-camel-dangerously-set-inner-h-t-m-l="{{ insightsHtml }}"></div>
+</sc-if>
+
 <!-- ══ SHARED CTA + FOOTER ══ -->
 <sc-if value="{{ showCta }}" hint-placeholder-val="{{ true }}">
 <div style="padding:60px clamp(20px,4.6vw,44px);display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap">
@@ -2636,11 +2653,19 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 
 </script>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180},&quot;previewDate&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;live&quot;,&quot;options&quot;:[&quot;live&quot;,&quot;2026-11-10&quot;,&quot;2026-11-30&quot;,&quot;2026-12-15&quot;,&quot;2027-01-10&quot;,&quot;2027-01-25&quot;,&quot;2027-02-05&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Self Assessment campaign&quot;}}">
-const __ROUTES = [{"key":"home","path":"/","title":"Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."},{"key":"services","path":"/services/","title":"Accounting & Tax Services for Small Businesses | Bromage & Co","description":"Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."},{"key":"companyAccounts","path":"/services/company-accounts/","title":"Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet","description":"Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"selfAssessment","path":"/services/self-assessment/","title":"Self Assessment Tax Returns from £180 a Year | Bromage & Co, Fleet","description":"Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. From £180 a year, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"managementAccounts","path":"/services/management-accounts/","title":"Management Accounts for Small Businesses | Bromage & Co","description":"Monthly or quarterly management accounts from £200 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant."},{"key":"finance","path":"/outsourced-finance/","title":"Outsourced Finance & Part-Time FD Support | Bromage & Co","description":"Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."},{"key":"advisory","path":"/advisory/","title":"Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co","description":"Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a Chartered Management Accountant, scoped as projects with the fee fixed first."},{"key":"package","path":"/packages/","title":"Accounting Package Prices: Build Your Quote Online | Bromage & Co","description":"Build your accounting package and see the fixed monthly price instantly. Published prices for limited companies, sole traders, partnerships and personal tax. No call needed."},{"key":"mtd","path":"/making-tax-digital/","title":"Making Tax Digital for Income Tax: What You Need to Do | Bromage & Co","description":"Making Tax Digital for Income Tax starts April 2026 for sole traders and landlords over £50,000, then £30,000 from April 2027. What changes, and how Bromage & Co can handle the quarterly updates for you."},{"key":"about","path":"/about/","title":"About Louis Bromage, Chartered Management Accountant | Bromage & Co","description":"A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients."},{"key":"contact","path":"/contact/","title":"Contact Bromage & Co Accounting | Fleet, Hampshire","description":"Talk to Louis about your accounts, tax or finance. Call 07387 835 746, email enquiries@bromageco.com or send a message. Questions are always free."},{"key":"legal","path":"/legal/","title":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."},{"key":"taxReturn","path":"/tax-return/","title":"Self Assessment tax return from £180 | Bromage & Co","description":"Your Self Assessment 2025/26 tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. £180 if you book by 30 November, normally £300. Fixed fee, no VAT."},{"key":"saThanks","path":"/tax-return/thank-you/","title":"Booking confirmed | Bromage & Co","description":"Thank you, your Self Assessment booking with Bromage & Co is confirmed."}];
+const __ROUTES = [{"key":"home","path":"/","title":"Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire","description":"Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."},{"key":"services","path":"/services/","title":"Accounting & Tax Services for Small Businesses | Bromage & Co","description":"Year-end accounts, corporation tax, self assessment, VAT, bookkeeping, payroll and management accounts. Buy one service or bundle them into one fixed monthly fee."},{"key":"companyAccounts","path":"/services/company-accounts/","title":"Limited Company Accounts & Corporation Tax | Bromage & Co, Fleet","description":"Year-end accounts, CT600 and Companies House filing for limited companies, from £75 a month. Prepared early enough to act on, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"selfAssessment","path":"/services/self-assessment/","title":"Self Assessment Tax Returns from £180 a Year | Bromage & Co, Fleet","description":"Self assessment tax returns for sole traders, landlords and company directors, done in the autumn rather than January. From £180 a year, by a Chartered Management Accountant in Fleet, Hampshire."},{"key":"managementAccounts","path":"/services/management-accounts/","title":"Management Accounts for Small Businesses | Bromage & Co","description":"Monthly or quarterly management accounts from £200 a month: P&L against budget, cashflow forecast, margins, KPIs and a review call. From a CIMA Chartered Management Accountant."},{"key":"finance","path":"/outsourced-finance/","title":"Outsourced Finance & Part-Time FD Support | Bromage & Co","description":"Bookkeeping, payroll, monthly management accounts and finance director support for growing businesses, for a fixed monthly fee. Available from August 2027."},{"key":"advisory","path":"/advisory/","title":"Business Advisory: Valuations, Sale Readiness & Due Diligence | Bromage & Co","description":"Buying, selling or valuing a business? Valuations, exit readiness, due diligence and deal modelling from a Chartered Management Accountant, scoped as projects with the fee fixed first."},{"key":"package","path":"/packages/","title":"Accounting Package Prices: Build Your Quote Online | Bromage & Co","description":"Build your accounting package and see the fixed monthly price instantly. Published prices for limited companies, sole traders, partnerships and personal tax. No call needed."},{"key":"mtd","path":"/making-tax-digital/","title":"Making Tax Digital for Income Tax: What You Need to Do | Bromage & Co","description":"Making Tax Digital for Income Tax starts April 2026 for sole traders and landlords over £50,000, then £30,000 from April 2027. What changes, and how Bromage & Co can handle the quarterly updates for you."},{"key":"about","path":"/about/","title":"About Louis Bromage, Chartered Management Accountant | Bromage & Co","description":"A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients."},{"key":"contact","path":"/contact/","title":"Contact Bromage & Co Accounting | Fleet, Hampshire","description":"Talk to Louis about your accounts, tax or finance. Call 07387 835 746, email enquiries@bromageco.com or send a message. Questions are always free."},{"key":"legal","path":"/legal/","title":"Legal Information & Privacy Notice | Bromage & Co Accounting","description":"Company details, professional regulation and the privacy notice for Bromage & Co Accounting Ltd, company number 17052920."},{"key":"taxReturn","path":"/tax-return/","title":"Self Assessment tax return from £180 | Bromage & Co","description":"Your Self Assessment 2025/26 tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. £180 if you book by 30 November, normally £300. Fixed fee, no VAT."},{"key":"saThanks","path":"/tax-return/thank-you/","title":"Booking confirmed | Bromage & Co","description":"Thank you, your Self Assessment booking with Bromage & Co is confirmed."},{"key":"insights","path":"/insights/"},{"key":"insight","path":"/insights/__post__/"}];
 const __routeFor = key => __ROUTES.find(r => r.key === key) || __ROUTES[0];
+// Insights pages are written by the server (api/insights.mjs), so they keep
+// the title and description they were served with.
+const __servedMeta = typeof document === "undefined" ? null : {
+  title: document.title,
+  description: (document.querySelector('meta[name="description"]') || {}).content,
+  url: (document.querySelector('link[rel="canonical"]') || {}).href
+};
 function __pageFromLocation() {
   if (typeof window === "undefined") return "home";
   const p = window.location.pathname.replace(/\/index\.html$/, "/").replace(/\/?$/, "/");
+  if (/^\/insights\/[^/]+\/$/.test(p)) return "insight";
   const hit = __ROUTES.find(r => r.path === p);
   return hit ? hit.key : "home";
 }
@@ -2650,12 +2675,13 @@ function __topicFromLocation() {
 }
 function __applyMeta(key, topic) {
   const r = __routeFor(key);
+  const served = (key === "insights" || key === "insight") && __servedMeta;
   const sa = key === "taxReturn" ? saCampaignState() : null;
-  const description = sa ? sa.meta : r.description;
-  const title = sa ? sa.title : r.title;
+  const description = served ? served.description : sa ? sa.meta : r.description;
+  const title = served ? served.title : sa ? sa.title : r.title;
   document.title = title;
   const set = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val); };
-  const url = "https://www.bromageco.com" + r.path;
+  const url = served ? served.url : "https://www.bromageco.com" + r.path;
   set('meta[name="description"]', "content", description);
   set('link[rel="canonical"]', "href", url);
   set('meta[property="og:title"]', "content", title);
@@ -2952,6 +2978,7 @@ const PAGES = [
   { key: "services", label: "Services" },
   { key: "advisory", label: "Advisory" },
   { key: "package", label: "Prices" },
+  { key: "insights", label: "Insights" },
   { key: "mtd", label: "Making Tax Digital" },
   { key: "about", label: "About" },
   { key: "contact", label: "Contact" }
@@ -3580,6 +3607,7 @@ class Component extends DCLogic {
   }
 
   go(page, topic) {
+    if (page === "insights" && typeof window !== "undefined") { window.location.assign(__routeFor("insights").path); return; }
     this.setState({ page, open: 0, finOpen: 0, sent: false, menu: false, mobileMenu: false, topic: topic || "" });
     if (typeof window !== "undefined") {
       const target = __routeFor(page).path + (topic ? "?topic=" + encodeURIComponent(topic) : "");
@@ -3633,7 +3661,7 @@ class Component extends DCLogic {
         })),
       nav: PAGES.filter(n => n.key !== "mtd").map(n => {
         const hasSub = n.key === "services";
-        const active = p === n.key || (hasSub && (p === "finance" || p === "mtd" || SVC_KEYS.indexOf(p) !== -1));
+        const active = p === n.key || (n.key === "insights" && p === "insight") || (hasSub && (p === "finance" || p === "mtd" || SVC_KEYS.indexOf(p) !== -1));
         const subOpen = hasSub && this.state.menu;
         return {
           label: n.label,
@@ -3739,6 +3767,8 @@ class Component extends DCLogic {
       isAbout: p === "about",
       isContact: p === "contact",
       isLegal: p === "legal",
+      isInsights: p === "insights" || p === "insight",
+      insightsHtml: { __html: (typeof window !== "undefined" && window.__INSIGHTS_HTML) || "" },
       goLegal: () => this.go("legal"),
       legalFacts: LEGAL_FACTS,
       legalReg: LEGAL_REG,

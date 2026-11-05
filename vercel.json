@@ -19,6 +19,15 @@
           "value": "public, max-age=0, must-revalidate"
         }
       ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -251,6 +260,20 @@
       "source": "/finance/",
       "destination": "/outsourced-finance/",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/insights/",
+      "destination": "/api/insights"
+    },
+    {
+      "source": "/insights/:slug/",
+      "destination": "/api/insights?slug=:slug"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
     }
   ]
 }

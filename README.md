@@ -56,6 +56,14 @@ Still typed into the design (not in Supabase yet): payroll (£40 base + £7 per 
 - **Google reviews:** fill in `config/site.json` (count and profile link). Until then the site says "Rated 5.0 on Google" with no link.
 - The original brief is in `design/sa-campaign-handover.md`.
 
+## Insights (/insights/)
+
+- **Posts:** `public.insights` in Supabase (`supabase/migrations/20261105120000_insights.sql`). Write the body in markdown. A post shows once `is_published` is true and `published_at` has passed, so a post can be scheduled for a Tuesday. "Updated" shows when `updated_at` (set automatically on every edit) falls on a later day than `published_at`.
+- **Key dates:** `public.key_dates`. The next four from today (London time) show beside the list.
+- **Served by Vercel functions**, not files: `api/insights.mjs` renders `/insights/` and `/insights/<slug>/`, and `api/sitemap.mjs` renders `/sitemap.xml` with every published post. Vercel's CDN keeps each page for an hour, so a new or edited post appears within the hour without a deploy.
+- **The page frame** (header, footer, banners) comes from the design: the build renders it with placeholders into `api/_insights/site.mjs`, and `api/_insights/render.mjs` fills in the content, title, description, Open Graph tags and structured data. Rebuild after a design change so Insights keeps the same header and footer as the rest of the site.
+- There must be no `insights/` folder or `sitemap.xml` file in the repository: Vercel would serve a file instead of the function.
+
 ## Google tag and cookies
 
 - **Tag ID:** `googleTagId` in `config/site.json` (currently `G-SCL14250DK`), and nowhere else.
