@@ -94,8 +94,10 @@ const SA_BUILD_STATE = SA_BUILD.key;
 // event. The tag ID lives in config/site.json and nowhere else.
 const SITE_CFG = JSON.parse(fs.readFileSync(path.join(ROOT, "config", "site.json"), "utf8"));
 if (!/^(G|AW|GT)-[A-Z0-9]+$/.test(SITE_CFG.googleTagId || "")) fail("config/site.json needs a googleTagId such as G-XXXXXXX.");
+if (SITE_CFG.googleAdsTagId && !/^(GTM|GT|AW)-[A-Z0-9]+$/.test(SITE_CFG.googleAdsTagId)) fail("config/site.json googleAdsTagId should look like GTM-XXXXXXX.");
 const TRACKING = {
   tagId: SITE_CFG.googleTagId,
+  adsTagId: SITE_CFG.googleAdsTagId || "",
   consentKey: "bc-consent",
   privacyHref: "/legal/",
   supabaseUrl: SUPABASE.url,
@@ -1214,7 +1216,7 @@ ${page.key === "taxReturn" ? `(function () {
 var BC_TRACKING = ${scriptJson({ ...TRACKING, thankYouPage: page.key === "saThanks" })};
 ${TRACKING_HEAD}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=${TRACKING.tagId}"></script>
-<style>${BANNER_CSS}</style>
+${TRACKING.adsTagId ? `<script async src="https://www.googletagmanager.com/gtm.js?id=${TRACKING.adsTagId}"></script>\n` : ""}<style>${BANNER_CSS}</style>
 ${head}
 ${page.template ? `<script>window.__INSIGHTS_HTML = "%%INSIGHTS_HTML%%";</script>\n<!--%%INSIGHTS_HEAD%%-->\n` : ""}<script>window.__resources = {};</script>
 <script defer src="${reactSrc}"></script>

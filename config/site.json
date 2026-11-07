@@ -1,6 +1,7 @@
 {
-  "_note": "Site-wide settings. googleTagId is the public Google tag ID (Google Ads and Analytics); it is not a secret.",
+  "_note": "Site-wide settings. googleTagId is the Google Analytics tag; googleAdsTagId is the Google tag created by the Google Ads account (loaded alongside it, under the same consent). Both are public IDs, not secrets.",
   "googleTagId": "G-SCL14250DK",
+  "googleAdsTagId": "GTM-GDST6SV3",
   "googleReviews": {
     "count": null,
     "profileUrl": ""

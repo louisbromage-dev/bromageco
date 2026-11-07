@@ -74,6 +74,7 @@ Still typed into the design (not in Supabase yet): payroll (£40 base + £7 per 
 ## Google tag and cookies
 
 - **Tag ID:** `googleTagId` in `config/site.json` (currently `G-SCL14250DK`), and nowhere else.
+- **Two Google tags:** `googleTagId` (G-SCL14250DK, Analytics) and `googleAdsTagId` (GTM-GDST6SV3, the Google tag made by the Google Ads account), both in `config/site.json`. The Ads tag loads after the consent defaults, so it follows the same cookie banner.
 - **Consent Mode v2** (`tools/tracking-head.js`, in every page's head before gtag.js): `ad_storage`, `ad_user_data`, `ad_personalization` and `analytics_storage` start "denied", `url_passthrough` is on. Accept grants all four; Reject keeps them denied. The choice is kept in the browser (`bc-consent`); if storage is unavailable the banner shows again and consent stays denied.
 - **Cookie banner and events** (`tools/tracking-body.js`): the banner at the foot of the screen, "Cookie settings" in the footer to reopen it, `phone_click` on every tel: link, and on the thank-you page one `purchase` event per Stripe Checkout session (`session_id` starting `cs_`), valued at the price of the tier in the URL from Supabase. No labelled conversion events: Google Ads counts a booking when the thank-you page loads.
 - No names, emails or phone numbers go into URLs or events.
