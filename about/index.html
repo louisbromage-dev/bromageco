@@ -490,6 +490,18 @@ a[data-nav] { color: buttontext; text-decoration: none; display: inline-block; t
 @media (max-width: 640px) {
   [data-steps3] { grid-template-columns: 1fr !important; }
 }
+@media (max-width: 980px) {
+  [data-herogrid] { grid-template-columns: minmax(0px, 1fr) !important; }
+  [data-herogrid] h1 { font-size: clamp(33px, 5vw, 50px) !important; }
+  [data-herovis] { width: 100%; max-width: 560px; }
+}
+@media (max-width: 620px) {
+  [data-herovis] { padding: 20px 16px; display: flex; flex-direction: column; min-height: 0px !important; }
+  [data-hv-list], [data-hv-filed] { position: relative !important; inset: auto !important; width: auto !important; }
+  [data-hv-filed] { margin: -10px 0px 0px 12% !important; }
+  [data-hv-list] { padding: 16px 14px 6px !important; }
+  [data-hv-chip] { display: none !important; }
+}
 @media (max-width: 1000px) {
   [data-steps5] { grid-template-columns: repeat(2, minmax(0px, 1fr)) !important; }
   [data-sa2] { grid-template-columns: 1fr !important; }
@@ -1021,6 +1033,8 @@ a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-alig
 @media (max-width:1100px){ [data-refband]{grid-template-columns:1fr !important} }
 @media (max-width:820px){ [data-creds]{grid-template-columns:1fr !important} [data-creds] > div{border-bottom:1px solid var(--border-soft);padding:16px 0 !important;flex-direction:row !important;justify-content:space-between;align-items:baseline;gap:16px !important} [data-creds] > div:last-child{border-bottom:0} }
 @media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
+@media (max-width:980px){ [data-herogrid]{grid-template-columns:minmax(0,1fr) !important} [data-herogrid] h1{font-size:clamp(33px,5vw,50px) !important} [data-herovis]{width:100%;max-width:560px} }
+@media (max-width:620px){ [data-herovis]{min-height:0 !important;padding:20px 16px;display:flex;flex-direction:column} [data-hv-list],[data-hv-filed]{position:relative !important;left:auto !important;right:auto !important;top:auto !important;bottom:auto !important;width:auto !important} [data-hv-filed]{margin:-10px 0 0 12% !important} [data-hv-list]{padding:16px 14px 6px !important} [data-hv-chip]{display:none !important} }
 @media (max-width:1000px){ [data-steps5]{grid-template-columns:repeat(2,minmax(0,1fr)) !important} [data-sa2]{grid-template-columns:1fr !important} }
 @media (max-width:560px){ [data-steps5]{grid-template-columns:1fr !important} [data-sachecks]{grid-template-columns:1fr !important} [data-saprice]{grid-template-columns:1fr auto !important} [data-saprice] [data-sanote]{display:none !important} }
 details > summary{list-style:none} details > summary::-webkit-details-marker{display:none} details[open] > summary [data-plus]{transform:rotate(45deg)}
@@ -1110,9 +1124,10 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 <div>
   <div style="background:var(--bg);color:#1b1f1c;padding:clamp(56px,8vw,112px) clamp(20px,4.6vw,48px) 0">
     <div style="display:flex;flex-direction:column;gap:clamp(44px,5vw,64px)">
-      <div style="display:flex;flex-direction:column;gap:28px">
+      <div data-herogrid="" style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(32px,4vw,64px);align-items:center;min-width:0">
+      <div style="display:flex;flex-direction:column;gap:28px;min-width:0">
         <p style="margin:0;font:600 clamp(18px,1.9vw,21px)/1.3 var(--font-body);color:#1f3d34">Chartered Management Accountant in Fleet, Hampshire</p>
-        <h1 style="margin:0;font:500 clamp(33px,5vw,68px)/1.1 var(--font-heading);letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance">Accounts and tax for sole traders, landlords and small companies. <span style="display:block;font-style:italic;color:#1f3d34">And advice when it matters.</span></h1>
+        <h1 style="margin:0;font:500 clamp(33px,3.6vw,50px)/1.1 var(--font-heading);letter-spacing:-.02em;color:#1b1f1c;text-wrap:balance">Accounts and tax for sole traders, landlords and small companies. <span style="display:block;font-style:italic;color:#1f3d34">And advice when it matters.</span></h1>
         <p style="margin:0;font:400 clamp(18px,1.6vw,21px)/1.6 var(--font-body);color:rgba(27,31,28,.8);max-width:46ch;text-wrap:pretty">You deal with Louis directly. Fixed fees, agreed upfront.</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
           <a data-nav="" href="/contact/" sc-camel-on-click="{{ goContact }}" style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:20px 32px;font:600 17px/1 var(--font-body);border-radius:2px;white-space:nowrap" style-hover="background:#142b24;border-color:#142b24">Book a free call</a>
@@ -1120,6 +1135,43 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
         </div>
         <a data-nav="" href="/advisory/" sc-camel-on-click="{{ goAdvisory }}" style="align-self:flex-start;margin-top:12px;border:0;background:transparent;padding:2px 0;text-align:left;font:400 15px/1.5 var(--font-body);color:rgba(27,31,28,.74);text-decoration:underline;text-decoration-color:rgba(27,31,28,.3);text-underline-offset:4px" style-hover="color:#1f3d34;text-decoration-color:#1f3d34">Buying, selling or valuing a business? Advisory →</a>
       </div>
+      <div data-herovis="" aria-hidden="true" style="position:relative;box-sizing:border-box;min-height:460px;border-radius:8px;background:var(--bg-alt);overflow:hidden">
+    <svg data-hv-map="" sc-camel-view-box="0 0 480 440" sc-camel-preserve-aspect-ratio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      <path d="M-10 268 C 80 250, 150 236, 236 222 S 400 150, 490 86" fill="none" stroke="#D6DFDA" stroke-width="9" stroke-linecap="round"></path>
+      <path d="M-10 268 C 80 250, 150 236, 236 222 S 400 150, 490 86" fill="none" stroke="#FCFCFA" stroke-width="2" stroke-dasharray="10 9"></path>
+      <path d="M120 450 C 170 360, 220 300, 250 236 S 330 120, 320 -10" fill="none" stroke="#DCE4E0" stroke-width="3"></path>
+      <path d="M40 -10 C 90 90, 110 170, 106 214 S 120 300, 128 316 S 180 420, 220 450" fill="none" stroke="#DCE4E0" stroke-width="2.5"></path>
+      <path d="M250 236 C 300 210, 340 190, 372 176" fill="none" stroke="#DCE4E0" stroke-width="2.5"></path>
+      <circle cx="250" cy="236" r="96" fill="none" stroke="#C9D4CE" stroke-width="1.5" stroke-dasharray="4 6"></circle>
+      <circle cx="250" cy="236" r="6" fill="#1f3d34" stroke="#1f3d34" stroke-opacity="1" stroke-width="1.5"></circle><circle cx="214" cy="296" r="4" fill="#FCFCFA" stroke="#1f3d34" stroke-opacity="0.45" stroke-width="1.5"></circle><circle cx="372" cy="176" r="4" fill="#FCFCFA" stroke="#1f3d34" stroke-opacity="0.45" stroke-width="1.5"></circle><circle cx="404" cy="92" r="4" fill="#FCFCFA" stroke="#1f3d34" stroke-opacity="0.45" stroke-width="1.5"></circle><circle cx="106" cy="214" r="4" fill="#FCFCFA" stroke="#1f3d34" stroke-opacity="0.45" stroke-width="1.5"></circle><circle cx="128" cy="316" r="4" fill="#FCFCFA" stroke="#1f3d34" stroke-opacity="0.45" stroke-width="1.5"></circle><circle cx="300" cy="98" r="4" fill="#FCFCFA" stroke="#1f3d34" stroke-opacity="0.45" stroke-width="1.5"></circle>
+    </svg>
+    <div data-hv-list="" style="position:absolute;left:6%;top:15%;width:min(300px,84%);background:var(--surface);border:1px solid var(--border);border-radius:6px;box-shadow:0 24px 48px -20px rgba(27,31,28,.24),0 2px 6px rgba(27,31,28,.05);padding:18px 18px 8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font:600 17px/1.2 var(--font-heading);color:#1b1f1c">Records for your return</span>
+        <span style="font:600 11px/1 var(--font-body);color:#1f3d34;background:var(--bg-alt);border-radius:999px;padding:6px 9px;white-space:nowrap">3 of 4 in</span>
+      </div>
+      <ul style="list-style:none;margin:0;padding:0">
+        <li style="display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-soft);font:500 13.5px/1.3 var(--font-body);color:#1b1f1c"><span style="width:20px;height:20px;border-radius:50%;background:#1f3d34;display:inline-flex;align-items:center;justify-content:center;flex:none"><svg width="11" height="11" sc-camel-view-box="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M2.5 6.5 5 9l4.5-6"></path></svg></span><span style="flex:1;min-width:0">P60 from your employer</span></li>
+        <li style="display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-soft);font:500 13.5px/1.3 var(--font-body);color:#1b1f1c"><span style="width:20px;height:20px;border-radius:50%;background:#1f3d34;display:inline-flex;align-items:center;justify-content:center;flex:none"><svg width="11" height="11" sc-camel-view-box="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M2.5 6.5 5 9l4.5-6"></path></svg></span><span style="flex:1;min-width:0">Bank interest statements</span></li>
+        <li style="display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-soft);font:500 13.5px/1.3 var(--font-body);color:#1b1f1c"><span style="width:20px;height:20px;border-radius:50%;background:#1f3d34;display:inline-flex;align-items:center;justify-content:center;flex:none"><svg width="11" height="11" sc-camel-view-box="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M2.5 6.5 5 9l4.5-6"></path></svg></span><span style="flex:1;min-width:0">Rental income and costs</span></li>
+        <li style="display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--border-soft);font:500 13.5px/1.3 var(--font-body);color:rgba(27,31,28,.66)"><span style="width:20px;height:20px;border-radius:50%;border:1.5px dashed #879690;box-sizing:border-box;flex:none"></span><span style="flex:1;min-width:0">Pension contributions</span><span style="font:600 11px/1.2 var(--font-body);color:#44705c;white-space:nowrap">Reminder sent</span></li>
+      </ul>
+    </div>
+    <div data-hv-filed="" style="position:absolute;right:6%;bottom:8%;width:min(280px,78%);background:var(--surface);border:1px solid var(--border);border-radius:6px;box-shadow:0 24px 48px -20px rgba(27,31,28,.24),0 2px 6px rgba(27,31,28,.05);padding:16px 18px;display:flex;gap:12px;align-items:flex-start">
+      <span style="width:30px;height:30px;border-radius:50%;background:#1f3d34;display:inline-flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" sc-camel-view-box="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M2.5 6.5 5 9l4.5-6"></path></svg></span>
+      <div style="display:flex;flex-direction:column;gap:6px;min-width:0;flex:1">
+        <span style="font:600 17px/1.2 var(--font-heading);color:#1b1f1c">Tax return 2025/26</span>
+        <span style="font:500 13px/1.35 var(--font-body);color:rgba(27,31,28,.72)">Submitted to HMRC, 14 November</span>
+        <span style="display:block;height:4px;border-radius:2px;background:#1f3d34;margin:4px 0 2px"></span>
+        <span style="font:600 11.5px/1.3 var(--font-body);color:#44705c">Nothing more to do until 31 January</span>
+      </div>
+    </div>
+    <div data-hv-chip="" style="position:absolute;right:6%;top:4.5%;background:var(--surface);border:1px solid var(--border);border-radius:6px;box-shadow:0 24px 48px -20px rgba(27,31,28,.24),0 2px 6px rgba(27,31,28,.05);border-radius:999px;padding:9px 14px;display:inline-flex;align-items:center;gap:8px;font:500 12.5px/1 var(--font-body);color:#1b1f1c;white-space:nowrap">
+      <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1f3d34" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><rect x="3.5" y="5" width="17" height="15.5" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>
+      Next deadline <strong style="font-weight:600">31 Jan</strong>
+    </div>
+  </div>
+    </div>
       <div data-stack="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,3.6vw,48px);align-items:stretch">
       <sc-if value="{{ saShowCard }}" hint-placeholder-val="{{ false }}">
         <div aria-label="Self Assessment 2025/26 offer" role="region" style="background:var(--surface);border:2px solid #1f3d34;border-radius:0;padding:clamp(22px,2.4vw,30px);display:flex;flex-direction:column;gap:12px">

@@ -493,7 +493,7 @@ markup = markup.split("within 24 hours").join("within one working day");
   const hero = markup.match(/<h1 style="([^"]*)">Chartered management accountant in Fleet, Hampshire<\/h1>\s*<div role="text" style="([^"]*)">Your accountant, by name\. <span style="([^"]*)">Your fee, in writing\.<\/span><\/div>\s*<p style="([^"]*)">[^<]*<\/p>\s*<div style="([^"]*)">\s*<button sc-camel-on-click="\{\{ goContact \}\}" ([^>]*)>Book a consultation<\/button>\s*<button sc-camel-on-click="\{\{ goPackage \}\}" ([^>]*)>See our fees<\/button>\s*<\/div>/);
   if (!hero) fail("could not find the home page hero.");
   const [, eyebrowStyle, headingStyle, accentStyle, subStyle, buttonsStyle, primaryAttrs, secondaryAttrs] = hero;
-  const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(33px,5vw,68px)/1.04");
+  const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(33px,3.6vw,50px)/1.04");
   if (heading === headingStyle) fail("could not resize the home page heading.");
   markup = markup.replace(hero[0], `<p style="${eyebrowStyle}">Chartered Management Accountant in Fleet, Hampshire</p>
         <h1 style="${heading}">Accounts and tax for sole traders, landlords and small companies. <span style="${accentStyle}">And advice when it matters.</span></h1>
@@ -657,6 +657,70 @@ markup = replaceOnce(markup,
     ${h}
     ${SAMPLE_PACK}
   </div>`, "the 'Most small businesses' heading");
+}
+
+// Home page hero: the text on the left and, on the right, a small stack of
+// branded cards (a records checklist, a filed return and the next deadline)
+// over a faint line map of Fleet and the towns around it. Below 980px the
+// visual sits under the buttons; on phones it is a simple pair of cards.
+{
+  const card = "background:#fff;border:1px solid #dcd8cf;border-radius:6px;box-shadow:0 24px 48px -20px rgba(27,31,28,.24),0 2px 6px rgba(27,31,28,.05)";
+  const tick = (size = 20) => `<span style="width:${size}px;height:${size}px;border-radius:50%;background:#1f3d34;display:inline-flex;align-items:center;justify-content:center;flex:none"><svg width="${Math.round(size * .55)}" height="${Math.round(size * .55)}" sc-camel-view-box="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M2.5 6.5 5 9l4.5-6"></path></svg></span>`;
+  const todo = `<span style="width:20px;height:20px;border-radius:50%;border:1.5px dashed #879690;box-sizing:border-box;flex:none"></span>`;
+  const row = (done, text, note) => `<li style="display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid #e7e3da;font:500 13.5px/1.3 var(--font-body);color:${done ? "#1b1f1c" : "rgba(27,31,28,.66)"}">${done ? tick() : todo}<span style="flex:1;min-width:0">${text}</span>${note ? `<span style="font:600 11px/1.2 var(--font-body);color:#44705c;white-space:nowrap">${note}</span>` : ""}</li>`;
+  // The towns (unlabelled) are placed roughly as they sit on a map, around Fleet.
+  const towns = [["Fleet", 250, 236, 1], ["Church Crookham", 214, 296, 0], ["Farnborough", 372, 176, 0], ["Camberley", 404, 92, 0], ["Hook", 106, 214, 0], ["Odiham", 128, 316, 0], ["Yateley", 300, 98, 0]];
+  const map = `<svg data-hv-map="" sc-camel-view-box="0 0 480 440" sc-camel-preserve-aspect-ratio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;display:block">
+      <path d="M-10 268 C 80 250, 150 236, 236 222 S 400 150, 490 86" fill="none" stroke="#D6DFDA" stroke-width="9" stroke-linecap="round"></path>
+      <path d="M-10 268 C 80 250, 150 236, 236 222 S 400 150, 490 86" fill="none" stroke="#FCFCFA" stroke-width="2" stroke-dasharray="10 9"></path>
+      <path d="M120 450 C 170 360, 220 300, 250 236 S 330 120, 320 -10" fill="none" stroke="#DCE4E0" stroke-width="3"></path>
+      <path d="M40 -10 C 90 90, 110 170, 106 214 S 120 300, 128 316 S 180 420, 220 450" fill="none" stroke="#DCE4E0" stroke-width="2.5"></path>
+      <path d="M250 236 C 300 210, 340 190, 372 176" fill="none" stroke="#DCE4E0" stroke-width="2.5"></path>
+      <circle cx="250" cy="236" r="96" fill="none" stroke="#C9D4CE" stroke-width="1.5" stroke-dasharray="4 6"></circle>
+      ${towns.map(([name, x, y, main]) => `<circle cx="${x}" cy="${y}" r="${main ? 6 : 4}" fill="${main ? "#1f3d34" : "#FCFCFA"}" stroke="#1f3d34" stroke-opacity="${main ? 1 : .45}" stroke-width="1.5"></circle>`).join("")}
+    </svg>`;
+  const visual = `<div data-herovis="" aria-hidden="true" style="position:relative;box-sizing:border-box;min-height:460px;border-radius:8px;background:#f1eee6;overflow:hidden">
+    ${map}
+    <div data-hv-list="" style="position:absolute;left:6%;top:15%;width:min(300px,84%);${card};padding:18px 18px 8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font:600 17px/1.2 var(--font-heading);color:#1b1f1c">Records for your return</span>
+        <span style="font:600 11px/1 var(--font-body);color:#1f3d34;background:#f1eee6;border-radius:999px;padding:6px 9px;white-space:nowrap">3 of 4 in</span>
+      </div>
+      <ul style="list-style:none;margin:0;padding:0">
+        ${row(true, "P60 from your employer")}
+        ${row(true, "Bank interest statements")}
+        ${row(true, "Rental income and costs")}
+        ${row(false, "Pension contributions", "Reminder sent")}
+      </ul>
+    </div>
+    <div data-hv-filed="" style="position:absolute;right:6%;bottom:8%;width:min(280px,78%);${card};padding:16px 18px;display:flex;gap:12px;align-items:flex-start">
+      ${tick(30)}
+      <div style="display:flex;flex-direction:column;gap:6px;min-width:0;flex:1">
+        <span style="font:600 17px/1.2 var(--font-heading);color:#1b1f1c">Tax return 2025/26</span>
+        <span style="font:500 13px/1.35 var(--font-body);color:rgba(27,31,28,.72)">Submitted to HMRC, 14 November</span>
+        <span style="display:block;height:4px;border-radius:2px;background:#1f3d34;margin:4px 0 2px"></span>
+        <span style="font:600 11.5px/1.3 var(--font-body);color:#44705c">Nothing more to do until 31 January</span>
+      </div>
+    </div>
+    <div data-hv-chip="" style="position:absolute;right:6%;top:4.5%;${card};border-radius:999px;padding:9px 14px;display:inline-flex;align-items:center;gap:8px;font:500 12.5px/1 var(--font-body);color:#1b1f1c;white-space:nowrap">
+      <svg width="15" height="15" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1f3d34" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><rect x="3.5" y="5" width="17" height="15.5" rx="2"></rect><path d="M3.5 10h17M8 3v4M16 3v4"></path></svg>
+      Next deadline <strong style="font-weight:600">31 Jan</strong>
+    </div>
+  </div>`;
+  const open = `<div style="display:flex;flex-direction:column;gap:28px">`;
+  const at = markup.indexOf(open, markup.indexOf(`<sc-if value="{{ isHome }}"`));
+  const end = markup.indexOf("</div>", markup.indexOf("Buying, selling or valuing a business? Advisory →</button>", at));
+  if (at === -1 || end === -1) fail("could not find the home page hero text.");
+  markup = markup.slice(0, at) +
+    `<div data-herogrid="" style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(32px,4vw,64px);align-items:center;min-width:0">
+      <div style="display:flex;flex-direction:column;gap:28px;min-width:0">` +
+    markup.slice(at + open.length, end + "</div>".length) + `
+      ${visual}
+    </div>` + markup.slice(end + "</div>".length);
+  markup = replaceOnce(markup, `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }`,
+    `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
+@media (max-width:980px){ [data-herogrid]{grid-template-columns:minmax(0,1fr) !important} [data-herogrid] h1{font-size:clamp(33px,5vw,50px) !important} [data-herovis]{width:100%;max-width:560px} }
+@media (max-width:620px){ [data-herovis]{min-height:0 !important;padding:20px 16px;display:flex;flex-direction:column} [data-hv-list],[data-hv-filed]{position:relative !important;left:auto !important;right:auto !important;top:auto !important;bottom:auto !important;width:auto !important} [data-hv-filed]{margin:-10px 0 0 12% !important} [data-hv-list]{padding:16px 14px 6px !important} [data-hv-chip]{display:none !important} }`, "the home hero breakpoints");
 }
 markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxReturnLink }}"`,
   `<a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturnLink }}"`, "the campaign banner link");
