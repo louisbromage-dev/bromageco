@@ -531,6 +531,51 @@ markup = markup.split("within 24 hours").join("within one working day");
     `style="border:0;border-bottom:1px solid #dcd8cf;background:transparent;padding:15px 0;display:flex;justify-content:space-between;align-items:baseline;gap:16px;text-align:left;color:#1b1f1c" style-hover="color:#1f3d34">
             <span style="font:500 clamp(22px,2vw,25px)/1.2 'Cormorant Garamond',serif;letter-spacing:-.01em">{{ h.label }}</span>`, "the hero services rows");
 }
+
+// A shorter home page (11 sections to 8). "How we work" repeated the
+// referral steps and the case for the practice, and "What we do for you"
+// repeated the services list in the hero, so both go. The Advisory and
+// Outsourced finance teasers share one band, side by side, wording as it was.
+{
+  const home = markup.indexOf(`<sc-if value="{{ isHome }}"`);
+  if (home === -1) fail("could not find the home page.");
+  // The home page section (a child of its wrapper) that contains `needle`.
+  const section = needle => {
+    const at = markup.indexOf(needle, home);
+    if (at === -1) fail(`could not find the home page section with ${needle}`);
+    const re = /<(\/?)(div|section|sc-if|sc-for)\b[^>]*>/g;
+    re.lastIndex = home;
+    const open = [];
+    for (let m; (m = re.exec(markup));) {
+      if (!m[1]) { open.push(m.index); continue; }
+      const start = open.pop();
+      if (open.length === 2 && start < at && m.index > at) return { start, end: m.index + m[0].length };
+    }
+    fail(`could not find the home page section with ${needle}`);
+  };
+  const how = section("How we work</h2>");
+  const what = section("What we do for you</h2>");
+  const adv = section("Buying, selling or valuing a business?</h2>");
+  const fin = section("Outgrown just the accounts?</h2>");
+  if (!(how.end < what.start && what.end < adv.start && adv.end < fin.start)) fail("the home page sections have moved.");
+  // Each teaser's label, heading, text and link, as one column.
+  const column = s => {
+    const m = markup.slice(s.start, s.end).match(/^<div[^>]*>\s*<div>\s*(<div[^>]*>[^<]*<\/div>)\s*<h2 style="([^"]*)">([^<]*)<\/h2>\s*<\/div>\s*<div[^>]*>\s*(<p[\s\S]*?<\/p>)\s*(<button[\s\S]*?<\/button>)\s*<\/div>\s*<\/div>$/);
+    if (!m) fail("a home page teaser has changed shape.");
+    const [, label, hStyle, heading, text, link] = m;
+    return `<div style="display:flex;flex-direction:column;gap:16px">
+      ${label.replace("margin-bottom:14px", "margin-bottom:-2px")}
+      <h2 style="${hStyle.replace(/font:500 clamp\([^)]*\)/, "font:500 clamp(25px,2.8vw,32px)")}">${heading}</h2>
+      ${text}
+      ${link}
+    </div>`;
+  };
+  const band = `<div data-stack-sm="" style="padding:56px clamp(20px,4.6vw,44px);border-bottom:1px solid #dcd8cf;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
+    ${column(adv)}
+    ${column(fin)}
+  </div>`;
+  markup = markup.slice(0, how.start) + markup.slice(how.end, what.start) + band + markup.slice(fin.end);
+}
 markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxReturnLink }}"`,
   `<a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturnLink }}"`, "the campaign banner link");
 markup = replaceOnce(markup, "<span>Call and onboarding within one working day</span>",
@@ -1012,7 +1057,6 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   const TITLE = new RegExp("^\\s*(" + [
     /\{\{ (sa\.cardHeading|a\.title|f\.q|r\.title|saThanksHeading) \}\}/, // card, FAQ and section item titles
     /Your package is ready|Thank you\{\{ sentName \}\}/,                     // form confirmations
-    /Reply within one working day|Fixed fee and engagement letter|Deadlines met early|Records held securely/, // "How we work"
     /Pay through your tax code|Know where you stand on MTD/                 // "Why file early"
   ].map(r => r.source).join("|") + ")");
   const count = { logo: 0, price: 0, title: 0 };
@@ -1045,7 +1089,7 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   });
   if (count.logo !== 4) fail(`expected the logo in 4 places, found ${count.logo}.`);
   if (count.price !== 5) fail(`expected 5 serif prices, found ${count.price}. Check PRICE in the typography step.`);
-  if (count.title !== 25) fail(`expected 25 serif titles, found ${count.title}. Check TITLE in the typography step.`);
+  if (count.title !== 21) fail(`expected 21 serif titles, found ${count.title}. Check TITLE in the typography step.`);
   // EB Garamond sets wider than the serif it replaces; at up to 120px the tax
   // return headline broke onto a third line on desktop.
   markup = replaceOnce(markup, `font:500 clamp(48px,8.6vw,120px)/1.1 var(--font-heading)`,

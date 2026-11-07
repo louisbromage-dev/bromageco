@@ -1214,27 +1214,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
     </div>
   </div>
 
-  <div style="padding:0 clamp(20px,4.6vw,48px) clamp(56px,7vw,96px);display:flex;flex-direction:column;gap:28px">
-    <h2 style="margin:0;font:600 clamp(32px,4.4vw,46px)/1.15 var(--font-heading);letter-spacing:-.015em">How we work</h2>
-    <div data-grid4="" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 32px;border-top:1px solid #1b1f1c">
-      <div style="border-bottom:1px solid var(--border);padding:24px 0 28px;display:flex;flex-direction:column;gap:12px">
-        <span style="font:500 22px/1 var(--font-heading);font-variant-numeric:lining-nums;color:#44705c">01</span>
-        <span style="font:600 23px/1.2 var(--font-heading);letter-spacing:-.01em;color:#1b1f1c;text-wrap:balance">Reply within one working day</span>
-      </div>
-      <div style="border-bottom:1px solid var(--border);padding:24px 0 28px;display:flex;flex-direction:column;gap:12px">
-        <span style="font:500 22px/1 var(--font-heading);font-variant-numeric:lining-nums;color:#44705c">02</span>
-        <span style="font:600 23px/1.2 var(--font-heading);letter-spacing:-.01em;color:#1b1f1c;text-wrap:balance">Fixed fee and engagement letter before any work starts</span>
-      </div>
-      <div style="border-bottom:1px solid var(--border);padding:24px 0 28px;display:flex;flex-direction:column;gap:12px">
-        <span style="font:500 22px/1 var(--font-heading);font-variant-numeric:lining-nums;color:#44705c">03</span>
-        <span style="font:600 23px/1.2 var(--font-heading);letter-spacing:-.01em;color:#1b1f1c;text-wrap:balance">Deadlines met early, not on the day</span>
-      </div>
-      <div style="border-bottom:1px solid var(--border);padding:24px 0 28px;display:flex;flex-direction:column;gap:12px">
-        <span style="font:500 22px/1 var(--font-heading);font-variant-numeric:lining-nums;color:#44705c">04</span>
-        <span style="font:600 23px/1.2 var(--font-heading);letter-spacing:-.01em;color:#1b1f1c;text-wrap:balance">Records held securely in the UK</span>
-      </div>
-    </div>
-  </div>
+  
 
   <div data-stack-sm="" style="padding:70px clamp(20px,4.6vw,44px);border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
     <h2 style="margin:0;font:600 clamp(29px,4.8vw,44px)/1.15 var(--font-heading);letter-spacing:-.015em;max-width:20ch">Most small businesses outgrow their first accountant.</h2>
@@ -1251,38 +1231,16 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
     </div>
   </div>
 
-  <div style="padding:70px clamp(20px,4.6vw,44px);border-bottom:1px solid var(--border)">
-    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:36px;gap:20px;flex-wrap:wrap">
-      <h2 style="margin:0;font:600 clamp(27px,4.2vw,38px)/1.15 var(--font-heading);letter-spacing:-.015em">What we do for you</h2>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:32px">
-      <sc-for list="{{ serviceCards }}" as="s" hint-placeholder-count="6">
-        <a data-nav="" href="{{ s.href }}" sc-camel-on-click="{{ s.go }}" style="position:relative;background:var(--surface);border-radius:2px;border:1px solid var(--border);padding:28px 26px 30px;display:flex;flex-direction:column;gap:10px;text-align:left;color:#1b1f1c" style-hover="background:rgba(47,85,70,.08)">
-          <div style="font:600 13.5px/1 var(--font-body);color:#44705c">{{ s.num }}</div>
-          <h3 style="margin:0;font:600 24px/1.15 var(--font-heading);letter-spacing:-.015em">{{ s.title }}</h3>
-          <p style="margin:0;font:400 15px/1.6 var(--font-body);color:rgba(27,31,28,.8)">{{ s.body }}</p>
-        </a>
-      </sc-for>
-    </div>
-  </div>
-
   <div data-stack-sm="" style="padding:56px clamp(20px,4.6vw,44px);border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
-    <div>
-      <div style="font:600 14px/1 var(--font-body);color:#44705c;margin-bottom:14px">Advisory</div>
-      <h2 style="margin:0;font:600 clamp(27px,4.2vw,38px)/1.15 var(--font-heading);letter-spacing:-.015em;max-width:22ch">Buying, selling or valuing a business?</h2>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font:600 14px/1 var(--font-body);color:#44705c;margin-bottom:-2px">Advisory</div>
+      <h2 style="margin:0;font:600 clamp(25px,2.8vw,32px)/1.15 var(--font-heading);letter-spacing:-.015em;max-width:22ch">Buying, selling or valuing a business?</h2>
       <p style="margin:0;font:400 17px/1.7 var(--font-body);color:rgba(27,31,28,.8);text-wrap:pretty">Valuations, sale readiness, due diligence and deal modelling, scoped as projects with the fee fixed first. The regulated side of a transaction belongs elsewhere and we say so plainly, which is half of why the advisory page exists.</p>
       <a data-nav="" href="/advisory/" sc-camel-on-click="{{ goAdvisory }}" style="align-self:flex-start;border:0;background:transparent;padding:0;font:600 15px/1 var(--font-body);color:#1f3d34;border-bottom:1px solid #44705c;padding-bottom:4px" style-hover="color:#44705c">Advisory services →</a>
     </div>
-  </div>
-
-  <div data-stack-sm="" style="padding:56px clamp(20px,4.6vw,44px);border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
-    <div>
-      <div style="font:600 14px/1 var(--font-body);color:#1f3d34;margin-bottom:14px">Outsourced finance · from August 2027</div>
-      <h2 style="margin:0;font:600 clamp(27px,4.2vw,38px)/1.15 var(--font-heading);letter-spacing:-.015em;max-width:22ch">Outgrown just the accounts?</h2>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:18px">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="font:600 14px/1 var(--font-body);color:#1f3d34;margin-bottom:-2px">Outsourced finance · from August 2027</div>
+      <h2 style="margin:0;font:600 clamp(25px,2.8vw,32px)/1.15 var(--font-heading);letter-spacing:-.015em;max-width:22ch">Outgrown just the accounts?</h2>
       <p style="margin:0;font:400 17px/1.7 var(--font-body);color:rgba(27,31,28,.8);text-wrap:pretty">Bookkeeping, payroll, monthly reporting and finance director support for a fixed monthly fee. For growing businesses that need numbers they can decide on, without the cost of a full-time finance director.</p>
       <a data-nav="" href="/outsourced-finance/" sc-camel-on-click="{{ goFinance }}" style="align-self:flex-start;border:0;background:transparent;padding:0;font:600 15px/1 var(--font-body);color:#1f3d34;border-bottom:1px solid #44705c;padding-bottom:4px" style-hover="color:#44705c">Outsourced finance →</a>
     </div>
