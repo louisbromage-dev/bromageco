@@ -573,6 +573,110 @@ markup = markup.split("border:0;border-top:2px solid #1f3d34;border-radius:0").j
 if (markup.includes("[data-saprice] [data-sanote]{display:none}"))
   markup = markup.replace("[data-saprice] [data-sanote]{display:none}", "[data-saprice] [data-sanote]{display:none !important}");
 
+// "Continue without paying": a short form under the final Book button that
+// sends the visitor's details to Louis (the same Formspree form as the
+// contact page) instead of going to Stripe. Nothing is paid, so nothing is
+// held: the fee is the one that applies on the day they pay. Shown while
+// online booking is open; the hero's "Continue without paying" opens it.
+const FIELD = `background:#fff;border:1px solid rgba(27,31,28,.35);border-radius:2px;color:#1b1f1c;font:400 16px/1.4 Hanken Grotesk,sans-serif;padding:13px 14px;outline:none`;
+const FIELD_FOCUS = `border-color:#1f3d34;box-shadow:0 0 0 2px rgba(31,61,52,.25)`;
+const LABEL = `font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1b1f1c`;
+const PAY_LATER = `<sc-if value="{{ payLaterOffer }}" hint-placeholder-val="{{ true }}">
+      <div id="pay-later" style="align-self:stretch;margin-top:14px;padding-top:24px;border-top:1px solid #dcd8cf;display:flex;flex-direction:column;gap:12px">
+        <sc-if value="{{ payLaterShut }}" hint-placeholder-val="{{ true }}">
+          <button type="button" sc-camel-on-click="{{ openPayLater }}" aria-controls="pay-later" style="align-self:flex-start;border:0;border-bottom:1px solid #1f3d34;background:transparent;padding:0 0 3px;font:600 16px/1.3 Hanken Grotesk,sans-serif;color:#1f3d34;cursor:pointer">Continue without paying</button>
+          <p style="margin:0;font:400 14.5px/1.55 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72);max-width:52ch;text-wrap:pretty">Send your details and Louis will call you. Nothing is taken now, and the fee is the one that applies on the day you pay.</p>
+        </sc-if>
+        <sc-if value="{{ payLaterForm }}" hint-placeholder-val="{{ false }}">
+          <form sc-camel-on-submit="{{ payLaterSubmit }}" aria-labelledby="pay-later-h" style="display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div id="pay-later-h" style="font:600 18px/1.3 Hanken Grotesk,sans-serif;color:#1b1f1c">Continue without paying</div>
+              <p style="margin:0;font:400 15px/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);max-width:56ch;text-wrap:pretty">{{ payLaterNote }}</p>
+            </div>
+            <div data-sa2="" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px">
+              <label style="display:flex;flex-direction:column;gap:8px"><span style="${LABEL}">Full name</span>
+                <input name="name" sc-camel-auto-complete="name" required="{{ true }}" value="{{ saName }}" sc-camel-on-change="{{ setSaName }}" style="${FIELD}" style-focus="${FIELD_FOCUS}"></label>
+              <label style="display:flex;flex-direction:column;gap:8px"><span style="${LABEL}">Email</span>
+                <input name="email" type="email" sc-camel-auto-complete="email" required="{{ true }}" value="{{ saEmail }}" sc-camel-on-change="{{ setSaEmail }}" style="${FIELD}" style-focus="${FIELD_FOCUS}"></label>
+            </div>
+            <label style="display:flex;flex-direction:column;gap:8px;max-width:calc(50% - 10px);min-width:min(100%,260px)"><span style="${LABEL}">Phone <span style="font-weight:400;color:rgba(27,31,28,.72)">(optional)</span></span>
+              <input name="phone" type="tel" sc-camel-auto-complete="tel" value="{{ saPhone }}" sc-camel-on-change="{{ setSaPhone }}" style="${FIELD}" style-focus="${FIELD_FOCUS}"></label>
+            <fieldset style="border:0;margin:0;padding:0">
+              <legend style="${LABEL};padding:0;margin-bottom:12px">Best way to reach you</legend>
+              <div style="display:flex;gap:10px 24px;flex-wrap:wrap">
+                <sc-for list="{{ saContactOpts }}" as="o" hint-placeholder-count="3">
+                  <label style="display:flex;gap:10px;align-items:center;font:400 15.5px/1.4 Hanken Grotesk,sans-serif;color:#1b1f1c;cursor:pointer;padding:4px 0"><input type="radio" name="pay-later-contact" checked="{{ o.checked }}" sc-camel-on-change="{{ o.select }}" style="width:20px;height:20px;margin:0;accent-color:#1f3d34">{{ o.label }}</label>
+                </sc-for>
+              </div>
+            </fieldset>
+            <sc-if value="{{ saHasError }}" hint-placeholder-val="{{ false }}">
+              <p role="alert" style="margin:0;font:500 15px/1.5 Hanken Grotesk,sans-serif;color:#8a2f1f">{{ saError }}</p>
+            </sc-if>
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+              <button type="submit" disabled="{{ saSending }}" style="border:1px solid #1b1f1c;background:transparent;color:#1b1f1c;padding:18px 28px;font:600 16.5px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;cursor:pointer" style-hover="background:rgba(27,31,28,.05)">{{ payLaterLabel }}</button>
+            </div>
+          </form>
+        </sc-if>
+        <sc-if value="{{ payLaterSent }}" hint-placeholder-val="{{ false }}">
+          <div role="status" style="background:#fff;border:1px solid #dcd8cf;border-radius:2px;padding:24px;display:flex;flex-direction:column;gap:8px">
+            <div style="font:600 26px/1.15 'Cormorant Garamond',serif;color:#1b1f1c">Thank you, your details are in.</div>
+            <p style="margin:0;font:400 16px/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-wrap:pretty">{{ payLaterThanks }}</p>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>`;
+logic = replaceOnce(logic, `saHidden: "", saPaid: false`, `saHidden: "", saPaid: false, payLater: false, payLaterSent: false`, "the campaign form state");
+logic = replaceOnce(logic, `      saHasError: !!this.state.saError, saError: this.state.saError,\n`,
+  `      saHasError: !!this.state.saError, saError: this.state.saError,
+      payLaterOffer: saV.live && !saV.closed,
+      payLaterShut: !this.state.payLater && !this.state.payLaterSent,
+      payLaterForm: this.state.payLater && !this.state.payLaterSent,
+      payLaterSent: this.state.payLaterSent,
+      openPayLater: e => { if (e && e.preventDefault) e.preventDefault(); this.openPayLater(); },
+      payLaterSubmit: e => { e.preventDefault(); this.payLaterSend(saV); },
+      payLaterLabel: this.state.saSending ? "Sending…" : "Send my details",
+      payLaterNote: "No payment is taken now. Louis will call you, and the fee is the one that applies on the day you pay: " + saV.priceText + " until " + saV.untilText + ".",
+      payLaterThanks: "Louis will be in touch within one working day. When you are ready to go ahead he will send you the payment link, and the fee is the one that applies on the day you pay.",
+`, "the campaign form values");
+logic = replaceOnce(logic, `  dismissBanner() {\n`, `  openPayLater() {
+    this.setState({ payLater: true, saError: "" }, () => {
+      if (typeof document === "undefined") return;
+      const el = document.getElementById("pay-later");
+      if (!el) return;
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: "smooth" });
+      const first = el.querySelector("input");
+      if (first) setTimeout(() => first.focus({ preventScroll: true }), 400);
+    });
+  }
+
+  async payLaterSend(sa) {
+    if (this.state.saSending) return;
+    const st = this.state;
+    if (!st.saName.trim() || !/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(st.saEmail.trim())) {
+      this.setState({ saError: "Please add your name and a valid email address so Louis can reply." });
+      return;
+    }
+    const body = {
+      name: st.saName.trim(), email: st.saEmail.trim(), phone: st.saPhone.trim() || "(not given)",
+      preferred_contact: st.saContact,
+      booking: "Continue without paying (no payment taken)",
+      price_shown: sa.priceText + " until " + sa.untilText,
+      _subject: "Self Assessment ${SA_CFG.taxYear}, pay later: " + st.saName.trim(),
+      source: "Tax return page, continue without paying"
+    };
+    this.setState({ saSending: true, saError: "" });
+    try {
+      const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(body) });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      this.setState({ saSending: false, payLaterSent: true });
+    } catch (err) {
+      this.setState({ saSending: false, saError: "That didn't send. Please try again, or call ${SA_CFG.phone}." });
+    }
+  }
+
+  dismissBanner() {
+`, "the banner dismiss method");
+
 // Book buttons on the campaign page become links straight to the current
 // Stripe payment link, each tagged with where it was clicked (client_reference_id).
 const asLink = (button, href, label) => {
@@ -593,7 +697,21 @@ const asLink = (button, href, label) => {
   markup = markup.replace(pricing[0], asLink(pricing[0], "sa.pricingHref", "sa.pricingLabel"));
   const heroPhone = markup.match(/<a href="tel:\+447387835746" [^>]*style-hover="background:rgba\(27,31,28,\.05\)">Call 07387 835 746<\/a>/);
   if (!heroPhone) fail("could not find the tax return page phone button.");
-  markup = markup.replace(heroPhone[0], `<sc-if value="{{ sa.showPhoneLink }}" hint-placeholder-val="{{ true }}">${heroPhone[0]}</sc-if>`);
+  // "Continue without paying" takes the phone button's place in the hero and
+  // opens the pay-later form at the foot of the page; the phone number moves
+  // to a link underneath. Neither shows once online booking has closed.
+  {
+    const at = markup.indexOf(heroPhone[0]);
+    const rowEnd = markup.indexOf("</div>", at);
+    const payLater = heroPhone[0]
+      .replace(/^<a href="tel:\+447387835746" /, `<a href="#pay-later" sc-camel-on-click="{{ openPayLater }}" `)
+      .replace(/>Call 07387 835 746<\/a>$/, ">Continue without paying</a>");
+    markup = markup.slice(0, at) +
+      `<sc-if value="{{ payLaterOffer }}" hint-placeholder-val="{{ true }}">${payLater}</sc-if>
+    </div>
+    <sc-if value="{{ sa.showPhoneLink }}" hint-placeholder-val="{{ true }}"><a href="${SA_CFG.phoneHref}" style="align-self:flex-start;margin-top:-8px;font:600 16px/1.3 Hanken Grotesk,sans-serif;color:#1f3d34;text-decoration:none;border-bottom:1px solid #1f3d34;padding-bottom:3px">Or call ${SA_CFG.phone}</a></sc-if>` +
+      markup.slice(rowEnd + "</div>".length);
+  }
   // The booking form becomes a final Book button: the Stripe checkout takes
   // the details, and the partner return is an add-on inside it.
   const submit = markup.match(/<button type="submit" disabled="\{\{ saSending \}\}" style="([^"]*)"([^>]*)>/);
@@ -605,6 +723,7 @@ const asLink = (button, href, label) => {
     `<div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px">
       <a href="{{ sa.footerHref }}" style="${submit[1]};text-decoration:none;display:inline-flex;align-items:center"${submit[2]}>{{ sa.bookLabel }}</a>
       <span style="font:400 14.5px/1.4 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.72)">{{ sa.formNote }}</span>
+      ${PAY_LATER}
     </div>` + markup.slice(to + "</sc-if>".length);
 }
 
