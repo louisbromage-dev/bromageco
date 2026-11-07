@@ -1445,6 +1445,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
     <div data-grid4="" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 32px;border-top:1px solid #1b1f1c">
       <sc-for list="{{ audiences }}" as="a" hint-placeholder-count="4">
         <a data-nav="" href="{{ a.href }}" sc-camel-on-click="{{ a.go }}" style="border:0;border-bottom:1px solid var(--border);background:transparent;padding:28px 0 30px;display:flex;flex-direction:column;gap:10px;text-align:left;color:#1b1f1c" style-hover="color:#1f3d34">
+          <span aria-hidden="true" sc-camel-dangerously-set-inner-h-t-m-l="{{ a.icon }}" style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:var(--bg-alt);color:#1f3d34;flex:none"></span>
           <span style="font:600 27px/1.1 var(--font-heading);letter-spacing:-.01em;text-wrap:balance">{{ a.title }}</span>
           <span style="font:400 15px/1.55 var(--font-body);color:rgba(27,31,28,.74);text-wrap:pretty">{{ a.body }}</span>
           <span style="font:600 14.5px/1 var(--font-body);color:#1f3d34;margin-top:auto;padding-top:14px">{{ a.price }} →</span>
@@ -1456,7 +1457,48 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
   
 
   <div data-stack-sm="" style="padding:70px clamp(20px,4.6vw,44px);border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:clamp(28px,3.4vw,40px);min-width:0">
     <h2 style="margin:0;font:600 clamp(29px,4.8vw,44px)/1.15 var(--font-heading);letter-spacing:-.015em;max-width:20ch">Most small businesses outgrow their first accountant.</h2>
+    <figure aria-label="Sample monthly management accounts pack, with made-up figures" style="margin:0;max-width:440px;background:var(--surface);border:1px solid var(--border);border-radius:4px;box-shadow:0 22px 44px -18px rgba(27,31,28,.18),0 2px 6px rgba(27,31,28,.04);padding:22px 22px 20px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="min-width:0">
+          <div style="font:600 12.5px/1.2 var(--font-body);color:#44705c">Monthly management pack</div>
+          <div style="font:600 21px/1.2 var(--font-heading);color:#1b1f1c;margin-top:6px">October, at a glance</div>
+        </div>
+        <span style="font:600 11px/1 var(--font-body);color:#1f3d34;background:var(--bg-alt);border:1px solid var(--border);border-radius:999px;padding:6px 10px;white-space:nowrap">Sample figures</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+        <div style="padding:12px 10px 12px 0;display:flex;flex-direction:column;gap:5px;min-width:0">
+          <span style="font:600 11.5px/1.2 var(--font-body);color:rgba(27,31,28,.66)">Revenue</span>
+          <span style="font:600 25px/1 var(--font-heading);color:#1b1f1c">£48.2k</span>
+          <span style="font:600 11.5px/1.3 var(--font-body);color:#44705c">6% over budget</span>
+        </div>
+        <div style="padding:12px 10px 12px 12px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;min-width:0">
+          <span style="font:600 11.5px/1.2 var(--font-body);color:rgba(27,31,28,.66)">Gross margin</span>
+          <span style="font:600 25px/1 var(--font-heading);color:#1b1f1c">41%</span>
+          <span style="font:600 11.5px/1.3 var(--font-body);color:#44705c">Up 2 points</span>
+        </div>
+        <div style="padding:12px 0 12px 12px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:5px;min-width:0">
+          <span style="font:600 11.5px/1.2 var(--font-body);color:rgba(27,31,28,.66)">Cash in bank</span>
+          <span style="font:600 25px/1 var(--font-heading);color:#1b1f1c">£62k</span>
+          <span style="font:600 11.5px/1.3 var(--font-body);color:#44705c">7 months of runway</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;font:600 11.5px/1.2 var(--font-body);color:rgba(27,31,28,.66)">
+          <span>Revenue against budget</span>
+          <span style="display:inline-flex;align-items:center;gap:12px"><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#1f3d34;display:inline-block"></span>Revenue</span><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;border-top:1.5px dashed #44705c;display:inline-block"></span>Budget</span></span>
+        </div>
+        <svg role="img" aria-label="Revenue rising from £38k in May to £48k in October, ahead of budget for the last three months" sc-camel-view-box="0 0 300 112" style="display:block;width:100%;height:auto">
+          <path d="M0 92H300" stroke="#E3E8E5" stroke-width="1"></path>
+          <rect x="11.0" y="28.5" width="28.0" height="63.5" rx="2" fill="#b9cabf"></rect><rect x="61.0" y="23.9" width="28.0" height="68.1" rx="2" fill="#b9cabf"></rect><rect x="111.0" y="26.5" width="28.0" height="65.5" rx="2" fill="#b9cabf"></rect><rect x="161.0" y="19.1" width="28.0" height="72.9" rx="2" fill="#b9cabf"></rect><rect x="211.0" y="17.1" width="28.0" height="74.9" rx="2" fill="#b9cabf"></rect><rect x="261.0" y="12.3" width="28.0" height="79.7" rx="2" fill="#1f3d34"></rect>
+          <path d="M25.0 25.8 L75.0 25.0 L125.0 22.5 L175.0 20.9 L225.0 19.2 L275.0 16.8" fill="none" stroke="#44705c" stroke-width="1.5" stroke-dasharray="4 3" stroke-linecap="round"></path>
+          <text x="25.0" y="108" text-anchor="middle" style="font:600 10px var(--font-body);fill:rgba(27,31,28,.66)">May</text><text x="75.0" y="108" text-anchor="middle" style="font:600 10px var(--font-body);fill:rgba(27,31,28,.66)">Jun</text><text x="125.0" y="108" text-anchor="middle" style="font:600 10px var(--font-body);fill:rgba(27,31,28,.66)">Jul</text><text x="175.0" y="108" text-anchor="middle" style="font:600 10px var(--font-body);fill:rgba(27,31,28,.66)">Aug</text><text x="225.0" y="108" text-anchor="middle" style="font:600 10px var(--font-body);fill:rgba(27,31,28,.66)">Sep</text><text x="275.0" y="108" text-anchor="middle" style="font:600 10px var(--font-body);fill:rgba(27,31,28,.66)">Oct</text>
+        </svg>
+      </div>
+      <p style="margin:0;padding:12px 14px;background:var(--bg-alt);border-left:2px solid #1f3d34;font:400 13.5px/1.5 var(--font-body);color:#1b1f1c"><strong style="font-weight:600">Louis's note:</strong> margin is up on the new pricing. Debtor days are creeping up, so two invoices to chase this week.</p>
+    </figure>
+  </div>
     <div style="display:flex;flex-direction:column;gap:18px">
       <p style="margin:0;font:400 17px/1.7 var(--font-body);color:rgba(27,31,28,.8);text-wrap:pretty">We work with limited companies, consultants and founders in their first few years of trading, people who need an accountant that understands where they're headed, not just where they've been.</p>
       <p style="margin:0;font:400 17px/1.7 var(--font-body);color:rgba(27,31,28,.8);text-wrap:pretty">Being CIMA-qualified rather than audit-trained matters here: management accounting is about using the numbers to make decisions, not just filing them after the fact.</p>
@@ -1472,12 +1514,14 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 
   <div data-stack-sm="" style="padding:56px clamp(20px,4.6vw,44px);border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
     <div style="display:flex;flex-direction:column;gap:16px">
+      <span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:var(--bg-alt);color:#1f3d34;flex:none"><svg aria-hidden="true" width="28" height="28" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path><path d="M8 12.5v-1.5M10.5 12.5V8.5M13 12.5V10"></path></svg></span>
       <div style="font:600 14px/1 var(--font-body);color:#44705c;margin-bottom:-2px">Advisory</div>
       <h2 style="margin:0;font:600 clamp(25px,2.8vw,32px)/1.15 var(--font-heading);letter-spacing:-.015em;max-width:22ch">Buying, selling or valuing a business?</h2>
       <p style="margin:0;font:400 17px/1.7 var(--font-body);color:rgba(27,31,28,.8);text-wrap:pretty">Valuations, sale readiness, due diligence and deal modelling, scoped as projects with the fee fixed first. The regulated side of a transaction belongs elsewhere and we say so plainly, which is half of why the advisory page exists.</p>
       <a data-nav="" href="/advisory/" sc-camel-on-click="{{ goAdvisory }}" style="align-self:flex-start;border:0;background:transparent;padding:0;font:600 15px/1 var(--font-body);color:#1f3d34;border-bottom:1px solid #44705c;padding-bottom:4px" style-hover="color:#44705c">Advisory services →</a>
     </div>
     <div style="display:flex;flex-direction:column;gap:16px">
+      <span aria-hidden="true" style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:var(--bg-alt);color:#1f3d34;flex:none"><svg aria-hidden="true" width="28" height="28" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M12 3.5 3 8.5l9 5 9-5-9-5z"></path><path d="m3 12.5 9 5 9-5"></path><path d="m3 16.5 9 5 9-5"></path></svg></span>
       <div style="font:600 14px/1 var(--font-body);color:#1f3d34;margin-bottom:-2px">Outsourced finance · from August 2027</div>
       <h2 style="margin:0;font:600 clamp(25px,2.8vw,32px)/1.15 var(--font-heading);letter-spacing:-.015em;max-width:22ch">Outgrown just the accounts?</h2>
       <p style="margin:0;font:400 17px/1.7 var(--font-body);color:rgba(27,31,28,.8);text-wrap:pretty">Bookkeeping, payroll, monthly reporting and finance director support for a fixed monthly fee. For growing businesses that need numbers they can decide on, without the cost of a full-time finance director.</p>
@@ -2754,6 +2798,7 @@ function __applyMeta(key, topic) {
   set('meta[property="og:description"]', "content", description);
   set('meta[property="og:url"]', "content", url);
 }
+const __ICONS = {"companyAccounts":"<svg aria-hidden=\"true\" width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"display:block\"><path d=\"M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16\"></path><path d=\"M15 9h4a1 1 0 0 1 1 1v11\"></path><path d=\"M2.5 21h19\"></path><path d=\"M8 8h3M8 12h3M8 16h3\"></path></svg>","selfAssessment":"<svg aria-hidden=\"true\" width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"display:block\"><path d=\"M3 11.5 12 4l9 7.5\"></path><path d=\"M5 10v10h14V10\"></path><path d=\"M10 20v-5.5h4V20\"></path></svg>","package":"<svg aria-hidden=\"true\" width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"display:block\"><path d=\"M12 21v-8.5\"></path><path d=\"M12 12.5C12 8.4 14.8 6 19.5 6c0 4.2-2.9 6.5-7.5 6.5z\"></path><path d=\"M12 14.5c0-3.2-2.3-5.5-6.5-5.5 0 3.3 2.4 5.5 6.5 5.5z\"></path></svg>","managementAccounts":"<svg aria-hidden=\"true\" width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"display:block\"><path d=\"M3.5 20.5h17\"></path><path d=\"M5.5 16.5l4.5-4.5 3 3 6.5-7\"></path><path d=\"M15 8h4.5v4.5\"></path></svg>"};
 var SA_CFG = {"_note":"Wording and contact details for the Self Assessment campaign. Prices, dates, Stripe links and add-ons live in Supabase (public.campaign_prices); the standard fee is the builder_packages row named below, times 12 months.","campaign":"sa-2025-26","taxYear":"2025/26","timeZone":"Europe/London","standardFee":{"category":"sa","tierKey":"professional","months":12},"phone":"07387 835 746","phoneHref":"tel:+447387835746","email":"enquiries@bromageco.com","productionHosts":["bromageco.com","www.bromageco.com"]};
 var SA_SNAPSHOT = {"campaign_prices":[{"campaign":"sa-2025-26","kind":"tier","key":"november","label":"Early bird","price":180,"price_basis":"fixed","active_from":"2026-10-29","active_until":"2026-11-30","payment_link":"https://book.stripe.com/aFabIU08T0k99XTglk1wY00","sort_order":1},{"campaign":"sa-2025-26","kind":"tier","key":"december","label":"December","price":230,"price_basis":"fixed","active_from":"2026-12-01","active_until":"2026-12-31","payment_link":"https://book.stripe.com/dRm8wI6xh0k92vrc541wY01","sort_order":2},{"campaign":"sa-2025-26","kind":"tier","key":"january","label":"Standard fee","price":300,"price_basis":"fixed","active_from":"2027-01-01","active_until":"2027-01-20","payment_link":"https://book.stripe.com/7sY5kwf3N9UJ4Dz5GG1wY02","sort_order":3},{"campaign":"sa-2025-26","kind":"tier","key":"closed","label":"By phone, subject to capacity","price":350,"price_basis":"fixed","active_from":"2027-01-21","active_until":"2027-01-31","payment_link":null,"sort_order":4},{"campaign":"sa-2025-26","kind":"addon","key":"partner","label":"Spouse or partner return","price":150,"price_basis":"fixed","active_from":null,"active_until":null,"payment_link":null,"sort_order":10},{"campaign":"sa-2025-26","kind":"addon","key":"income-100k-200k","label":"Income £100,000 to £200,000, including a short tax-saving review","price":100,"price_basis":"plus_tier","active_from":null,"active_until":null,"payment_link":null,"sort_order":11},{"campaign":"sa-2025-26","kind":"addon","key":"income-over-200k","label":"Income over £200,000","price":null,"price_basis":"quote","active_from":null,"active_until":null,"payment_link":null,"sort_order":12}],"builder_packages":[{"name":"Starter SA","category":"sa","tier_key":"starter","price":15,"short_desc":"Employed with one or two additional income sources.","includes":["SA100 preparation & filing","Employment income review","Basic reliefs & allowances"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":1},{"name":"Professional SA","category":"sa","tier_key":"professional","price":25,"short_desc":"Self-employed individual with trading income.","includes":["Everything in Starter","Self-employment pages","Expense review & maximisation"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":2},{"name":"Comprehensive SA","category":"sa","tier_key":"comprehensive","price":35,"short_desc":"Multiple income streams or complex personal tax affairs.","includes":["Everything in Professional","Rental, investment & foreign income","Capital gains tax review"],"billing_suffix":"/mo","business_types":["limited","sole","partnership","personal"],"sort_order":3}]};
 // Self Assessment campaign: works out which price tier applies right now, in
@@ -3888,7 +3933,7 @@ class Component extends DCLogic {
       privacy: PRIVACY,
       showCta: p !== "contact" && p !== "package" && p !== "legal" && p !== "finance" && p !== "taxReturn" && p !== "saThanks",
 
-      audiences: AUDIENCES.map(a => ({ ...a, price: __audiencePrice(a, this.state.tiers || __PRICE_ROWS), href: __routeFor(a.key).path, go: () => this.go(a.key) })),
+      audiences: AUDIENCES.map(a => ({ ...a, icon: { __html: __ICONS[a.key] || "" }, price: __audiencePrice(a, this.state.tiers || __PRICE_ROWS), href: __routeFor(a.key).path, go: () => this.go(a.key) })),
       referralSteps: REFERRAL_STEPS.map((x, i) => ({ ...x, n: String(i + 1).padStart(2, "0") })),
       heroServices: [
         { label: "Company accounts & corporation tax", key: "companyAccounts" },

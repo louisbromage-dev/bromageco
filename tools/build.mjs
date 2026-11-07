@@ -532,6 +532,66 @@ markup = markup.split("within 24 hours").join("within one working day");
             <span style="font:500 clamp(22px,2vw,25px)/1.2 'Cormorant Garamond',serif;letter-spacing:-.01em">{{ h.label }}</span>`, "the hero services rows");
 }
 
+// Line icons (24px grid, 1.5px stroke, in the text colour they sit in).
+const ICON_PATHS = {
+  building: `<path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 9h4a1 1 0 0 1 1 1v11"/><path d="M2.5 21h19"/><path d="M8 8h3M8 12h3M8 16h3"/>`,
+  home: `<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-5.5h4V20"/>`,
+  sprout: `<path d="M12 21v-8.5"/><path d="M12 12.5C12 8.4 14.8 6 19.5 6c0 4.2-2.9 6.5-7.5 6.5z"/><path d="M12 14.5c0-3.2-2.3-5.5-6.5-5.5 0 3.3 2.4 5.5 6.5 5.5z"/>`,
+  growth: `<path d="M3.5 20.5h17"/><path d="M5.5 16.5l4.5-4.5 3 3 6.5-7"/><path d="M15 8h4.5v4.5"/>`,
+  advisory: `<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/><path d="M8 12.5v-1.5M10.5 12.5V8.5M13 12.5V10"/>`,
+  finance: `<path d="M12 3.5 3 8.5l9 5 9-5-9-5z"/><path d="m3 12.5 9 5 9-5"/><path d="m3 16.5 9 5 9-5"/>`
+};
+// In the design template, attribute names that use capitals are written in
+// the runtime's encoded form; HTML handed over as a string is not.
+const iconSvg = (name, template = true) => `<svg aria-hidden="true" width="28" height="28" ${template ? "sc-camel-view-box" : "viewBox"}="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block">${ICON_PATHS[name].replace(/\/>/g, "></path>").replace(/<circle([^>]*)><\/path>/g, "<circle$1></circle>")}</svg>`;
+const ICON_TILE = "display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#f1eee6;color:#1f3d34;flex:none";
+const iconTile = name => `<span aria-hidden="true" style="${ICON_TILE}">${iconSvg(name)}</span>`;
+
+// A sample monthly management accounts pack, as a card. The figures are
+// made up and the card says so.
+const SAMPLE_PACK = (() => {
+  const revenue = [38.4, 41.2, 39.6, 44.1, 45.3, 48.2];
+  const budget = [40, 40.5, 42, 43, 44, 45.5];
+  const months = ["May", "Jun", "Jul", "Aug", "Sep", "Oct"];
+  const W = 300, H = 112, top = 6, base = 92, max = 52, step = W / revenue.length;
+  const y = v => base - (v / max) * (base - top);
+  const bars = revenue.map((v, i) => `<rect x="${(i * step + step * 0.22).toFixed(1)}" y="${y(v).toFixed(1)}" width="${(step * 0.56).toFixed(1)}" height="${(base - y(v)).toFixed(1)}" rx="2" fill="${i === revenue.length - 1 ? "#1f3d34" : "#b9cabf"}"></rect>`).join("");
+  const line = budget.map((v, i) => `${i ? "L" : "M"}${(i * step + step / 2).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
+  const labels = months.map((m, i) => `<text x="${(i * step + step / 2).toFixed(1)}" y="${H - 4}" text-anchor="middle" style="font:600 10px var(--font-body);fill:rgba(27,31,28,.66)">${m}</text>`).join("");
+  const kpi = (label, value, note, edge) => `<div style="padding:12px ${edge === "last" ? "0" : "10px"} 12px ${edge === "first" ? "0" : "12px"};${edge === "first" ? "" : "border-left:1px solid #dcd8cf;"}display:flex;flex-direction:column;gap:5px;min-width:0">
+          <span style="font:600 11.5px/1.2 var(--font-body);color:rgba(27,31,28,.66)">${label}</span>
+          <span style="font:600 25px/1 var(--font-heading);color:#1b1f1c">${value}</span>
+          <span style="font:600 11.5px/1.3 var(--font-body);color:#44705c">${note}</span>
+        </div>`;
+  return `<figure aria-label="Sample monthly management accounts pack, with made-up figures" style="margin:0;max-width:440px;background:#fff;border:1px solid #dcd8cf;border-radius:4px;box-shadow:0 22px 44px -18px rgba(27,31,28,.18),0 2px 6px rgba(27,31,28,.04);padding:22px 22px 20px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div style="min-width:0">
+          <div style="font:600 12.5px/1.2 var(--font-body);color:#44705c">Monthly management pack</div>
+          <div style="font:600 21px/1.2 var(--font-heading);color:#1b1f1c;margin-top:6px">October, at a glance</div>
+        </div>
+        <span style="font:600 11px/1 var(--font-body);color:#1f3d34;background:#f1eee6;border:1px solid #dcd8cf;border-radius:999px;padding:6px 10px;white-space:nowrap">Sample figures</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid #dcd8cf;border-bottom:1px solid #dcd8cf">
+        ${kpi("Revenue", "£48.2k", "6% over budget", "first")}
+        ${kpi("Gross margin", "41%", "Up 2 points", "")}
+        ${kpi("Cash in bank", "£62k", "7 months of runway", "last")}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;font:600 11.5px/1.2 var(--font-body);color:rgba(27,31,28,.66)">
+          <span>Revenue against budget</span>
+          <span style="display:inline-flex;align-items:center;gap:12px"><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#1f3d34;display:inline-block"></span>Revenue</span><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;border-top:1.5px dashed #44705c;display:inline-block"></span>Budget</span></span>
+        </div>
+        <svg role="img" aria-label="Revenue rising from £38k in May to £48k in October, ahead of budget for the last three months" sc-camel-view-box="0 0 ${W} ${H}" style="display:block;width:100%;height:auto">
+          <path d="M0 ${base}H${W}" stroke="#dcd8cf" stroke-width="1"></path>
+          ${bars}
+          <path d="${line}" fill="none" stroke="#44705c" stroke-width="1.5" stroke-dasharray="4 3" stroke-linecap="round"></path>
+          ${labels}
+        </svg>
+      </div>
+      <p style="margin:0;padding:12px 14px;background:#f1eee6;border-left:2px solid #1f3d34;font:400 13.5px/1.5 var(--font-body);color:#1b1f1c"><strong style="font-weight:600">Louis's note:</strong> margin is up on the new pricing. Debtor days are creeping up, so two invoices to chase this week.</p>
+    </figure>`;
+})();
+
 // A shorter home page (11 sections to 8). "How we work" repeated the
 // referral steps and the case for the practice, and "What we do for you"
 // repeated the services list in the hero, so both go. The Advisory and
@@ -559,11 +619,12 @@ markup = markup.split("within 24 hours").join("within one working day");
   const fin = section("Outgrown just the accounts?</h2>");
   if (!(how.end < what.start && what.end < adv.start && adv.end < fin.start)) fail("the home page sections have moved.");
   // Each teaser's label, heading, text and link, as one column.
-  const column = s => {
+  const column = (s, icon) => {
     const m = markup.slice(s.start, s.end).match(/^<div[^>]*>\s*<div>\s*(<div[^>]*>[^<]*<\/div>)\s*<h2 style="([^"]*)">([^<]*)<\/h2>\s*<\/div>\s*<div[^>]*>\s*(<p[\s\S]*?<\/p>)\s*(<button[\s\S]*?<\/button>)\s*<\/div>\s*<\/div>$/);
     if (!m) fail("a home page teaser has changed shape.");
     const [, label, hStyle, heading, text, link] = m;
     return `<div style="display:flex;flex-direction:column;gap:16px">
+      ${iconTile(icon)}
       ${label.replace("margin-bottom:14px", "margin-bottom:-2px")}
       <h2 style="${hStyle.replace(/font:500 clamp\([^)]*\)/, "font:500 clamp(25px,2.8vw,32px)")}">${heading}</h2>
       ${text}
@@ -571,10 +632,31 @@ markup = markup.split("within 24 hours").join("within one working day");
     </div>`;
   };
   const band = `<div data-stack-sm="" style="padding:56px clamp(20px,4.6vw,44px);border-bottom:1px solid #dcd8cf;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
-    ${column(adv)}
-    ${column(fin)}
+    ${column(adv, "advisory")}
+    ${column(fin, "finance")}
   </div>`;
   markup = markup.slice(0, how.start) + markup.slice(how.end, what.start) + band + markup.slice(fin.end);
+}
+
+// Branded visuals on the home page, drawn in the site's own colours and
+// fonts (no photographs yet): a line icon for each kind of client, and a
+// sample monthly management accounts pack beside "Most small businesses
+// outgrow their first accountant", labelled as sample figures.
+logic = `const __ICONS = ${JSON.stringify(Object.fromEntries(Object.entries({
+  companyAccounts: "building", selfAssessment: "home", package: "sprout", managementAccounts: "growth"
+}).map(([key, name]) => [key, iconSvg(name, false)])))};\n` + logic;
+logic = replaceOnce(logic, "audiences: AUDIENCES.map(a => ({ ...a, price:",
+  `audiences: AUDIENCES.map(a => ({ ...a, icon: { __html: __ICONS[a.key] || "" }, price:`, "the audience cards (icons)");
+markup = replaceOnce(markup,
+  `<span style="font:500 27px/1.1 'Cormorant Garamond',serif;letter-spacing:-.01em;text-wrap:balance">{{ a.title }}</span>`,
+  `<span aria-hidden="true" sc-camel-dangerously-set-inner-h-t-m-l="{{ a.icon }}" style="${ICON_TILE}"></span>
+          <span style="font:500 27px/1.1 'Cormorant Garamond',serif;letter-spacing:-.01em;text-wrap:balance">{{ a.title }}</span>`, "the audience card titles");
+{
+  const h = `<h2 style="margin:0;font:500 clamp(29px,4.8vw,44px)/1.08 'Cormorant Garamond',serif;letter-spacing:-.015em;max-width:20ch">Most small businesses outgrow their first accountant.</h2>`;
+  markup = replaceOnce(markup, h, `<div style="display:flex;flex-direction:column;gap:clamp(28px,3.4vw,40px);min-width:0">
+    ${h}
+    ${SAMPLE_PACK}
+  </div>`, "the 'Most small businesses' heading");
 }
 markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxReturnLink }}"`,
   `<a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturnLink }}"`, "the campaign banner link");
