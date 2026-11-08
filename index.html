@@ -491,6 +491,18 @@ a[data-nav] { color: buttontext; text-decoration: none; display: inline-block; t
 @media (max-width: 640px) {
   [data-steps3] { grid-template-columns: 1fr !important; }
 }
+[data-satext] h1 { font-size: clamp(44px, 5.2vw, 74px) !important; }
+@media (max-width: 1100px) {
+  [data-satext] { max-width: min(640px, 64%) !important; }
+  [data-safade] { background: linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 54%,color-mix(in srgb,var(--bg) 60%,transparent) 68%,color-mix(in srgb,var(--bg) 10%,transparent) 86%) !important; }
+}
+@media (max-width: 900px) {
+  [data-sahero] { padding-bottom: calc(clamp(220px, 58vw, 380px) + clamp(40px, 6vw, 56px)) !important; }
+  [data-satext] { max-width: none !important; }
+  [data-saimg] { top: auto !important; height: clamp(220px, 58vw, 380px) !important; object-position: 62% 72% !important; }
+  [data-safade] { display: none !important; }
+  [data-satext] h1 { font-size: clamp(44px, 8vw, 72px) !important; }
+}
 @media (max-width: 560px) {
   [data-teamrow] { grid-template-columns: 1fr !important; }
 }
@@ -1348,6 +1360,9 @@ a[data-nav]{color:ButtonText;text-decoration:none;display:inline-block;text-alig
 @media (max-width:1100px){ [data-refband]{grid-template-columns:1fr !important} }
 @media (max-width:820px){ [data-creds]{grid-template-columns:1fr !important} [data-creds] > div{border-bottom:1px solid var(--border-soft);padding:16px 0 !important;flex-direction:row !important;justify-content:space-between;align-items:baseline;gap:16px !important} [data-creds] > div:last-child{border-bottom:0} }
 @media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
+[data-satext] h1{font-size:clamp(44px,5.2vw,74px) !important}
+@media (max-width:1100px){ [data-satext]{max-width:min(640px,64%) !important} [data-safade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 54%,color-mix(in srgb,var(--bg) 60%,transparent) 68%,color-mix(in srgb,var(--bg) 10%,transparent) 86%) !important} }
+@media (max-width:900px){ [data-sahero]{padding-bottom:calc(clamp(220px,58vw,380px) + clamp(40px,6vw,56px)) !important} [data-satext]{max-width:none !important} [data-saimg]{top:auto !important;height:clamp(220px,58vw,380px) !important;object-position:62% 72% !important} [data-safade]{display:none !important} [data-satext] h1{font-size:clamp(44px,8vw,72px) !important} }
 @media (max-width:560px){ [data-teamrow]{grid-template-columns:1fr !important} }
 @media (max-width:1100px){ [data-herotext]{max-width:min(600px,56%) !important} [data-herofade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 94%,transparent) 46%,color-mix(in srgb,var(--bg) 60%,transparent) 58%,transparent 74%) !important} }
 @media (max-width:900px){ [data-hero]{display:block !important;min-height:0 !important;padding-bottom:calc(clamp(240px,64vw,420px) + clamp(40px,7vw,64px)) !important} [data-herotext]{max-width:none !important} [data-heroimg]{top:auto !important;height:clamp(240px,64vw,420px) !important;object-position:40% 62% !important} [data-herofade]{display:none !important} }
@@ -2590,7 +2605,10 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
 <!-- ══ TAX RETURN CAMPAIGN ══ -->
 <sc-if value="{{ isTaxReturn }}" hint-placeholder-val="{{ false }}">
 <div>
-  <div style="padding:clamp(40px,6vw,88px) clamp(20px,4.6vw,48px) clamp(40px,5vw,64px);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:26px">
+  <div data-sahero="" style="position:relative;isolation:isolate;overflow:hidden;padding:clamp(40px,6vw,88px) clamp(20px,4.6vw,48px) clamp(40px,5vw,64px);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:26px">
+    <img data-saimg="" src="/assets/img/tax-return-7377e62251.webp" alt="" width="2400" height="1601" fetchpriority="high" style="position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:70% 70%;display:block">
+    <div data-safade="" aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 44%,color-mix(in srgb,var(--bg) 66%,transparent) 56%,color-mix(in srgb,var(--bg) 12%,transparent) 76%)"></div>
+    <div data-satext="" style="display:flex;flex-direction:column;gap:26px;min-width:0;max-width:min(700px,58%)">
     <div style="font:600 14px/1.2 var(--font-body);color:#1f3d34;font-size:15px">Self Assessment 2025/26 · Louis Bromage ACMA CGMA, Chartered Management Accountant</div>
     <h1 style="margin:0;font:500 clamp(48px,7vw,96px)/1.1 var(--font-heading);letter-spacing:-.025em;color:#1b1f1c;text-wrap:balance">{{ sa.heroHeading }} <span style="display:block;font-style:italic;color:#1f3d34">{{ sa.heroAccent }}</span></h1>
     <p style="margin:0;font:400 clamp(18px,1.7vw,22px)/1.6 var(--font-body);color:rgba(27,31,28,.8);max-width:62ch;text-wrap:pretty">{{ sa.heroLine }}</p>
@@ -2603,6 +2621,7 @@ details > summary{list-style:none} details > summary::-webkit-details-marker{dis
       <span>Pay securely by card through Stripe</span><span>Louis calls within one working day</span><span>Fully refundable until work starts on your return</span>
     </div></sc-if>
     <div style="font:400 15px/1.4 var(--font-body);color:rgba(27,31,28,.72)">{{ sa.countdown }}</div>
+  </div>
   </div>
 
   <div data-sa2="" style="background:var(--bg-alt);padding:clamp(48px,6vw,88px) clamp(20px,4.6vw,48px);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:clamp(28px,3.5vw,40px)">

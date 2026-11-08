@@ -1260,6 +1260,42 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   markup = replaceOnce(markup, `font:500 clamp(48px,8.6vw,120px)/1.1 var(--font-heading)`,
     `font:500 clamp(48px,7vw,96px)/1.1 var(--font-heading)`, "the tax return headline size");
 
+  // Tax return page: the hero sits on a photo (a desk with a notebook, a
+  // calculator and printed charts, design/photos/tax-return.webp). The page
+  // colour fades across from the left so the text reads cleanly; on phones
+  // the photo sits as a band under the text. The headline is a little
+  // smaller so it fits beside the photo.
+  {
+    const buf = fs.readFileSync(path.join(ROOT, "design/photos/tax-return.webp"));
+    const src = `/assets/img/tax-return-${hash(buf)}.webp`;
+    fs.mkdirSync(path.join(OUT_ASSETS, "img"), { recursive: true });
+    fs.writeFileSync(path.join(ROOT, src), buf);
+    const eyebrow = markup.indexOf("Self Assessment 2025/26 · Louis Bromage ACMA CGMA, Chartered Management Accountant</div>");
+    const inner = markup.lastIndexOf("<div", eyebrow);
+    const start = markup.lastIndexOf("<div", inner - 1);
+    if (eyebrow === -1 || !markup.slice(start, inner).includes("padding:clamp(40px,6vw,88px)")) fail("could not find the tax return hero.");
+    // the end of the hero: walk the divs to the one that closes `start`
+    const open = markup.indexOf(">", start) + 1;
+    let depth = 1, i = open;
+    while (depth) {
+      const o = markup.indexOf("<div", i), c = markup.indexOf("</div>", i);
+      if (c === -1) fail("could not find the end of the tax return hero.");
+      if (o !== -1 && o < c) { depth++; i = o + 4; } else { depth--; i = c + 6; }
+    }
+    const close = i - "</div>".length;
+    const tag = markup.slice(start, open).replace(`style="`, `data-sahero="" style="position:relative;isolation:isolate;overflow:hidden;`);
+    markup = markup.slice(0, start) + tag + `
+    <img data-saimg="" src="${src}" alt="" width="2400" height="1601" fetchpriority="high" style="position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:70% 70%;display:block">
+    <div data-safade="" aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 44%,color-mix(in srgb,var(--bg) 66%,transparent) 56%,color-mix(in srgb,var(--bg) 12%,transparent) 76%)"></div>
+    <div data-satext="" style="display:flex;flex-direction:column;gap:26px;min-width:0;max-width:min(700px,58%)">` + markup.slice(open, close) + `</div>
+  ` + markup.slice(close);
+    markup = replaceOnce(markup, `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }`,
+      `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
+[data-satext] h1{font-size:clamp(44px,5.2vw,74px) !important}
+@media (max-width:1100px){ [data-satext]{max-width:min(640px,64%) !important} [data-safade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 54%,color-mix(in srgb,var(--bg) 60%,transparent) 68%,color-mix(in srgb,var(--bg) 10%,transparent) 86%) !important} }
+@media (max-width:900px){ [data-sahero]{padding-bottom:calc(clamp(220px,58vw,380px) + clamp(40px,6vw,56px)) !important} [data-satext]{max-width:none !important} [data-saimg]{top:auto !important;height:clamp(220px,58vw,380px) !important;object-position:62% 72% !important} [data-safade]{display:none !important} [data-satext] h1{font-size:clamp(44px,8vw,72px) !important} }`, "the tax return photo breakpoints");
+  }
+
   // The sans, wherever the design names it (but not its @font-face rules).
   const SANS = /'?Hanken Grotesk'?,(system-ui,)?sans-serif/g;
   markup = markup.replace(/ style="[^"]*"|font-family:Hanken Grotesk,system-ui,sans-serif/g, s => s.replace(SANS, "var(--font-body)"));
