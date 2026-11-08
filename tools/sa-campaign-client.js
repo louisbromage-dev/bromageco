@@ -182,18 +182,18 @@ function saCampaignState() {
     v.countdown = daysLeft === 1 ? "Last day before the " + t.untilShort + " deadline" : daysLeft + " days to the " + t.untilShort + " deadline";
     v.heroHeading = "Online bookings have closed.";
     v.heroAccent = "Call to check capacity.";
-    v.heroLine = "The online filing deadline is " + c.filingDeadline.label + ". Late returns are " + price + ", subject to capacity. Call Louis on " + c.phone + " and he will tell you straight away whether he can take yours on.";
+    v.heroLine = "The online filing deadline is " + c.filingDeadline.label + ". Late returns are " + price + ", subject to capacity. Call " + c.phone + " and we will tell you straight away whether we can take yours on.";
     v.formHeading = "Call to book a late return";
     v.formNote = "Late returns are " + price + ", subject to capacity. Fixed fee, no VAT.";
-    v.meta = "Online bookings for Self Assessment " + c.taxYear + " have closed. Call " + c.phone + " to check capacity for a late return at " + price + ", prepared by Louis Bromage ACMA CGMA in Fleet, Hampshire.";
+    v.meta = "Online bookings for Self Assessment " + c.taxYear + " have closed. Call " + c.phone + " to check capacity for a late return at " + price + ", signed off by Louis Bromage ACMA CGMA in Fleet, Hampshire.";
   } else if (over) {
     v.banner = "";
     v.cardHeading = ""; v.cardLine = ""; v.countdown = "";
     v.heroHeading = "Self Assessment " + c.taxYear;
     v.heroAccent = "Online booking has closed.";
-    v.heroLine = "The " + c.filingDeadline.label + " deadline has passed. If you still need to file, get in touch and Louis will quote for a late return.";
+    v.heroLine = "The " + c.filingDeadline.label + " deadline has passed. If you still need to file, get in touch and we will quote for a late return.";
     v.formHeading = "Still need to file?";
-    v.formNote = "Louis will quote for a late return before any work starts.";
+    v.formNote = "We will quote for a late return before any work starts.";
     v.meta = "Self Assessment tax returns from Bromage & Co, Chartered Management Accountant in Fleet, Hampshire. Get in touch about a late or future return.";
   } else {
     v.banner = "Self Assessment " + c.taxYear + ": " + price + " if you book by " + t.untilShort + " →";
@@ -202,10 +202,10 @@ function saCampaignState() {
     v.countdown = (daysLeft === 1 ? "Last day" : daysLeft + " days left") + " at " + price;
     v.heroHeading = "Your tax return for " + price + ".";
     v.heroAccent = "Book by " + t.untilShort + ".";
-    v.heroLine = "Prepared, checked and filed by Louis Bromage ACMA CGMA. One fixed fee, all in" + (std && t.price < std ? " (normally " + saMoney(std) + ")" : "") + ", and you approve every figure before it goes to HMRC.";
+    v.heroLine = "Prepared by our team, checked and filed by Louis Bromage ACMA CGMA. One fixed fee, all in" + (std && t.price < std ? " (normally " + saMoney(std) + ")" : "") + ", and you approve every figure before it goes to HMRC.";
     v.formHeading = "Book at " + price;
     v.formNote = "Secure card payment through Stripe. Fixed fee, no VAT.";
-    v.meta = "Your Self Assessment " + c.taxYear + " tax return prepared and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. " + price + " if you book by " + t.untilShort + (std && t.price < std ? ", normally " + saMoney(std) : "") + ". Fixed fee, no VAT.";
+    v.meta = "Your Self Assessment " + c.taxYear + " tax return prepared by our team, checked and filed by Louis Bromage ACMA CGMA, Chartered Management Accountant in Fleet. " + price + " if you book by " + t.untilShort + (std && t.price < std ? ", normally " + saMoney(std) : "") + ". Fixed fee, no VAT.";
   }
   v.title = "Self Assessment tax return " + (over ? "" : closed ? price + ", subject to capacity " : "from " + price + " ") + "| Bromage & Co";
 

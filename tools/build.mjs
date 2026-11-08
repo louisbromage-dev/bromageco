@@ -128,7 +128,7 @@ const PAGES = [
   {
     key: "home", path: "/",
     title: "Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire",
-    description: "Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. You deal with Louis."
+    description: "Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. A small team, led by Louis Bromage ACMA CGMA."
   },
   {
     key: "services", path: "/services/",
@@ -172,8 +172,8 @@ const PAGES = [
   },
   {
     key: "about", path: "/about/",
-    title: "About Louis Bromage, Chartered Management Accountant | Bromage & Co",
-    description: "A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and see how Bromage & Co works with its clients."
+    title: "About Bromage & Co: Louis Bromage and the team | Fleet, Hampshire",
+    description: "A principal-led practice in Fleet, Hampshire. Meet Louis Bromage ACMA CGMA, Chartered Management Accountant, and the small team behind Bromage & Co."
   },
   {
     key: "contact", path: "/contact/",
@@ -394,7 +394,7 @@ logic = logic.replace(/\n\s*if \(\/tax-return\|paid=1\/i\.test\([^\n]*\n/, "\n")
 logic = logic.replace(/\n\s*if \(typeof document !== "undefined"\) document\.title = page === "taxReturn"[^\n]*\n/, "\n");
 logic = logic.split("within 24 hours").join("within one working day");
 logic = replaceOnce(logic, "const SA_FAQ = [", "const SA_FAQ = [\n" +
-  '  { q: "What if you can\\u2019t take me on?", a: "Then your payment is refunded in full. Louis will tell you on your onboarding call, within one working day of booking, and the money goes back to the card you paid with." },',
+  '  { q: "What if you can\\u2019t take me on?", a: "Then your payment is refunded in full. We will tell you on your onboarding call, within one working day of booking, and the money goes back to the card you paid with." },',
   "the Self Assessment questions");
 // Self-employment and CIS income are part of the fixed fee, not an extra.
 logic = replaceOnce(logic, `const SA_INCLUDED = ["Employment and pension income", `,
@@ -499,7 +499,7 @@ markup = markup.split("within 24 hours").join("within one working day");
   if (heading === headingStyle) fail("could not resize the home page heading.");
   markup = markup.replace(hero[0], `<p style="${eyebrowStyle}">Chartered Management Accountant in Fleet, Hampshire</p>
         <h1 style="${heading}">Accounts and tax for sole traders, landlords and small companies. <span style="${accentStyle}">And advice when it matters.</span></h1>
-        <p style="${subStyle}">You deal with Louis directly. Fixed fees, agreed upfront.</p>
+        <p style="${subStyle}">A small team, led by Louis. Fixed fees, agreed upfront.</p>
         <div style="${buttonsStyle}">
           <button sc-camel-on-click="{{ goContact }}" ${primaryAttrs}>Book a free call</button>
           <button sc-camel-on-click="{{ goPackage }}" ${secondaryAttrs}>See prices</button>
@@ -1124,6 +1124,58 @@ markup = replaceOnce(markup, `@media (min-width:901px) and (max-width:1080px){ [
 @media (min-width:901px) and (max-width:1080px){ [data-navactions]{gap:14px !important} [data-navphone] svg{display:none !important} }
 [data-navlink]:not([aria-current]):hover{color:#1f3d34 !important;text-decoration-color:var(--border-strong) !important}
 [data-navcaret]:hover,[data-navphone]:hover{color:#1f3d34 !important}`, "the header hover styles");
+
+// ── 3b4. Copy: a small team, led by Louis ────────────────────────────────
+// Louis is the principal and the person clients can always reach, but he
+// works with a bookkeeper and a junior accountant. They are not employees,
+// so the copy says "team" and "work with", never "staff" or "employ".
+// Each line must be found in the design; the build stops if one is missing.
+{
+  const TEAM = [["Louis Bromage ACMA CGMA", "Principal", "Leads every client, gives the advice, and reviews and signs off everything before it is filed."], ["Bookkeeper", "", "Keeps your books, bank feeds and receipts up to date through the year."], ["Junior accountant", "", "Prepares accounts and tax returns for Louis to review."]];
+  const TEAM_COPY = [
+    ["Who I work with", "Who we work with"],
+    ['"I keep the client list short on purpose, so every file gets read properly rather than skimmed. You will always deal with me directly, because the person who knows your numbers should be the person you speak to."',
+     '"We keep the client list short on purpose, so every file gets read properly rather than skimmed. I lead every client myself and review everything before it goes out, because the person who knows your numbers should be the person you speak to."'],
+    ['a: "Louis. It\'s a principal-led practice: you deal with Louis Bromage ACMA CGMA directly, from the first call to every filing. The person who does your books is the person who answers the phone and signs off your accounts."',
+     'a: "A small team, led by Louis. Louis Bromage ACMA CGMA leads your work from the first call and reviews and signs off everything before it is filed. A bookkeeper and a junior accountant work on your file alongside him, and Louis is always the person you can reach."'],
+    ["Bromage &amp; Co is a principal-led practice: you deal with Louis Bromage ACMA CGMA directly, from the first call to every filing.",
+     "Bromage &amp; Co is a principal-led practice: Louis Bromage ACMA CGMA leads your work from the first call to every filing, with a bookkeeper and a junior accountant alongside him."],
+    ["Most of my clients are in their first few years of trading", "Most of our clients are in their first few years of trading"],
+    ['title: "One named person", body: "You deal with Louis. Not a portal, not a rotating team of juniors, not an inbox that forgets you."',
+     'title: "A team you know by name", body: "Louis leads your work, with the same small team on your file each time. Not a call centre, not a rotating cast, not an inbox that forgets you."'],
+    ["run by the same person who already knows your numbers", "led by the same person who already knows your numbers"],
+    ["What Louis does</span>", "What we do</span>"],
+    ["Your return, prepared by the person you speak to.", "Your return, signed off by the person you speak to."],
+    ["He prepares and reviews every return himself, and he is the person who answers when you call.",
+     "He leads a small team, with a bookkeeper and a junior accountant, and reviews and signs off every return himself. He is also the person who answers when you call."],
+    ["Over £200,000, Louis will quote individually.", "Over £200,000, we will quote individually."],
+    ['title: "Who else sees it", body: "HMRC and Companies House, where a filing requires it.',
+     'title: "Who else sees it", body: "The bookkeeper and junior accountant who work with the practice, where they are working on your file, under the same duty of confidentiality. HMRC and Companies House, where a filing requires it.'],
+  ];
+  const missing = [];
+  for (const [from, to] of TEAM_COPY) {
+    const n = markup.split(from).length - 1 + logic.split(from).length - 1;
+    if (!n) { missing.push(from.slice(0, 70)); continue; }
+    markup = markup.split(from).join(to);
+    logic = logic.split(from).join(to);
+  }
+  if (missing.length) fail("the team wording step could not find:\n  " + missing.join("\n  "));
+  // About page: the team, under the introduction.
+  const row = (name, role, body) => `<div style="display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);gap:6px 28px;padding:18px 0;border-bottom:1px solid #e7e3da" data-teamrow="">
+          <div><div style="font:600 21px/1.2 var(--font-heading);letter-spacing:-.005em;color:#1b1f1c">${name}</div>${role ? `<div style="font:600 13.5px/1.4 Hanken Grotesk,sans-serif;color:#44705c;margin-top:4px">${role}</div>` : ""}</div>
+          <p style="margin:0;font:400 16px/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-wrap:pretty">${body}</p>
+        </div>`;
+  markup = replaceOnce(markup,
+    `The client list stays deliberately short. It's the only way the same person can know every file.</p>`,
+    `The client list stays deliberately short. It's the only way a small team can know every file properly.</p>
+      <div data-team="" style="display:flex;flex-direction:column;border-top:1px solid #dcd8cf;margin-top:8px">
+        <h2 style="margin:22px 0 4px;font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34">The team</h2>
+        ${TEAM.map(t => row(...t)).join("\n        ")}
+      </div>`, "the about page introduction");
+  markup = replaceOnce(markup, `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }`,
+    `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
+@media (max-width:560px){ [data-teamrow]{grid-template-columns:1fr !important} }`, "the team breakpoint");
+}
 
 // ── 3c. Typography ───────────────────────────────────────────────────────
 // Two fonts, each set once as a CSS variable in every page's head, so either
