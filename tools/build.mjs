@@ -664,7 +664,8 @@ markup = replaceOnce(markup,
 // Home page hero: the text sits on a full-width photograph
 // (design/photos/hero.webp). On wide screens the page colour fades across
 // from the left so the text reads cleanly and the photo shows on the right;
-// below 900px the photo sits under the text instead. HERO_PHOTO sets which
+// below 900px the photo sits across the top and fades into the page colour
+// behind the headline. HERO_PHOTO sets which
 // part of the photo stays in view.
 const HERO_PHOTO = { file: "design/photos/hero.webp", width: 1470, height: 980, wide: "72% 50%", narrow: "40% 62%" };
 {
@@ -687,7 +688,7 @@ const HERO_PHOTO = { file: "design/photos/hero.webp", width: 1470, height: 980, 
   markup = replaceOnce(markup, `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }`,
     `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
 @media (max-width:1100px){ [data-herotext]{max-width:min(600px,56%) !important} [data-herofade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 94%,transparent) 46%,color-mix(in srgb,var(--bg) 60%,transparent) 58%,transparent 74%) !important} }
-@media (max-width:900px){ [data-hero]{display:block !important;min-height:0 !important;padding-bottom:calc(clamp(240px,64vw,420px) + clamp(40px,7vw,64px)) !important} [data-herotext]{max-width:none !important} [data-heroimg]{top:auto !important;height:clamp(240px,64vw,420px) !important;object-position:${HERO_PHOTO.narrow} !important} [data-herofade]{display:none !important} }`, "the home hero breakpoints");
+@media (max-width:900px){ [data-hero]{--pt:clamp(200px,58vw,300px);display:block !important;min-height:0 !important;padding-top:var(--pt) !important} [data-herotext]{max-width:none !important} [data-heroimg]{bottom:auto !important;height:calc(var(--pt) + 100px) !important;object-position:${HERO_PHOTO.narrow} !important} [data-herofade]{bottom:auto !important;height:calc(var(--pt) + 100px);background:linear-gradient(180deg,transparent 0,color-mix(in srgb,var(--bg) 8%,transparent) calc(var(--pt) - 150px),color-mix(in srgb,var(--bg) 88%,transparent) var(--pt),var(--bg) calc(var(--pt) + 100px)) !important} }`, "the home hero breakpoints");
 }
 markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxReturnLink }}"`,
   `<a data-nav="" href="/tax-return/" sc-camel-on-click="{{ goTaxReturnLink }}"`, "the campaign banner link");
@@ -1263,7 +1264,7 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   // Tax return page: the hero sits on a photo (a desk with a notebook, a
   // calculator and printed charts, design/photos/tax-return.webp). The page
   // colour fades across from the left so the text reads cleanly; on phones
-  // the photo sits as a band under the text. The headline is a little
+  // the photo sits across the top and fades down behind the headline. The headline is a little
   // smaller so it fits beside the photo.
   {
     const buf = fs.readFileSync(path.join(ROOT, "design/photos/tax-return.webp"));
@@ -1293,7 +1294,7 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
       `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
 [data-satext] h1{font-size:clamp(44px,5.2vw,74px) !important}
 @media (max-width:1100px){ [data-satext]{max-width:min(640px,64%) !important} [data-safade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 54%,color-mix(in srgb,var(--bg) 60%,transparent) 68%,color-mix(in srgb,var(--bg) 10%,transparent) 86%) !important} }
-@media (max-width:900px){ [data-sahero]{padding-bottom:calc(clamp(220px,58vw,380px) + clamp(40px,6vw,56px)) !important} [data-satext]{max-width:none !important} [data-saimg]{top:auto !important;height:clamp(220px,58vw,380px) !important;object-position:62% 72% !important} [data-safade]{display:none !important} [data-satext] h1{font-size:clamp(44px,8vw,72px) !important} }`, "the tax return photo breakpoints");
+@media (max-width:900px){ [data-sahero]{--pt:clamp(200px,58vw,300px);padding-top:var(--pt) !important} [data-satext]{max-width:none !important} [data-saimg]{bottom:auto !important;height:calc(var(--pt) + 100px) !important;object-position:62% 78% !important} [data-safade]{bottom:auto !important;height:calc(var(--pt) + 100px);background:linear-gradient(180deg,transparent 0,color-mix(in srgb,var(--bg) 8%,transparent) calc(var(--pt) - 150px),color-mix(in srgb,var(--bg) 88%,transparent) var(--pt),var(--bg) calc(var(--pt) + 100px)) !important} [data-satext] h1{font-size:clamp(44px,8vw,72px) !important} }`, "the tax return photo breakpoints");
   }
 
   // The sans, wherever the design names it (but not its @font-face rules).
