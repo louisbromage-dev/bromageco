@@ -672,7 +672,7 @@ markup = replaceOnce(markup, "Partner returns and extras are confirmed on your c
       <div style="display:flex;flex-direction:column;gap:18px">
         <h2 style="${H2}">Everything a limited company needs, for one monthly fee.</h2>
         <p style="${INTRO}">Pick what fits now and change it as the business grows. Every price is published.</p>
-        <p style="margin:6px 0 0;padding:20px 22px;background:#fff;border:1px solid #dcd8cf;border-left:3px solid #1f3d34;font:400 17px/1.6 Hanken Grotesk,sans-serif;color:#1b1f1c;text-wrap:pretty"><strong style="font-weight:600">{{ homeCorePrice }}</strong>: annual accounts, CT600, Companies House filing, confirmation statement, pre-year-end tax review and a walkthrough call.</p>
+        <p style="margin:6px 0 0;padding:20px 22px;background:#fff;border:1px solid #dcd8cf;border-left:3px solid #1f3d34;font:400 17px/1.6 Hanken Grotesk,sans-serif;color:#1b1f1c;text-wrap:pretty"><strong style="font-weight:600">{{ homeCorePrice }}</strong>: annual accounts, CT600, Companies House filing, pre-year-end tax review and a walkthrough call.</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
           <button sc-camel-on-click="{{ goPackage }}" ${PRIMARY}>Build your package</button>
           <button sc-camel-on-click="{{ goContact }}" ${SECONDARY}>Book a free call</button>
