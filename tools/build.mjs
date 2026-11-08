@@ -127,8 +127,10 @@ html.cc-open body{padding-bottom:var(--cc-h,0px)!important}
 const PAGES = [
   {
     key: "home", path: "/",
-    title: "Bromage & Co Accounting | Chartered Management Accountant in Fleet, Hampshire",
-    description: "Chartered Management Accountant in Fleet, Hampshire for limited companies, sole traders and growing businesses across the UK. Fixed monthly fees, published online. A small team, led by Louis Bromage ACMA CGMA."
+    title: "Accountant for Limited Companies in Fleet, Hampshire | Bromage & Co",
+    // The "from" price is the cheapest company package in the price list.
+    description: "Accounts, corporation tax and advice for owner-managed limited companies, from a Chartered Management Accountant in Fleet. Fixed monthly fees from £" +
+      Math.min(...PRICES.builder_packages.filter(r => r.category === "ct").map(r => Number(r.price))) + ", replies within one working day, and switching handled for you."
   },
   {
     key: "services", path: "/services/",
@@ -498,11 +500,11 @@ markup = markup.split("within 24 hours").join("within one working day");
   const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(33px,3.6vw,50px)/1.04");
   if (heading === headingStyle) fail("could not resize the home page heading.");
   markup = markup.replace(hero[0], `<p style="${eyebrowStyle}">Chartered Management Accountant in Fleet, Hampshire</p>
-        <h1 style="${heading}">Accounts and tax for sole traders, landlords and small companies. <span style="${accentStyle}">And advice when it matters.</span></h1>
-        <p style="${subStyle}">A small team, led by Louis. Fixed fees, agreed upfront.</p>
+        <h1 style="${heading}">Accounts, tax and advice for limited company owners. <span style="${accentStyle}">From an accountant who actually picks up.</span></h1>
+        <p style="${subStyle}">Louis leads every client and is the person you speak to. Fixed monthly fees, agreed in writing before anything starts.</p>
         <div style="${buttonsStyle}">
           <button sc-camel-on-click="{{ goContact }}" ${primaryAttrs}>Book a free call</button>
-          <button sc-camel-on-click="{{ goPackage }}" ${secondaryAttrs}>See prices</button>
+          <button sc-camel-on-click="{{ goPackage }}" ${secondaryAttrs}>See monthly prices</button>
         </div>
         <button sc-camel-on-click="{{ goAdvisory }}" style="align-self:flex-start;margin-top:12px;border:0;background:transparent;padding:2px 0;text-align:left;font:400 15px/1.5 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74);text-decoration:underline;text-decoration-color:rgba(27,31,28,.3);text-underline-offset:4px" style-hover="color:#1f3d34;text-decoration-color:#1f3d34">Buying, selling or valuing a business? Advisory →</button>`);
 }
@@ -534,70 +536,11 @@ markup = markup.split("within 24 hours").join("within one working day");
             <span style="font:500 clamp(22px,2vw,25px)/1.2 'Cormorant Garamond',serif;letter-spacing:-.01em">{{ h.label }}</span>`, "the hero services rows");
 }
 
-// Line icons (24px grid, 1.5px stroke, in the text colour they sit in).
-const ICON_PATHS = {
-  building: `<path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 9h4a1 1 0 0 1 1 1v11"/><path d="M2.5 21h19"/><path d="M8 8h3M8 12h3M8 16h3"/>`,
-  home: `<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-5.5h4V20"/>`,
-  sprout: `<path d="M12 21v-8.5"/><path d="M12 12.5C12 8.4 14.8 6 19.5 6c0 4.2-2.9 6.5-7.5 6.5z"/><path d="M12 14.5c0-3.2-2.3-5.5-6.5-5.5 0 3.3 2.4 5.5 6.5 5.5z"/>`,
-  growth: `<path d="M3.5 20.5h17"/><path d="M5.5 16.5l4.5-4.5 3 3 6.5-7"/><path d="M15 8h4.5v4.5"/>`,
-  advisory: `<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/><path d="M8 12.5v-1.5M10.5 12.5V8.5M13 12.5V10"/>`,
-  finance: `<path d="M12 3.5 3 8.5l9 5 9-5-9-5z"/><path d="m3 12.5 9 5 9-5"/><path d="m3 16.5 9 5 9-5"/>`
-};
-// In the design template, attribute names that use capitals are written in
-// the runtime's encoded form; HTML handed over as a string is not.
-const iconSvg = (name, template = true) => `<svg aria-hidden="true" width="28" height="28" ${template ? "sc-camel-view-box" : "viewBox"}="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block">${ICON_PATHS[name].replace(/\/>/g, "></path>").replace(/<circle([^>]*)><\/path>/g, "<circle$1></circle>")}</svg>`;
-const ICON_TILE = "display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#f1eee6;color:#1f3d34;flex:none";
-const iconTile = name => `<span aria-hidden="true" style="${ICON_TILE}">${iconSvg(name)}</span>`;
-
-// A sample monthly management accounts pack, as a card. The figures are
-// made up and the card says so.
-const SAMPLE_PACK = (() => {
-  const revenue = [38.4, 41.2, 39.6, 44.1, 45.3, 48.2];
-  const budget = [40, 40.5, 42, 43, 44, 45.5];
-  const months = ["May", "Jun", "Jul", "Aug", "Sep", "Oct"];
-  const W = 300, H = 112, top = 6, base = 92, max = 52, step = W / revenue.length;
-  const y = v => base - (v / max) * (base - top);
-  const bars = revenue.map((v, i) => `<rect x="${(i * step + step * 0.22).toFixed(1)}" y="${y(v).toFixed(1)}" width="${(step * 0.56).toFixed(1)}" height="${(base - y(v)).toFixed(1)}" rx="2" fill="${i === revenue.length - 1 ? "#1f3d34" : "#b9cabf"}"></rect>`).join("");
-  const line = budget.map((v, i) => `${i ? "L" : "M"}${(i * step + step / 2).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
-  const labels = months.map((m, i) => `<text x="${(i * step + step / 2).toFixed(1)}" y="${H - 4}" text-anchor="middle" style="font:600 10px var(--font-body);fill:rgba(27,31,28,.66)">${m}</text>`).join("");
-  const kpi = (label, value, note, edge) => `<div style="padding:12px ${edge === "last" ? "0" : "10px"} 12px ${edge === "first" ? "0" : "12px"};${edge === "first" ? "" : "border-left:1px solid #dcd8cf;"}display:flex;flex-direction:column;gap:5px;min-width:0">
-          <span style="font:600 11.5px/1.2 var(--font-body);color:rgba(27,31,28,.66)">${label}</span>
-          <span style="font:600 25px/1 var(--font-heading);color:#1b1f1c">${value}</span>
-          <span style="font:600 11.5px/1.3 var(--font-body);color:#44705c">${note}</span>
-        </div>`;
-  return `<figure aria-label="Sample monthly management accounts pack, with made-up figures" style="margin:0;max-width:440px;background:#fff;border:1px solid #dcd8cf;border-radius:4px;box-shadow:0 22px 44px -18px rgba(27,31,28,.18),0 2px 6px rgba(27,31,28,.04);padding:22px 22px 20px;display:flex;flex-direction:column;gap:16px">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
-        <div style="min-width:0">
-          <div style="font:600 12.5px/1.2 var(--font-body);color:#44705c">Monthly management pack</div>
-          <div style="font:600 21px/1.2 var(--font-heading);color:#1b1f1c;margin-top:6px">October, at a glance</div>
-        </div>
-        <span style="font:600 11px/1 var(--font-body);color:#1f3d34;background:#f1eee6;border:1px solid #dcd8cf;border-radius:999px;padding:6px 10px;white-space:nowrap">Sample figures</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid #dcd8cf;border-bottom:1px solid #dcd8cf">
-        ${kpi("Revenue", "£48.2k", "6% over budget", "first")}
-        ${kpi("Gross margin", "41%", "Up 2 points", "")}
-        ${kpi("Cash in bank", "£62k", "7 months of runway", "last")}
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;font:600 11.5px/1.2 var(--font-body);color:rgba(27,31,28,.66)">
-          <span>Revenue against budget</span>
-          <span style="display:inline-flex;align-items:center;gap:12px"><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:9px;height:9px;border-radius:2px;background:#1f3d34;display:inline-block"></span>Revenue</span><span style="display:inline-flex;align-items:center;gap:5px"><span style="width:12px;border-top:1.5px dashed #44705c;display:inline-block"></span>Budget</span></span>
-        </div>
-        <svg role="img" aria-label="Revenue rising from £38k in May to £48k in October, ahead of budget for the last three months" sc-camel-view-box="0 0 ${W} ${H}" style="display:block;width:100%;height:auto">
-          <path d="M0 ${base}H${W}" stroke="#dcd8cf" stroke-width="1"></path>
-          ${bars}
-          <path d="${line}" fill="none" stroke="#44705c" stroke-width="1.5" stroke-dasharray="4 3" stroke-linecap="round"></path>
-          ${labels}
-        </svg>
-      </div>
-      <p style="margin:0;padding:12px 14px;background:#f1eee6;border-left:2px solid #1f3d34;font:400 13.5px/1.5 var(--font-body);color:#1b1f1c"><strong style="font-weight:600">Louis's note:</strong> margin is up on the new pricing. Debtor days are creeping up, so two invoices to chase this week.</p>
-    </figure>`;
-})();
-
-// A shorter home page (11 sections to 8). "How we work" repeated the
-// referral steps and the case for the practice, and "What we do for you"
-// repeated the services list in the hero, so both go. The Advisory and
-// Outsourced finance teasers share one band, side by side, wording as it was.
+// A shorter home page. "How we work" repeated the referral steps and the
+// case for the practice, and "What we do for you" repeated the services list
+// in the hero, so both go, with the Advisory and Outsourced finance teasers
+// (Advisory keeps its link under the hero buttons). The home page step below
+// sets the rest of the page.
 {
   const home = markup.indexOf(`<sc-if value="{{ isHome }}"`);
   if (home === -1) fail("could not find the home page.");
@@ -620,45 +563,7 @@ const SAMPLE_PACK = (() => {
   const adv = section("Buying, selling or valuing a business?</h2>");
   const fin = section("Outgrown just the accounts?</h2>");
   if (!(how.end < what.start && what.end < adv.start && adv.end < fin.start)) fail("the home page sections have moved.");
-  // Each teaser's label, heading, text and link, as one column.
-  const column = (s, icon) => {
-    const m = markup.slice(s.start, s.end).match(/^<div[^>]*>\s*<div>\s*(<div[^>]*>[^<]*<\/div>)\s*<h2 style="([^"]*)">([^<]*)<\/h2>\s*<\/div>\s*<div[^>]*>\s*(<p[\s\S]*?<\/p>)\s*(<button[\s\S]*?<\/button>)\s*<\/div>\s*<\/div>$/);
-    if (!m) fail("a home page teaser has changed shape.");
-    const [, label, hStyle, heading, text, link] = m;
-    return `<div style="display:flex;flex-direction:column;gap:16px">
-      ${iconTile(icon)}
-      ${label.replace("margin-bottom:14px", "margin-bottom:-2px")}
-      <h2 style="${hStyle.replace(/font:500 clamp\([^)]*\)/, "font:500 clamp(25px,2.8vw,32px)")}">${heading}</h2>
-      ${text}
-      ${link}
-    </div>`;
-  };
-  const band = `<div data-stack-sm="" style="padding:56px clamp(20px,4.6vw,44px);border-bottom:1px solid #dcd8cf;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start">
-    ${column(adv, "advisory")}
-    ${column(fin, "finance")}
-  </div>`;
-  markup = markup.slice(0, how.start) + markup.slice(how.end, what.start) + band + markup.slice(fin.end);
-}
-
-// Branded visuals on the home page, drawn in the site's own colours and
-// fonts (no photographs yet): a line icon for each kind of client, and a
-// sample monthly management accounts pack beside "Most small businesses
-// outgrow their first accountant", labelled as sample figures.
-logic = `const __ICONS = ${JSON.stringify(Object.fromEntries(Object.entries({
-  companyAccounts: "building", selfAssessment: "home", package: "sprout", managementAccounts: "growth"
-}).map(([key, name]) => [key, iconSvg(name, false)])))};\n` + logic;
-logic = replaceOnce(logic, "audiences: AUDIENCES.map(a => ({ ...a, price:",
-  `audiences: AUDIENCES.map(a => ({ ...a, icon: { __html: __ICONS[a.key] || "" }, price:`, "the audience cards (icons)");
-markup = replaceOnce(markup,
-  `<span style="font:500 27px/1.1 'Cormorant Garamond',serif;letter-spacing:-.01em;text-wrap:balance">{{ a.title }}</span>`,
-  `<span aria-hidden="true" sc-camel-dangerously-set-inner-h-t-m-l="{{ a.icon }}" style="${ICON_TILE}"></span>
-          <span style="font:500 27px/1.1 'Cormorant Garamond',serif;letter-spacing:-.01em;text-wrap:balance">{{ a.title }}</span>`, "the audience card titles");
-{
-  const h = `<h2 style="margin:0;font:500 clamp(29px,4.8vw,44px)/1.08 'Cormorant Garamond',serif;letter-spacing:-.015em;max-width:20ch">Most small businesses outgrow their first accountant.</h2>`;
-  markup = replaceOnce(markup, h, `<div style="display:flex;flex-direction:column;gap:clamp(28px,3.4vw,40px);min-width:0">
-    ${h}
-    ${SAMPLE_PACK}
-  </div>`, "the 'Most small businesses' heading");
+  markup = markup.slice(0, how.start) + markup.slice(how.end, what.start) + markup.slice(what.end, adv.start) + markup.slice(fin.end);
 }
 
 // Home page hero: the text sits on a full-width photograph
@@ -697,6 +602,251 @@ markup = replaceOnce(markup, "<span>Call and onboarding within one working day</
 markup = replaceOnce(markup, "Partner returns and extras are confirmed on your call and invoiced separately.",
   "{{ sa.partnerNote }}",
   "the booking section note");
+
+// ── Home page: written for owner-managed limited companies ─────────────────
+// Seven sections, in this order: the hero (with the campaign card, Services
+// list and trust strip as they were), why people switch accountant, the
+// monthly packages, clients (two case studies and the Google reviews, one at
+// a time), four questions, and the closing call to action. The referral
+// steps, the client types, "Most small businesses outgrow…", the Fleet map
+// and the Advisory and Outsourced finance teasers come off the home page (the
+// town names move to the footer; Advisory keeps its link under the hero
+// buttons). Prices come from the price list, like everywhere else.
+{
+  const home = markup.indexOf(`<sc-if value="{{ isHome }}"`);
+  if (home === -1) fail("could not find the home page.");
+  // The home page section (a child of its wrapper) that contains `needle`.
+  const section = needle => {
+    const at = markup.indexOf(needle, home);
+    if (at === -1) fail(`could not find the home page section with ${needle}`);
+    const re = /<(\/?)(div|section|sc-if|sc-for)\b[^>]*>/g;
+    re.lastIndex = home;
+    const open = [];
+    for (let m; (m = re.exec(markup));) {
+      if (!m[1]) { open.push(m.index); continue; }
+      const start = open.pop();
+      if (open.length === 2 && start < at && m.index > at) return { start, end: m.index + m[0].length };
+    }
+    fail(`could not find the home page section with ${needle}`);
+  };
+  const H2 = "margin:0;font:600 clamp(30px,3.6vw,42px)/1.1 var(--font-heading);letter-spacing:-.015em;color:#1b1f1c;text-wrap:balance";
+  const INTRO = "margin:0;font:400 clamp(17px,1.5vw,19px)/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);max-width:62ch;text-wrap:pretty";
+  const PRIMARY = `style="border:1px solid #1f3d34;background:#1f3d34;color:#fff;padding:18px 28px;font:600 16px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;cursor:pointer" style-hover="background:#142b24;border-color:#142b24"`;
+  const SECONDARY = `style="border:1px solid #1b1f1c;background:transparent;color:#1b1f1c;padding:18px 28px;font:600 16px/1 Hanken Grotesk,sans-serif;border-radius:2px;white-space:nowrap;cursor:pointer" style-hover="background:rgba(47,85,70,.14);border-color:#44705c"`;
+  const PAD = "padding:clamp(56px,7vw,96px) clamp(20px,4.6vw,48px)";
+
+  // 3. Why people switch (in place of the referral steps).
+  const ROWS = [
+    ["Emails that sit for a week", "A reply within one working day"],
+    ["Accounts finished months after year end", "Accounts prepared early, while there's still time to act on them"],
+    ["A fee that grew with every question", "One fixed monthly fee. Questions are never billed"],
+    ["Only hearing from them at year end", "A pre-year-end tax review, and a call when something changes"],
+    ["Numbers filed, never explained", "A walkthrough before anything is filed"]
+  ];
+  const TH = "text-align:left;vertical-align:bottom;padding:0 0 12px;font:600 14px/1.35 Hanken Grotesk,sans-serif;border-bottom:2px solid #1f3d34";
+  const TD = "vertical-align:top;padding:14px 0;border-bottom:1px solid #dcd8cf;font:400 16px/1.5 Hanken Grotesk,sans-serif";
+  const why = `<div data-home="switch" style="background:#efece4;${PAD}">
+    <div style="display:flex;flex-direction:column;gap:clamp(24px,3vw,36px);max-width:980px">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <h2 style="${H2}">Most businesses don't change accountant because of tax.</h2>
+        <p style="${INTRO}">They change because communication is poor, advice comes too late, and they only hear from their accountant once a year. Here's what working with us looks like instead.</p>
+      </div>
+      <table data-switch="" style="width:100%;border-collapse:collapse;table-layout:fixed">
+        <thead><tr>
+          <th scope="col" style="${TH};color:rgba(27,31,28,.74);padding-right:clamp(16px,3vw,40px)">What clients tell us they had</th>
+          <th scope="col" style="${TH};color:#1f3d34">What you get here</th>
+        </tr></thead>
+        <tbody>
+          ${ROWS.map(([had, get]) => `<tr><td style="${TD};color:rgba(27,31,28,.74);padding-right:clamp(16px,3vw,40px)">${had}</td><td style="${TD};color:#1b1f1c;font-weight:500">${get}</td></tr>`).join("\n          ")}
+        </tbody>
+      </table>
+      <p style="margin:-8px 0 0;font:400 14.5px/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74);max-width:72ch;text-wrap:pretty">Switching takes one call. We contact your old accountant, set up our authority with HMRC and Companies House, and map your next deadline. Mid-year is fine.</p>
+      <div><button sc-camel-on-click="{{ goContact }}" ${PRIMARY}>Book a free switching call</button></div>
+    </div>
+  </div>`;
+
+  // 4. Monthly packages (in place of the client types).
+  const ROW = "display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid #dcd8cf";
+  const packages = `<div data-home="packages" style="${PAD};border-bottom:1px solid #dcd8cf">
+    <div data-pkgs="" style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(32px,5vw,72px);align-items:start">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <h2 style="${H2}">Everything a limited company needs, for one monthly fee.</h2>
+        <p style="${INTRO}">Pick what fits now and change it as the business grows. Every price is published.</p>
+        <p style="margin:6px 0 0;padding:20px 22px;background:#fff;border:1px solid #dcd8cf;border-left:3px solid #1f3d34;font:400 17px/1.6 Hanken Grotesk,sans-serif;color:#1b1f1c;text-wrap:pretty"><strong style="font-weight:600">{{ homeCorePrice }}</strong>: annual accounts, CT600, Companies House filing, confirmation statement, pre-year-end tax review and a walkthrough call.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
+          <button sc-camel-on-click="{{ goPackage }}" ${PRIMARY}>Build your package</button>
+          <button sc-camel-on-click="{{ goContact }}" ${SECONDARY}>Book a free call</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;border-top:2px solid #1f3d34">
+        <div style="font:600 14px/1.2 Hanken Grotesk,sans-serif;color:#1f3d34;padding:20px 0 6px">Add when you need them</div>
+        <sc-for list="{{ homeAddons }}" as="x" hint-placeholder-count="4">
+          <div style="${ROW}"><span style="font:600 21px/1.25 var(--font-heading);letter-spacing:-.005em;color:#1b1f1c">{{ x.label }}</span><span style="font:500 15px/1.4 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.8);text-align:right">{{ x.price }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </div>`;
+
+  // 5. Clients (in place of "What clients say"): two case studies, then the
+  // Google reviews one at a time. The reviews link is the design's own, so the
+  // Google reviews step below still turns it into "Rated 5.0 on Google".
+  const LABEL = "font:600 13px/1.3 Hanken Grotesk,sans-serif;color:#cfe0d5;margin-bottom:4px";
+  const LINE = "margin:0;font:400 16px/1.6 Hanken Grotesk,sans-serif;color:rgba(251,248,242,.88);text-wrap:pretty";
+  const CASES = [
+    { title: "A group of e-commerce companies", lines: [
+      ["The problem", "Their previous accountant was hard to reach. When they did get in touch, it was usually to put the price up. The service felt off the shelf, work was done without asking first, and extra work they had never agreed to appeared on the invoice."],
+      ["What we did", "Took the group on, built a package around how the businesses actually run, and put a clear written agreement in place covering what's included, what isn't, and how anything new is agreed and priced before it starts."],
+      ["The result", "Regular contact, no surprise invoices, and a group that has stayed with us because they know what they're getting and what it costs."]] },
+    { title: "Three companies, one deadline", lines: [
+      ["The problem", "A group of three companies came to us close to their filing deadlines, with year-end figures that needed considerable checking and adjustment."],
+      ["What we did", "Worked through the records for all three, made the corrections, and prepared and filed the financial statements and CT600 returns for each."],
+      ["The result", "All three companies filed correctly, with support the directors could rely on through a high-pressure few weeks."]],
+      quote: "We are very grateful for your prompt, patient and thorough support throughout the process.", by: "Director, group of three companies" }
+  ];
+  const card = c => `<article style="border:1px solid rgba(251,248,242,.28);border-radius:2px;padding:clamp(22px,2.6vw,32px);display:flex;flex-direction:column;gap:18px">
+          <h3 style="margin:0;font:600 clamp(23px,2.2vw,27px)/1.2 var(--font-heading);letter-spacing:-.01em;color:#fbf8f2">${c.title}</h3>
+          ${c.lines.map(([l, t]) => `<div><div style="${LABEL}">${l}</div><p style="${LINE}">${t}</p></div>`).join("\n          ")}
+          ${c.quote ? `<figure style="margin:auto 0 0;padding-top:18px;border-top:1px solid rgba(251,248,242,.28)"><blockquote style="margin:0;font:italic 500 21px/1.45 var(--font-heading);color:#fbf8f2;text-wrap:pretty">"${c.quote}"</blockquote><figcaption style="margin-top:8px;font:400 14.5px/1.4 Hanken Grotesk,sans-serif;color:rgba(251,248,242,.72)">${c.by}</figcaption></figure>` : ""}
+        </article>`;
+  const NAV = `style="border:1px solid rgba(251,248,242,.45);background:transparent;color:#fbf8f2;width:44px;height:44px;border-radius:2px;font:500 18px/1 Hanken Grotesk,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="border-color:#fbf8f2;background:rgba(251,248,242,.08)"`;
+  const clientsOld = section("What clients say</h2>");
+  const reviewsLink = (markup.slice(clientsOld.start, clientsOld.end).match(/<a href="\[GOOGLE BUSINESS PROFILE URL\]"[\s\S]*?<\/a>/) || [])[0];
+  if (!reviewsLink) fail("could not find the Google reviews link on the home page.");
+  const clients = `<div data-home="clients" style="border-radius:2px;margin:0 clamp(8px,2vw,24px) 24px;background:#1f3d34;color:#fbf8f2;padding:clamp(52px,6vw,72px) clamp(20px,4.6vw,44px)">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:clamp(28px,3vw,40px);flex-wrap:wrap">
+      <h2 style="${H2};color:#fbf8f2">What that looks like in practice.</h2>
+      ${reviewsLink}
+    </div>
+    <div data-cases="" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,2.6vw,32px)">
+        ${CASES.map(card).join("\n        ")}
+    </div>
+    <div data-review="" style="margin-top:clamp(28px,3vw,40px);border-top:1px solid rgba(251,248,242,.28);padding-top:24px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 32px;align-items:end">
+      <figure aria-live="polite" style="margin:0;display:flex;flex-direction:column;gap:12px;max-width:760px">
+        <div aria-hidden="true" style="font:400 12px/1 Hanken Grotesk,sans-serif;color:#cfe0d5">{{ review.stars }}</div>
+        <blockquote style="margin:0;font:400 17px/1.6 Hanken Grotesk,sans-serif;color:rgba(251,248,242,.9);text-wrap:pretty">{{ review.quote }}</blockquote>
+        <figcaption style="font:400 14.5px/1.4 Hanken Grotesk,sans-serif;color:rgba(251,248,242,.72)"><span style="font:600 18px/1.3 var(--font-heading);color:#fbf8f2">{{ review.name }}</span> · {{ review.org }}</figcaption>
+      </figure>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button type="button" aria-label="Previous review" sc-camel-on-click="{{ reviewPrev }}" ${NAV}>←</button>
+        <span style="font:400 14px/1 Hanken Grotesk,sans-serif;color:rgba(251,248,242,.72);min-width:44px;text-align:center">{{ reviewCount }}</span>
+        <button type="button" aria-label="Next review" sc-camel-on-click="{{ reviewNext }}" ${NAV}>→</button>
+      </div>
+    </div>
+  </div>`;
+
+  const refs = section("Been recommended? Here's what happens next.</h2>");
+  const types = section("Who I work with</h2>");
+  const outgrow = section("Most small businesses outgrow their first accountant.</h2>");
+  const fleet = section("Accountant for Fleet and north");
+  if (!(refs.end <= types.start && types.end <= outgrow.start && outgrow.end <= fleet.start && fleet.end <= clientsOld.start)) fail("the home page sections have moved.");
+  markup = markup.slice(0, refs.start) + why + "\n  " + packages + "\n  " +
+    clients + markup.slice(clientsOld.end);
+  // Values for the new sections: prices from the price list, the reviews
+  // one at a time.
+  logic = replaceOnce(logic, `      isHome: p === "home",\n`, `      isHome: p === "home",
+      notHome: p !== "home",
+      homeCorePrice: (() => { const n = __minPrice(this.state.tiers || __PRICE_ROWS, "ct"); return n == null ? "A fixed monthly fee" : "From " + saMoney(n) + " a month"; })(),
+      homeAddons: [
+        { label: "VAT returns", cat: "vat" },
+        { label: "Bookkeeping", cat: "bk" },
+        { label: "Payroll", price: "£" + PAYROLL_BASE + " + £" + PAYROLL_PER_EMPLOYEE + " per employee a month" },
+        { label: "Management accounts", cat: "ma" }
+      ].map(x => ({ label: x.label, price: x.price || (() => { const n = __minPrice(this.state.tiers || __PRICE_ROWS, x.cat); return n == null ? "" : "From " + saMoney(n) + " a month"; })() })),
+      review: TESTIMONIALS[((this.state.review || 0) % TESTIMONIALS.length + TESTIMONIALS.length) % TESTIMONIALS.length],
+      reviewCount: (((this.state.review || 0) % TESTIMONIALS.length + TESTIMONIALS.length) % TESTIMONIALS.length + 1) + " of " + TESTIMONIALS.length,
+      reviewPrev: () => this.setState(s => ({ review: (s.review || 0) - 1 })),
+      reviewNext: () => this.setState(s => ({ review: (s.review || 0) + 1 })),
+      pkgFaq: PACKAGE_FAQ.map((f, i) => ({ q: f.q, a: f.a, open: this.state.open === 100 + i, sign: this.state.open === 100 + i ? "–" : "+", toggle: () => this.setState(s => ({ open: s.open === 100 + i ? -1 : 100 + i })) })),
+      contactFaq: CONTACT_FAQ.map((f, i) => ({ q: f.q, a: f.a, open: this.state.open === 200 + i, sign: this.state.open === 200 + i ? "–" : "+", toggle: () => this.setState(s => ({ open: s.open === 200 + i ? -1 : 200 + i })) })),
+`, "the home page values");
+
+  // 6. Four questions on the home page; the others move to Packages and Contact.
+  {
+    const a = logic.indexOf("const FAQ = [");
+    const b = logic.indexOf("\n];\n", a);
+    if (a === -1 || b === -1) fail("could not find the home page questions.");
+    const old = logic.slice(a, b);
+    const keep = q => {
+      const m = old.match(new RegExp(`\\{ q: "${q.replace(/[?]/g, "\\?")}", a: "([^"]*)" \\}`));
+      if (!m) fail(`could not find the question "${q}".`);
+      return m[1];
+    };
+    const fileo = keep("Are you the same firm as Fileo & Co?");
+    const cost = keep("What does a package cost?");
+    const midYear = keep("Can you take over mid-year?");
+    const hampshire = keep("Do I have to be in Hampshire?");
+    const q = (question, answer) => `  { q: ${JSON.stringify(question)}, a: ${JSON.stringify(answer)} }`;
+    logic = logic.slice(0, a) + `const FAQ = [
+${[
+  q("How does switching accountant work?", "We contact your current accountant, ask for your records and set up our authority with HMRC and Companies House. You sign one authorisation and we do the rest. Most switches are done within a couple of weeks."),
+  q("Is there a cost to switching?", "No fee from us to switch. If your previous accountant charges for handing over records, that's between you and them, but most don't."),
+  q("Are you the same firm as Fileo & Co?", fileo),
+  q("Who will I actually deal with?", "Louis leads every client and is the person you speak to, from the first call to every filing.")
+].join(",\n")}
+];
+
+const PACKAGE_FAQ = [
+${[q("What does a package cost?", cost), q("Can you take over mid-year?", midYear)].join(",\n")}
+];
+
+const CONTACT_FAQ = [
+${q("Do I have to be in Hampshire?", hampshire)}
+];
+` + logic.slice(b + "\n];\n".length);
+  }
+  // The same question list, on the Packages and Contact pages.
+  const faqBlock = (list, intro) => {
+    const s = section("Questions,<br>answered plainly</h2>");
+    return markup.slice(s.start, s.end)
+      .replace(`list="{{ faq }}"`, `list="{{ ${list} }}"`)
+      .replace(/hint-placeholder-count="\d+"/, `hint-placeholder-count="2"`)
+      .replace("Anything not here, just ask. We don't charge for questions.", intro);
+  };
+  const pageEnd = key => {
+    const st = markup.indexOf(`<sc-if value="{{ ${key} }}"`);
+    if (st === -1) fail(`could not find the ${key} page.`);
+    const re = /<(\/?)sc-if\b[^>]*>/g; re.lastIndex = st; let d = 0;
+    for (let x; (x = re.exec(markup));) { if (!x[1]) d++; else if (!--d) return x.index; }
+    fail(`could not find the end of the ${key} page.`);
+  };
+  const pkgBlock = faqBlock("pkgFaq", "Anything not here, just ask. We don't charge for questions.");
+  const contactBlock = faqBlock("contactFaq", "Anything not here, just ask. We don't charge for questions.");
+  let at = pageEnd("isPackage");
+  markup = markup.slice(0, at) + pkgBlock + "\n" + markup.slice(at);
+  at = pageEnd("isContact");
+  markup = markup.slice(0, at) + contactBlock + "\n" + markup.slice(at);
+
+  // Reviews: start at the first one.
+  logic = replaceOnce(logic, `saHidden: "", saPaid: false`, `saHidden: "", saPaid: false, review: 0`, "the reviews state");
+
+  // 7. The closing call to action, reworded on the home page only.
+  const cta = markup.indexOf(`<sc-if value="{{ showCta }}" hint-placeholder-val="{{ true }}">`);
+  const ctaH = markup.indexOf(`Let's talk about your business.</h2>`, cta);
+  const ctaEnd = markup.indexOf("</sc-if>", ctaH);
+  if (cta === -1 || ctaH === -1 || ctaEnd === -1) fail("could not find the closing call to action.");
+  const ctaInner = markup.slice(markup.indexOf(">", cta) + 1, ctaEnd);
+  const homeCta = ctaInner
+    .replace("Let's talk about your business.</h2>", "Ready for an accountant who keeps in touch?</h2>")
+    .replace("No obligation, no pitch. Just where you are and where you're heading.", "A free 20-minute call. No obligation, no pitch, and a fixed fee in writing if you'd like to go ahead.")
+    .replace(/(<button sc-camel-on-click="\{\{ goContact \}\}"[^>]*>)Get in touch(<\/button>)/, "$1Book a free call$2")
+    .replace(/<button sc-camel-on-click="\{\{ goPackage \}\}" style="([^"]*)" style-hover="([^"]*)">Packages &amp; pricing<\/button>/,
+      `<a href="https://wa.me/447387835746" target="_blank" rel="noopener" style="$1;text-decoration:none;display:inline-block" style-hover="$2">WhatsApp Louis</a>`);
+  if (!homeCta.includes("Book a free call") || !homeCta.includes("WhatsApp Louis")) fail("the closing call to action has changed shape.");
+  markup = markup.slice(0, cta) + `<sc-if value="{{ showCta }}" hint-placeholder-val="{{ true }}">
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">${homeCta}</sc-if>
+<sc-if value="{{ notHome }}" hint-placeholder-val="{{ false }}">${ctaInner}</sc-if>
+` + markup.slice(ctaEnd);
+
+  // The towns, as one line in the footer.
+  markup = replaceOnce(markup, `Chartered management accountant, CIMA member in practice.</div>`,
+    `Chartered management accountant, CIMA member in practice.</div>
+    <div style="font:400 14.5px/1.6 Hanken Grotesk,sans-serif;color:rgba(27,31,28,.74);max-width:40ch">Serving Fleet, Church Crookham, Farnborough, Farnham, Hook, Odiham, Camberley, Yateley and Basingstoke, in person or fully remote.</div>`, "the footer address");
+
+  markup = replaceOnce(markup, `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }`,
+    `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
+@media (max-width:900px){ [data-pkgs]{grid-template-columns:minmax(0,1fr) !important} [data-cases]{grid-template-columns:minmax(0,1fr) !important} }
+@media (max-width:560px){ [data-switch] th,[data-switch] td{font-size:14.5px !important;padding-right:12px !important} [data-review]{grid-template-columns:minmax(0,1fr) !important} }`, "the home page breakpoints");
+}
 
 // Refunds: fully refundable until work starts on the return. The separate
 // promise (a full refund if Louis can't take the return on) stays as it is.
@@ -1134,11 +1284,6 @@ markup = replaceOnce(markup, `@media (min-width:901px) and (max-width:1080px){ [
 {
   const TEAM = [["Louis Bromage ACMA CGMA", "Principal", "Leads every client, gives the advice, and reviews and signs off everything before it is filed."], ["Bookkeeper", "", "Keeps your books, bank feeds and receipts up to date through the year."], ["Junior accountant", "", "Prepares accounts and tax returns for Louis to review."]];
   const TEAM_COPY = [
-    ["Who I work with", "Who we work with"],
-    ['"I keep the client list short on purpose, so every file gets read properly rather than skimmed. You will always deal with me directly, because the person who knows your numbers should be the person you speak to."',
-     '"We keep the client list short on purpose, so every file gets read properly rather than skimmed. I lead every client myself and review everything before it goes out, because the person who knows your numbers should be the person you speak to."'],
-    ['a: "Louis. It\'s a principal-led practice: you deal with Louis Bromage ACMA CGMA directly, from the first call to every filing. The person who does your books is the person who answers the phone and signs off your accounts."',
-     'a: "A small team, led by Louis. Louis Bromage ACMA CGMA leads your work from the first call and reviews and signs off everything before it is filed. A bookkeeper and a junior accountant work on your file alongside him, and Louis is always the person you can reach."'],
     ["Bromage &amp; Co is a principal-led practice: you deal with Louis Bromage ACMA CGMA directly, from the first call to every filing.",
      "Bromage &amp; Co is a principal-led practice: Louis Bromage ACMA CGMA leads your work from the first call to every filing, with a bookkeeper and a junior accountant alongside him."],
     ["Most of my clients are in their first few years of trading", "Most of our clients are in their first few years of trading"],
@@ -1255,7 +1400,7 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   });
   if (count.logo !== 4) fail(`expected the logo in 4 places, found ${count.logo}.`);
   if (count.price !== 5) fail(`expected 5 serif prices, found ${count.price}. Check PRICE in the typography step.`);
-  if (count.title !== 21) fail(`expected 21 serif titles, found ${count.title}. Check TITLE in the typography step.`);
+  if (count.title !== 22) fail(`expected 22 serif titles, found ${count.title}. Check TITLE in the typography step.`);
   // EB Garamond sets wider than the serif it replaces; at up to 120px the tax
   // return headline broke onto a third line on desktop.
   markup = replaceOnce(markup, `font:500 clamp(48px,8.6vw,120px)/1.1 var(--font-heading)`,
@@ -1374,7 +1519,7 @@ const THEME_CSS = `:root{${Object.entries(THEME).map(([k, v]) => `--${k}:${v}`).
     if (n !== count) fail(`expected ${count} of ${what}, found ${n}.`);
     markup = markup.split(find).join(find.replace(`style="`, `style="background:var(--bg-alt);`));
   };
-  tint(`<div data-stack="" style="padding:70px clamp(20px,4.6vw,44px);display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;border-bottom:1px solid var(--border)">`, 2, "the home and outsourced finance questions");
+  tint(`<div data-stack="" style="padding:70px clamp(20px,4.6vw,44px);display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;border-bottom:1px solid var(--border)">`, 4, "the questions on the home, outsourced finance, packages and contact pages");
   tint(`<div data-stack="" style="padding:64px clamp(20px,4.6vw,44px);display:grid;grid-template-columns:.8fr 1.2fr;gap:52px;border-bottom:1px solid var(--border)">`, 1, "the service page questions");
   tint(`<div data-sa2="" style="padding:clamp(48px,6vw,88px) clamp(20px,4.6vw,48px);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:clamp(28px,3.5vw,40px)">`, 1, "the tax return prices");
   tint(`<div data-sa2="" style="padding:clamp(48px,6vw,88px) clamp(20px,4.6vw,48px);border-bottom:1px solid var(--border);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(32px,5vw,72px);align-items:start">`, 1, "the tax return questions");
