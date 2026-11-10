@@ -497,7 +497,7 @@ markup = markup.split("within 24 hours").join("within one working day");
   const hero = markup.match(/<h1 style="([^"]*)">Chartered management accountant in Fleet, Hampshire<\/h1>\s*<div role="text" style="([^"]*)">Your accountant, by name\. <span style="([^"]*)">Your fee, in writing\.<\/span><\/div>\s*<p style="([^"]*)">[^<]*<\/p>\s*<div style="([^"]*)">\s*<button sc-camel-on-click="\{\{ goContact \}\}" ([^>]*)>Book a consultation<\/button>\s*<button sc-camel-on-click="\{\{ goPackage \}\}" ([^>]*)>See our fees<\/button>\s*<\/div>/);
   if (!hero) fail("could not find the home page hero.");
   const [, eyebrowStyle, headingStyle, , subStyle, buttonsStyle, primaryAttrs, secondaryAttrs] = hero;
-  const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(33px,3.6vw,50px)/1.04");
+  const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(40px,4.9vw,66px)/1.08");
   if (heading === headingStyle) fail("could not resize the home page heading.");
   markup = markup.replace(hero[0], `<p style="${eyebrowStyle}">Chartered Management Accountant in Fleet, Hampshire</p>
         <h1 style="${heading}">Accounts and tax for limited companies.</h1>
@@ -586,13 +586,13 @@ const HERO_PHOTO = { file: "design/photos/hero.webp", width: 1470, height: 980, 
   markup = markup.slice(0, at) +
     `<div data-hero="" style="position:relative;isolation:isolate;overflow:hidden;display:flex;align-items:center;box-sizing:border-box;min-height:clamp(560px,46vw,700px);margin:calc(-1 * ${top}) calc(-1 * ${pad}) 0;padding:clamp(56px,6vw,96px) ${pad}">
       <img data-heroimg="" src="${heroImg}" alt="" width="${HERO_PHOTO.width}" height="${HERO_PHOTO.height}" fetchpriority="high" style="position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:${HERO_PHOTO.wide};display:block">
-      <div data-herofade="" aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 94%,transparent) 38%,color-mix(in srgb,var(--bg) 62%,transparent) 50%,transparent 66%)"></div>
-      <div data-herotext="" style="display:flex;flex-direction:column;gap:28px;min-width:0;max-width:min(640px,50%)">` +
+      <div data-herofade="" aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 44%,color-mix(in srgb,var(--bg) 66%,transparent) 56%,color-mix(in srgb,var(--bg) 12%,transparent) 76%)"></div>
+      <div data-herotext="" style="display:flex;flex-direction:column;gap:28px;min-width:0;max-width:min(660px,56%)">` +
     markup.slice(at + open.length, end + "</div>".length) + `
     </div>` + markup.slice(end + "</div>".length);
   markup = replaceOnce(markup, `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }`,
     `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
-@media (max-width:1100px){ [data-herotext]{max-width:min(600px,56%) !important} [data-herofade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 94%,transparent) 46%,color-mix(in srgb,var(--bg) 60%,transparent) 58%,transparent 74%) !important} }
+@media (max-width:1100px){ [data-herotext]{max-width:min(640px,62%) !important} [data-herofade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 54%,color-mix(in srgb,var(--bg) 60%,transparent) 68%,color-mix(in srgb,var(--bg) 10%,transparent) 86%) !important} }
 @media (max-width:900px){ [data-hero]{--pt:clamp(200px,58vw,300px);display:block !important;min-height:0 !important;padding-top:var(--pt) !important} [data-herotext]{max-width:none !important} [data-heroimg]{bottom:auto !important;height:calc(var(--pt) + 100px) !important;object-position:${HERO_PHOTO.narrow} !important} [data-herofade]{bottom:auto !important;height:calc(var(--pt) + 100px);background:linear-gradient(180deg,transparent 0,color-mix(in srgb,var(--bg) 8%,transparent) calc(var(--pt) - 150px),color-mix(in srgb,var(--bg) 88%,transparent) var(--pt),var(--bg) calc(var(--pt) + 100px)) !important} }`, "the home hero breakpoints");
 }
 markup = replaceOnce(markup, `<a href="#tax-return" sc-camel-on-click="{{ goTaxReturnLink }}"`,
@@ -1408,8 +1408,8 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
   // Tax return page: the hero sits on a photo (a desk with a notebook, a
   // calculator and printed charts, design/photos/tax-return.webp). The page
   // colour fades across from the left so the text reads cleanly; on phones
-  // the photo sits across the top and fades down behind the headline. The headline is a little
-  // smaller so it fits beside the photo.
+  // the photo sits across the top and fades down behind the headline. The
+  // hero type is shared with the home page (see the rules below).
   {
     const buf = fs.readFileSync(path.join(ROOT, "design/photos/tax-return.webp"));
     const src = `/assets/img/tax-return-${hash(buf)}.webp`;
@@ -1432,13 +1432,18 @@ FONT_CSS = `:root{--font-heading:${FONTS.heading};--font-body:${FONTS.body}}h1,h
     markup = markup.slice(0, start) + tag + `
     <img data-saimg="" src="${src}" alt="" width="2400" height="1601" fetchpriority="high" style="position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;object-position:70% 70%;display:block">
     <div data-safade="" aria-hidden="true" style="position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 44%,color-mix(in srgb,var(--bg) 66%,transparent) 56%,color-mix(in srgb,var(--bg) 12%,transparent) 76%)"></div>
-    <div data-satext="" style="display:flex;flex-direction:column;gap:26px;min-width:0;max-width:min(700px,58%)">` + markup.slice(open, close) + `</div>
+    <div data-satext="" style="display:flex;flex-direction:column;gap:28px;min-width:0;max-width:min(660px,56%)">` + markup.slice(open, close) + `</div>
   ` + markup.slice(close);
     markup = replaceOnce(markup, `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }`,
       `@media (max-width:640px){ [data-steps3]{grid-template-columns:1fr !important} }
-[data-satext] h1{font-size:clamp(44px,5.2vw,74px) !important}
-@media (max-width:1100px){ [data-satext]{max-width:min(640px,64%) !important} [data-safade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 54%,color-mix(in srgb,var(--bg) 60%,transparent) 68%,color-mix(in srgb,var(--bg) 10%,transparent) 86%) !important} }
-@media (max-width:900px){ [data-sahero]{--pt:clamp(200px,58vw,300px);padding-top:var(--pt) !important} [data-satext]{max-width:none !important} [data-saimg]{bottom:auto !important;height:calc(var(--pt) + 100px) !important;object-position:62% 78% !important} [data-safade]{bottom:auto !important;height:calc(var(--pt) + 100px);background:linear-gradient(180deg,transparent 0,color-mix(in srgb,var(--bg) 8%,transparent) calc(var(--pt) - 150px),color-mix(in srgb,var(--bg) 88%,transparent) var(--pt),var(--bg) calc(var(--pt) + 100px)) !important} [data-satext] h1{font-size:clamp(44px,8vw,72px) !important} }`, "the tax return photo breakpoints");
+/* One hero style for the home and tax return pages: the eyebrow, headline,
+   sub-line, spacing and text width match. */
+[data-herotext] > :first-child,[data-satext] > :first-child{font:600 15px/1.35 var(--font-body) !important;letter-spacing:0 !important}
+[data-herotext] h1,[data-satext] h1{font-size:clamp(40px,4.9vw,66px) !important;line-height:1.08 !important;letter-spacing:-.02em !important}
+[data-herotext] h1 + p,[data-satext] h1 + p{font-size:clamp(18px,1.6vw,21px) !important;line-height:1.6 !important}
+@media (max-width:900px){ [data-herotext] h1,[data-satext] h1{font-size:clamp(32px,10.2vw,48px) !important} }
+@media (max-width:1100px){ [data-satext]{max-width:min(640px,62%) !important} [data-safade]{background:linear-gradient(90deg,var(--bg) 0%,color-mix(in srgb,var(--bg) 95%,transparent) 54%,color-mix(in srgb,var(--bg) 60%,transparent) 68%,color-mix(in srgb,var(--bg) 10%,transparent) 86%) !important} }
+@media (max-width:900px){ [data-sahero]{--pt:clamp(200px,58vw,300px);padding-top:var(--pt) !important} [data-satext]{max-width:none !important} [data-saimg]{bottom:auto !important;height:calc(var(--pt) + 100px) !important;object-position:62% 78% !important} [data-safade]{bottom:auto !important;height:calc(var(--pt) + 100px);background:linear-gradient(180deg,transparent 0,color-mix(in srgb,var(--bg) 8%,transparent) calc(var(--pt) - 150px),color-mix(in srgb,var(--bg) 88%,transparent) var(--pt),var(--bg) calc(var(--pt) + 100px)) !important} }`, "the tax return photo breakpoints");
   }
 
   // The sans, wherever the design names it (but not its @font-face rules).
