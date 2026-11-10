@@ -496,12 +496,12 @@ markup = markup.split("within 24 hours").join("within one working day");
 {
   const hero = markup.match(/<h1 style="([^"]*)">Chartered management accountant in Fleet, Hampshire<\/h1>\s*<div role="text" style="([^"]*)">Your accountant, by name\. <span style="([^"]*)">Your fee, in writing\.<\/span><\/div>\s*<p style="([^"]*)">[^<]*<\/p>\s*<div style="([^"]*)">\s*<button sc-camel-on-click="\{\{ goContact \}\}" ([^>]*)>Book a consultation<\/button>\s*<button sc-camel-on-click="\{\{ goPackage \}\}" ([^>]*)>See our fees<\/button>\s*<\/div>/);
   if (!hero) fail("could not find the home page hero.");
-  const [, eyebrowStyle, headingStyle, accentStyle, subStyle, buttonsStyle, primaryAttrs, secondaryAttrs] = hero;
+  const [, eyebrowStyle, headingStyle, , subStyle, buttonsStyle, primaryAttrs, secondaryAttrs] = hero;
   const heading = headingStyle.replace(/font:500 clamp\([^)]*\)\/[.\d]+/, "font:500 clamp(33px,3.6vw,50px)/1.04");
   if (heading === headingStyle) fail("could not resize the home page heading.");
   markup = markup.replace(hero[0], `<p style="${eyebrowStyle}">Chartered Management Accountant in Fleet, Hampshire</p>
-        <h1 style="${heading}">Accounts, tax and advice for limited company owners. <span style="${accentStyle}">From an accountant who actually picks up.</span></h1>
-        <p style="${subStyle}">Louis leads every client and is the person you speak to. Fixed monthly fees, agreed in writing before anything starts.</p>
+        <h1 style="${heading}">Accounts and tax for limited companies.</h1>
+        <p style="${subStyle}">Fixed monthly fees, agreed upfront.</p>
         <div style="${buttonsStyle}">
           <button sc-camel-on-click="{{ goContact }}" ${primaryAttrs}>Book a free call</button>
           <button sc-camel-on-click="{{ goPackage }}" ${secondaryAttrs}>See monthly prices</button>
@@ -607,7 +607,7 @@ markup = replaceOnce(markup, "Partner returns and extras are confirmed on your c
 // Seven sections, in this order: the hero (with the campaign card, Services
 // list and trust strip as they were), why people switch accountant, the
 // monthly packages, clients (two case studies and the Google reviews, one at
-// a time), four questions, and the closing call to action. The referral
+// a time), three questions, and the closing call to action. The referral
 // steps, the client types, "Most small businesses outgrow…", the Fleet map
 // and the Advisory and Outsourced finance teasers come off the home page (the
 // town names move to the footer; Advisory keeps its link under the hero
@@ -760,7 +760,7 @@ markup = replaceOnce(markup, "Partner returns and extras are confirmed on your c
       contactFaq: CONTACT_FAQ.map((f, i) => ({ q: f.q, a: f.a, open: this.state.open === 200 + i, sign: this.state.open === 200 + i ? "–" : "+", toggle: () => this.setState(s => ({ open: s.open === 200 + i ? -1 : 200 + i })) })),
 `, "the home page values");
 
-  // 6. Four questions on the home page; the others move to Packages and Contact.
+  // 6. Three questions on the home page; the others move to Packages and Contact.
   {
     const a = logic.indexOf("const FAQ = [");
     const b = logic.indexOf("\n];\n", a);
@@ -780,8 +780,7 @@ markup = replaceOnce(markup, "Partner returns and extras are confirmed on your c
 ${[
   q("How does switching accountant work?", "We contact your current accountant, ask for your records and set up our authority with HMRC and Companies House. You sign one authorisation and we do the rest. Most switches are done within a couple of weeks."),
   q("Is there a cost to switching?", "No fee from us to switch. If your previous accountant charges for handing over records, that's between you and them, but most don't."),
-  q("Are you the same firm as Fileo & Co?", fileo),
-  q("Who will I actually deal with?", "Louis leads every client and is the person you speak to, from the first call to every filing.")
+  q("Are you the same firm as Fileo & Co?", fileo)
 ].join(",\n")}
 ];
 
