@@ -501,7 +501,7 @@ markup = markup.split("within 24 hours").join("within one working day");
   if (heading === headingStyle) fail("could not resize the home page heading.");
   markup = markup.replace(hero[0], `<p style="${eyebrowStyle}">Chartered Management Accountant in Fleet, Hampshire</p>
         <h1 style="${heading}">Accounts and tax for limited companies.</h1>
-        <p style="${subStyle}">Fixed monthly fees.</p>
+        <p style="${subStyle}">Year-end accounts, corporation tax, VAT and payroll, for a fixed monthly fee.</p>
         <div style="${buttonsStyle}">
           <button sc-camel-on-click="{{ goContact }}" ${primaryAttrs}>Book a free call</button>
           <button sc-camel-on-click="{{ goPackage }}" ${secondaryAttrs}>See monthly prices</button>
