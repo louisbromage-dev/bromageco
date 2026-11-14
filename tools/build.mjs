@@ -1609,7 +1609,9 @@ ${page.key === "taxReturn" ? `(function () {
 var BC_TRACKING = ${scriptJson({ ...TRACKING, thankYouPage: page.key === "saThanks" })};
 ${TRACKING_HEAD}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=${TRACKING.tagId}"></script>
-${TRACKING.adsTagId ? `<script async src="https://www.googletagmanager.com/gtm.js?id=${TRACKING.adsTagId}"></script>\n` : ""}<style>${BANNER_CSS}</style>
+${TRACKING.adsTagId ? `<script async src="https://www.googletagmanager.com/gtm.js?id=${TRACKING.adsTagId}"></script>\n` : ""}<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<style>${BANNER_CSS}</style>
 ${head}
 ${page.template ? `<script>window.__INSIGHTS_HTML = "%%INSIGHTS_HTML%%";</script>\n<!--%%INSIGHTS_HEAD%%-->\n` : ""}<script>window.__resources = {};</script>
 <script defer src="${reactSrc}"></script>
